@@ -167,8 +167,9 @@ public class MainParser {
         higherLevelTokens.add(VAR_TYPE);
     }
 
-    public static ArrayList<Token> tokenIDS = new ArrayList<>();
-    public static void parseFile(String[] tokens) throws Exception {
+
+    public static ArrayList<Token> parseFile(String[] tokens) throws Exception {
+        ArrayList<Token> tokenIDS = new ArrayList<>();
         for(int i = 0; i < tokens.length; i++) {
             TokenType type = null;
             for(TokenType tokenType : TokenType.values()) {
@@ -186,5 +187,6 @@ public class MainParser {
             }
             System.out.println(printString);
         }
+        return tokenIDS;
     }
 }

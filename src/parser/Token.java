@@ -19,4 +19,9 @@ public class Token {
         }
 
     }
+
+    @Override
+    public String toString() {
+        return "string : " + str + ", position" + position + ", tokenType : " + tokenType;
+    }
 }

@@ -2,9 +2,18 @@ package main;
 
 
 import parser.MainParser;
+import parser.Token;
+import parser.TokenType;
+import parser.laststage.BlockType;
+import parser.laststage.LastStageMain;
+import parser.reallylaststage.Variable;
+import parser.reallylaststage.Type;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Main {
     /*
@@ -140,29 +149,79 @@ public class Main {
     public static ArrayList<String> classNames = new ArrayList<>();
     public static void main(String[] args) throws Exception {
         File file = new File(Main.class.getClassLoader().getResource("main/fileTest.txt").getFile());
-        String[] tokens = tokenize(readFromInputStream(new FileInputStream(file)));
-        for(int i = 0; i < tokens.length; i++) {
-            System.out.println(tokens[i]);
+        String[] tokens1 = tokenize(readFromInputStream(new FileInputStream(file)));
+        for(int i = 0; i < tokens1.length; i++) {
+            System.out.println(tokens1[i]);
         }
 
-        MainParser.parseFile(tokens);
+        ArrayList<Token> tokens = MainParser.parseFile(tokens1);
+        //For now we will simply do stuff based on semicolons, will have to change when we implement classes and functions
+        ArrayList<Pair<Integer, Integer>> pairOfIntegers = new ArrayList<Pair<Integer, Integer>>();
+        ArrayList<Integer> positionsAfterSemicolons = new ArrayList<>();
+        int first = 0;
+        for(int i = 0; i < tokens.size(); i++) {
+            if(tokens.get(i).tokenType == TokenType.SEMICOLON) {
+                positionsAfterSemicolons.add(first+1);
+                first = i;
+            }
+        }
 
-        //First thing we do is we look for the starting token
-//        int classPosition = -1;
-//        for(int i = 0; i < tokens.length; i++) {
-//            if(tokens[i].equals("class")) {
-//                classPosition = i;
-//                break;
+        Map<Token, BlockType> blockTypes = new LinkedHashMap<>();
+//        for(int i = 0; i < positionsAfterSemicolons.size(); i++) {
+//            System.out.println("first token is : " + tokens.get(positionsAfterSemicolons.get(i)));
+//            for(BlockType blockType : BlockType.values()) {
+//                if(LastStageMain.tokenBlockTypeMap.get(blockType).test(tokens.get(positionsAfterSemicolons.get(i)), tokens)) {
+//                    blockTypes.put(tokens.get(i), blockType);
+//                    break;
+//                }
 //            }
 //        }
-//        if(classPosition == -1) {
-//            System.out.println("missing class deceleration in file");
-//        }
+        for(int i = 0; i < tokens.size(); i++) {
+            for(BlockType blockType : BlockType.values()) {
+                if(LastStageMain.tokenBlockTypeMap.get(blockType).test(tokens.get(i), tokens)) {
+                    blockTypes.put(tokens.get(i), blockType);
+                    break;
+                }
+            }
+        }
 
+        //Here we print stuff out.
+        System.out.println("\n\n\n Printing out Assigned Blocks");
+
+        for(Token token : blockTypes.keySet()) {
+            System.out.println("token : " + token + " , is of type : " + blockTypes.get(token));
+        }
+
+        Map<String, Type> inScopeThings = new HashMap<>();
+        Map<String, Token> mapBetweenStringsAndTokens = new HashMap<>();
+        Map<String, Variable> mapBetweenStringsAndVariables = new HashMap<>();
+        for(Token token : blockTypes.keySet()) {
+            mapBetweenStringsAndTokens.put(token.str, token);
+            if(blockTypes.get(token) == BlockType.VAR_DEC) {
+                inScopeThings.put(tokens.get(token.position+1).str, Type.VARIABLE);
+                mapBetweenStringsAndVariables.put(tokens.get(token.position+1).str, new Variable(token, tokens));
+                System.out.println(mapBetweenStringsAndVariables.get(tokens.get(token.position+1).str).getDeclarationRep());
+            }
+            if(blockTypes.get(token) == BlockType.VAR_ASSIGNMENT) {
+                if(!inScopeThings.containsKey(token.str)) {
+                    throw new Exception("TRIED TO REFRENCE OUT OF SCOPE VALUE");
+                }
+                mapBetweenStringsAndVariables.get(token.str).setValue(token, tokens);
+                System.out.println(mapBetweenStringsAndVariables.get(token.str).getAssignmentRep());
+            }
+            //Have to figure out later how to determine if the thing is out of scope, also shadowing need to be figured out.
+        }
+        //System.out.println("\n priting the actual bytecode now");
+//        for(Token token : blockTypes.keySet()) {
+//            if(blockTypes.get(token) != BlockType.EXP) {
+//                System.out.println(LastStageMain.getStringRepresentation(token, tokens, blockTypes.get(token)));
+//            }
+//        }
 
 
 
     }
+
 
     private static String readFromInputStream(InputStream inputStream)
             throws IOException {
