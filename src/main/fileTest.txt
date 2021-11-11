@@ -1,13 +1,3 @@
-int a = 1 ;
-a = 2 ;
-int b = 3 ;
-
-b = a ;
-
-double s = 1.0 ;
-
-float rAjsK = 212.232f ;
-
-char myChar = 'i' ;
-
-long hi = 20000 ;
+int b ;
+int a ;
+b = a + a * 1 - 5 '';

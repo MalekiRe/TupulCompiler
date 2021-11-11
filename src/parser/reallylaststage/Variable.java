@@ -16,6 +16,7 @@ public class Variable {
     //TODO::Do access level stuff here later as well
     String value;
     boolean isRawValue = false;
+    String expressionString = "";
     public Variable(PrimitiveType type, String identifier) {
         this.type = type;
         this.identifier = identifier;
@@ -43,6 +44,7 @@ public class Variable {
         }
         else {
             //TODO::Important, get this working for non const values!
+            this.value = tokens.get(token.position + 2).str;
             isRawValue = false;
         }
     }
@@ -60,19 +62,19 @@ public class Variable {
     public String getAssignmentRep() throws Exception {
         switch (type) {
             case INT -> {
-                return "loadc " + value + "\n setl " + identifier;
+                return expressionString + "loadc " + value + "\n setl " + identifier;
             }
             case CHAR -> {
-                return "loadc " + Character.getNumericValue(value.charAt(1)) + " C\n setl" + identifier + " B";
+                return expressionString + "loadc " + Character.getNumericValue(value.charAt(1)) + " C\n setl" + identifier + " B";
             }
             case FLOAT -> {
-                return "loadx " + value + " F\n setl " + identifier + " F";
+                return expressionString + "loadx " + value + " F\n setl " + identifier + " F";
             }
             case DOUBLE -> {
-                return "loadc " + value + " d\n setl " + identifier + " D";
+                return expressionString + "loadc " + value + " d\n setl " + identifier + " D";
             }
             case LONG -> {
-                return "loadc " + value + " L\n setl " + identifier + " L";
+                return expressionString + "loadc " + value + " L\n setl " + identifier + " L";
             }
         }
         throw new Exception("tried to get assignment represenation but the type didn't exist, wtf?");

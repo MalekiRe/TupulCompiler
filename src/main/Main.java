@@ -47,6 +47,7 @@ public class Main {
 
     Logic
 
+
     <logic-body> ::= <if> | <else if> | <else> | <for> | <while>
 
     <if> ::= 'if' '(' <exp> ')' '{' <function> '}'
@@ -62,6 +63,7 @@ public class Main {
 
 
     Function
+
 
     <function> ::=
 
@@ -204,7 +206,7 @@ public class Main {
             }
             if(blockTypes.get(token) == BlockType.VAR_ASSIGNMENT) {
                 if(!inScopeThings.containsKey(token.str)) {
-                    throw new Exception("TRIED TO REFRENCE OUT OF SCOPE VALUE");
+                    throw new Exception("TRIED TO REFRENCE OUT OF SCOPE VALUE : " + token.str +", at position : " + token.position);
                 }
                 mapBetweenStringsAndVariables.get(token.str).setValue(token, tokens);
                 System.out.println(mapBetweenStringsAndVariables.get(token.str).getAssignmentRep());

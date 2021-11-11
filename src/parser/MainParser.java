@@ -23,7 +23,6 @@ public class MainParser {
     <variable-dec> ::= <var-type> <identifier> '=' <identifier> ';'
 
 
-
      */
     public static Map<TokenType, Predicate<String>> tokenDict = new HashMap<>();
 
@@ -34,6 +33,8 @@ public class MainParser {
     public static ArrayList<TokenType> primitiveTokenTypes = new ArrayList<>();
 
     public static ArrayList<TokenType> MATH_OPERATORS = new ArrayList<>();
+
+    public static ArrayList<TokenType> TOKEN_TYPES_FOR_ITERATION = new ArrayList<>();
 
     public static TokenType determineFurtherTokenType(Token token, TokenType type) throws Exception {
         if(type == CONST) {
@@ -70,6 +71,16 @@ public class MainParser {
     }
 
     static {
+        //We only want to iterate over and compare our list of unkown token types to this higher level list, so for example, we don't get confused and assigne the highest level of token to INT, when it should be VAR_TYPE. both are correct, but VAR_TYPE is more useful and general.
+        TOKEN_TYPES_FOR_ITERATION.add(MATH_OPERATOR);
+        TOKEN_TYPES_FOR_ITERATION.add(VAR_TYPE);
+        TOKEN_TYPES_FOR_ITERATION.add(CONST);
+        TOKEN_TYPES_FOR_ITERATION.add(SEMICOLON);
+        TOKEN_TYPES_FOR_ITERATION.add(IDENTIFIER);
+        TOKEN_TYPES_FOR_ITERATION.add(EQUALS);
+        TOKEN_TYPES_FOR_ITERATION.add(LEFT_PAREN);
+        TOKEN_TYPES_FOR_ITERATION.add(RIGHT_PAREN);
+
         constTokenTypes.add(CHAR_CONST);
         constTokenTypes.add(DOUBLE_CONST);
         constTokenTypes.add(INT_CONST);
@@ -145,6 +156,15 @@ public class MainParser {
         });
         tokenDict.put(LONG_CONST, (str) -> tokenDict.get(INT_CONST).test(str));
 
+        tokenDict.put(MATH_OPERATOR, (str) -> {
+            for(TokenType type : MATH_OPERATORS) {
+                if(tokenDict.get(type).test(str)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+
         tokenDict.put(AND, (str) -> str.equals("&&") || str.equals("and"));
         tokenDict.put(OR, (str) -> str.equals("||") || str.equals("or"));
         tokenDict.put(BITWISE_AND, (str) -> str.equals("&"));
@@ -157,14 +177,12 @@ public class MainParser {
         tokenDict.put(LEFT_PAREN, (str) -> str.equals("("));
         tokenDict.put(RIGHT_PAREN, (str) -> str.equals(")"));
 
-        tokenDict.put(MATH_OPERATOR, (str) -> {
-           return (MATH_OPERATORS.contains(str));
-        });
 
         higherLevelTokens.add(MATH_OPERATOR);
         higherLevelTokens.add(CONST);
         higherLevelTokens.add(PRIMITIVE_TYPE);
         higherLevelTokens.add(VAR_TYPE);
+
     }
 
 
@@ -172,7 +190,7 @@ public class MainParser {
         ArrayList<Token> tokenIDS = new ArrayList<>();
         for(int i = 0; i < tokens.length; i++) {
             TokenType type = null;
-            for(TokenType tokenType : TokenType.values()) {
+            for(TokenType tokenType : TOKEN_TYPES_FOR_ITERATION) {
                 if(tokenDict.get(tokenType).test(tokens[i])) {
                     type = tokenType;
                     break;

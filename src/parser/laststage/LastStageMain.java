@@ -112,6 +112,8 @@ public class LastStageMain {
                     return true;
                 }
                 else {
+                    System.out.println("FALSE for : " + token.str);
+                    System.out.println("this is because the token type of token1 is : " + token1.get().tokenType);
                     return false;
                 }
             }
