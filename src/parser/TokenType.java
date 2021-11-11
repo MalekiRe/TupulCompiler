@@ -1,0 +1,32 @@
+package parser;
+
+public enum TokenType {
+    VAR_TYPE,
+    PRIMITIVE_TYPE,
+    SEMICOLON,
+    EQUALS,
+    CONST,
+    INT,
+    LONG,
+    DOUBLE,
+    CHAR,
+    FLOAT,
+    INT_CONST,
+    FLOAT_CONST,
+    DOUBLE_CONST,
+    CHAR_CONST,
+    LONG_CONST,
+    IDENTIFIER,
+    MATH_OPERATOR,
+    ADD,
+    DIVIDE,
+    MULTIPLY,
+    SUBTRACT,
+    CARET,
+    AND,
+    BITWISE_AND,
+    OR,
+    BITWISE_OR,
+    LEFT_PAREN,
+    RIGHT_PAREN
+}
