@@ -1,5 +1,7 @@
 package parser;
 
+import parser.identifiertoken.IdentifierToken;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,8 @@ public class MainParser {
     public static ArrayList<TokenType> constTokenTypes = new ArrayList<>();
 
     public static ArrayList<TokenType> primitiveTokenTypes = new ArrayList<>();
+
+    public static ArrayList<TokenType> LOGIC_BODY = new ArrayList<>();
 
     public static ArrayList<TokenType> MATH_OPERATORS = new ArrayList<>();
 
@@ -67,6 +71,14 @@ public class MainParser {
             }
             throw new Exception("error in parsing Math Operator token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
         }
+        if(type == LOGIC) {
+            for(TokenType tokenType : LOGIC_BODY) {
+                if(tokenDict.get(tokenType).test(token.str)) {
+                    return tokenType;
+                }
+            }
+            throw new Exception("error in parsing LOGIC BODY token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
+        }
         throw new Exception("error in parsing token type to lower level, is not a lower level of any kind, this should never happen, something has gone horribly wrong. MainParser");
     }
 
@@ -80,6 +92,10 @@ public class MainParser {
         TOKEN_TYPES_FOR_ITERATION.add(EQUALS);
         TOKEN_TYPES_FOR_ITERATION.add(LEFT_PAREN);
         TOKEN_TYPES_FOR_ITERATION.add(RIGHT_PAREN);
+        TOKEN_TYPES_FOR_ITERATION.add(LEFT_BRAC);
+        TOKEN_TYPES_FOR_ITERATION.add(RIGHT_BRAC);
+        TOKEN_TYPES_FOR_ITERATION.add(CLASS);
+        TOKEN_TYPES_FOR_ITERATION.add(LOGIC);
 
         constTokenTypes.add(CHAR_CONST);
         constTokenTypes.add(DOUBLE_CONST);
@@ -102,6 +118,14 @@ public class MainParser {
         MATH_OPERATORS.add(BITWISE_AND);
         MATH_OPERATORS.add(OR);
         MATH_OPERATORS.add(BITWISE_OR);
+        MATH_OPERATORS.add(LESS_THAN);
+        MATH_OPERATORS.add(GREATER_THAN);
+        MATH_OPERATORS.add(EQUALS_EQUALS);
+
+        LOGIC_BODY.add(IF);
+        LOGIC_BODY.add(ELSE);
+        LOGIC_BODY.add(ELIF);
+        LOGIC_BODY.add(WHILE);
 
         tokenDict.put(LONG, (str) -> str.equals("long"));
         tokenDict.put(CHAR, (str) -> str.equals("char"));
@@ -109,7 +133,6 @@ public class MainParser {
         tokenDict.put(FLOAT, (str) -> str.equals("float"));
         tokenDict.put(DOUBLE, (str) -> str.equals("double"));
         tokenDict.put(SEMICOLON, (str) -> str.equals(";"));
-        tokenDict.put(IDENTIFIER, (str) -> Character.isAlphabetic(str.charAt(0)));//make sure to do this check last.
         tokenDict.put(VAR_TYPE, (str) -> tokenDict.get(PRIMITIVE_TYPE).test(str));
         tokenDict.put(PRIMITIVE_TYPE, (str) -> tokenDict.get(LONG).test(str) || tokenDict.get(CHAR).test(str) || tokenDict.get(INT).test(str) || tokenDict.get(FLOAT).test(str) || tokenDict.get(DOUBLE).test(str));
         tokenDict.put(EQUALS, (str) -> str.equals("="));
@@ -177,11 +200,45 @@ public class MainParser {
         tokenDict.put(LEFT_PAREN, (str) -> str.equals("("));
         tokenDict.put(RIGHT_PAREN, (str) -> str.equals(")"));
 
+        tokenDict.put(LEFT_BRAC, (str) -> str.equals("{"));
+        tokenDict.put(RIGHT_BRAC, (str) -> str.equals("}"));
+        tokenDict.put(LOGIC, (str) -> {
+            for(TokenType type : LOGIC_BODY) {
+                if(tokenDict.get(type).test(str)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        //tokenDict.put(LOGIC, (str) -> tokenDict.get(IF).test(str) || tokenDict.get(WHILE).test(str) || tokenDict.get(ELIF).test(str) || tokenDict.get(ELSE).test(str));
+        tokenDict.put(IF, (str) -> str.equals("if"));
+        tokenDict.put(ELSE, (str) -> str.equals("else"));
+        tokenDict.put(ELIF, (str) -> str.equals("elif"));
+        tokenDict.put(WHILE, (str) -> str.equals("while"));
+        tokenDict.put(CLASS, (str) -> str.equals("class"));
+        tokenDict.put(LESS_THAN, (str) -> str.equals("<"));
+        tokenDict.put(GREATER_THAN, (str)-> str.equals(">"));
+        tokenDict.put(EQUALS_EQUALS, (str) -> str.equals("=="));
+
+        tokenDict.put(IDENTIFIER, (str) -> {
+            if(!Character.isAlphabetic(str.charAt(0)))
+                return false;
+            if(tokenDict.get(LOGIC).test(str))
+                return false;
+            if(tokenDict.get(PRIMITIVE_TYPE).test(str)) {
+                return false;
+            }
+            if(tokenDict.get(CLASS).test(str)) {
+                return false;
+            }
+            return true;
+        });//make sure to do this check last.
 
         higherLevelTokens.add(MATH_OPERATOR);
         higherLevelTokens.add(CONST);
         higherLevelTokens.add(PRIMITIVE_TYPE);
         higherLevelTokens.add(VAR_TYPE);
+        higherLevelTokens.add(LOGIC);
 
     }
 
@@ -196,15 +253,20 @@ public class MainParser {
                     break;
                 }
             }
-            tokenIDS.add(new Token(tokens[i], i, type));
-        }
-        for(Token token : tokenIDS) {
-            StringBuilder printString = new StringBuilder("token is : " + token.str + " , with position : " + token.position + " , and type : " + token.tokenType);
-            for(TokenType type : token.furtherTokenTypes) {
-                printString.append(" , lower type is : ").append(type);
+            if(type == IDENTIFIER) {
+                tokenIDS.add(new IdentifierToken(tokens[i], i, type));
             }
-            System.out.println(printString);
+            else {
+                tokenIDS.add(new Token(tokens[i], i, type));
+            }
         }
+     //   for(Token token : tokenIDS) {
+            //StringBuilder printString = new StringBuilder("token is : " + token.str + " , with position : " + token.position + " , and type : " + token.tokenType);
+          //  for(TokenType type : token.furtherTokenTypes) {
+               // printString.append(" , lower type is : ").append(type);
+          //  }
+            //System.out.println(printString);
+       // }
         return tokenIDS;
     }
 }

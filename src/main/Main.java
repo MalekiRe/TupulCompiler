@@ -4,8 +4,11 @@ package main;
 import parser.MainParser;
 import parser.Token;
 import parser.TokenType;
+import parser.identifiertoken.IdentifierToken;
+import parser.identifiertoken.IdentifierType;
 import parser.laststage.BlockType;
 import parser.laststage.LastStageMain;
+import parser.reallylaststage.AbstractSyntaxTree;
 import parser.reallylaststage.Variable;
 import parser.reallylaststage.Type;
 
@@ -148,7 +151,19 @@ public class Main {
     <variable-assignment> ::= <variable-identifier> '=' <value-identifier> ';'
 
      */
-    public static ArrayList<String> classNames = new ArrayList<>();
+    //public static ArrayList<String> classNames = new ArrayList<>();
+
+    public static IdentifierType getIdentifierType(Token token, ArrayList<Token> tokens) {
+        if(tokens.get(token.position-1).tokenType == TokenType.CLASS) {
+            return IdentifierType.CLASS;
+        }
+        if(tokens.get(token.position+1).tokenType == TokenType.LEFT_PAREN) {
+            return IdentifierType.FUNCTION;
+        }
+        return IdentifierType.VARIABLE;
+    }
+
+    public static Map<TokenType, ArrayList<Token>> tokenTypeMap = new LinkedHashMap<>();
     public static void main(String[] args) throws Exception {
         File file = new File(Main.class.getClassLoader().getResource("main/fileTest.txt").getFile());
         String[] tokens1 = tokenize(readFromInputStream(new FileInputStream(file)));
@@ -157,18 +172,44 @@ public class Main {
         }
 
         ArrayList<Token> tokens = MainParser.parseFile(tokens1);
-        //For now we will simply do stuff based on semicolons, will have to change when we implement classes and functions
-        ArrayList<Pair<Integer, Integer>> pairOfIntegers = new ArrayList<Pair<Integer, Integer>>();
-        ArrayList<Integer> positionsAfterSemicolons = new ArrayList<>();
-        int first = 0;
-        for(int i = 0; i < tokens.size(); i++) {
-            if(tokens.get(i).tokenType == TokenType.SEMICOLON) {
-                positionsAfterSemicolons.add(first+1);
-                first = i;
+
+
+
+        for(TokenType type : TokenType.values()) {
+            tokenTypeMap.put(type, new ArrayList<>());
+        }
+
+        for(Token token : tokens) {
+            tokenTypeMap.get(token.tokenType).add(token);
+            for(TokenType type : token.furtherTokenTypes) {
+                tokenTypeMap.get(type).add(token);
             }
         }
 
-        Map<Token, BlockType> blockTypes = new LinkedHashMap<>();
+        //Get Identifier Context
+        for(Token token : tokenTypeMap.get(TokenType.IDENTIFIER)) {
+            ((IdentifierToken)token).identifierType = getIdentifierType(token, tokens);
+        }
+
+        for(Token token : tokens) {
+            System.out.println(token);
+        }
+
+
+        //For now we will simply do stuff based on semicolons, will have to change when we implement classes and functions
+//        ArrayList<Pair<Integer, Integer>> pairOfIntegers = new ArrayList<Pair<Integer, Integer>>();
+//        ArrayList<Integer> positionsAfterSemicolons = new ArrayList<>();
+//        int first = 0;
+//        for(int i = 0; i < tokens.size(); i++) {
+//            if(tokens.get(i).tokenType == TokenType.SEMICOLON) {
+//                positionsAfterSemicolons.add(first+1);
+//                first = i;
+//            }
+//        }
+
+
+
+        //Map<Token, BlockType> blockTypes = new LinkedHashMap<>();
 //        for(int i = 0; i < positionsAfterSemicolons.size(); i++) {
 //            System.out.println("first token is : " + tokens.get(positionsAfterSemicolons.get(i)));
 //            for(BlockType blockType : BlockType.values()) {
@@ -178,41 +219,43 @@ public class Main {
 //                }
 //            }
 //        }
-        for(int i = 0; i < tokens.size(); i++) {
-            for(BlockType blockType : BlockType.values()) {
-                if(LastStageMain.tokenBlockTypeMap.get(blockType).test(tokens.get(i), tokens)) {
-                    blockTypes.put(tokens.get(i), blockType);
-                    break;
-                }
-            }
-        }
+//        for(int i = 0; i < tokens.size(); i++) {
+//            for(BlockType blockType : BlockType.values()) {
+//                if(LastStageMain.tokenBlockTypeMap.get(blockType).test(tokens.get(i), tokens)) {
+//                    blockTypes.put(tokens.get(i), blockType);
+//                    break;
+//                }
+//            }
+//        }
+//        AbstractSyntaxTree startNode = new AbstractSyntaxTree();
+//        startNode.ASTParse(tokens.get(0), tokens);
 
         //Here we print stuff out.
-        System.out.println("\n\n\n Printing out Assigned Blocks");
+        //System.out.println("\n\n\n Printing out Assigned Blocks");
 
-        for(Token token : blockTypes.keySet()) {
-            System.out.println("token : " + token + " , is of type : " + blockTypes.get(token));
-        }
-
-        Map<String, Type> inScopeThings = new HashMap<>();
-        Map<String, Token> mapBetweenStringsAndTokens = new HashMap<>();
-        Map<String, Variable> mapBetweenStringsAndVariables = new HashMap<>();
-        for(Token token : blockTypes.keySet()) {
-            mapBetweenStringsAndTokens.put(token.str, token);
-            if(blockTypes.get(token) == BlockType.VAR_DEC) {
-                inScopeThings.put(tokens.get(token.position+1).str, Type.VARIABLE);
-                mapBetweenStringsAndVariables.put(tokens.get(token.position+1).str, new Variable(token, tokens));
-                System.out.println(mapBetweenStringsAndVariables.get(tokens.get(token.position+1).str).getDeclarationRep());
-            }
-            if(blockTypes.get(token) == BlockType.VAR_ASSIGNMENT) {
-                if(!inScopeThings.containsKey(token.str)) {
-                    throw new Exception("TRIED TO REFRENCE OUT OF SCOPE VALUE : " + token.str +", at position : " + token.position);
-                }
-                mapBetweenStringsAndVariables.get(token.str).setValue(token, tokens);
-                System.out.println(mapBetweenStringsAndVariables.get(token.str).getAssignmentRep());
-            }
-            //Have to figure out later how to determine if the thing is out of scope, also shadowing need to be figured out.
-        }
+//        for(Token token : blockTypes.keySet()) {
+//            System.out.println("token : " + token + " , is of type : " + blockTypes.get(token));
+//        }
+//
+//        Map<String, Type> inScopeThings = new HashMap<>();
+//        Map<String, Token> mapBetweenStringsAndTokens = new HashMap<>();
+//        Map<String, Variable> mapBetweenStringsAndVariables = new HashMap<>();
+//        for(Token token : blockTypes.keySet()) {
+//            mapBetweenStringsAndTokens.put(token.str, token);
+//            if(blockTypes.get(token) == BlockType.VAR_DEC) {
+//                inScopeThings.put(tokens.get(token.position+1).str, Type.VARIABLE);
+//                mapBetweenStringsAndVariables.put(tokens.get(token.position+1).str, new Variable(token, tokens));
+//                System.out.println(mapBetweenStringsAndVariables.get(tokens.get(token.position+1).str).getDeclarationRep());
+//            }
+//            if(blockTypes.get(token) == BlockType.VAR_ASSIGNMENT) {
+//                if(!inScopeThings.containsKey(token.str)) {
+//                    throw new Exception("TRIED TO REFRENCE OUT OF SCOPE VALUE : " + token.str +", at position : " + token.position);
+//                }
+//                mapBetweenStringsAndVariables.get(token.str).setValue(token, tokens);
+//                System.out.println(mapBetweenStringsAndVariables.get(token.str).getAssignmentRep());
+//            }
+//            //Have to figure out later how to determine if the thing is out of scope, also shadowing need to be figured out.
+//        }
         //System.out.println("\n priting the actual bytecode now");
 //        for(Token token : blockTypes.keySet()) {
 //            if(blockTypes.get(token) != BlockType.EXP) {

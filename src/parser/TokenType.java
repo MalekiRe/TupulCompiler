@@ -16,7 +16,6 @@ public enum TokenType {
     DOUBLE_CONST,
     CHAR_CONST,
     LONG_CONST,
-    IDENTIFIER,
     MATH_OPERATOR,
     ADD,
     DIVIDE,
@@ -28,5 +27,18 @@ public enum TokenType {
     OR,
     BITWISE_OR,
     LEFT_PAREN,
-    RIGHT_PAREN
+    RIGHT_PAREN,
+    LEFT_BRAC,
+    RIGHT_BRAC,
+    LOGIC,
+    IF,
+    ELSE,
+    ELIF,
+    WHILE,
+    CLASS,
+    LESS_THAN,
+    GREATER_THAN,
+    EQUALS_EQUALS,
+    IDENTIFIER,
+
 }
