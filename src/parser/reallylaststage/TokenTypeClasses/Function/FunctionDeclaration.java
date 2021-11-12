@@ -13,11 +13,13 @@ public class FunctionDeclaration {
     MutableLevel mutableLevel = MutableLevel.MUTABLE;
     StaticLevel staticLevel = StaticLevel.NON_STATIC;
     Token token;
-    ReturnType returnType;
+    //ReturnType returnType;
+    Token returnTypeToken;
 
     public FunctionDeclaration(Token token, ArrayList<Token> tokens) {
         this.token = token;
-        returnType = new ReturnType(tokens.get(token.position-1));
+        returnTypeToken = tokens.get(token.position-1);
+        //returnType = new ReturnType(tokens.get(token.position-1));
     }
 
 

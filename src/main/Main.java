@@ -9,6 +9,8 @@ import parser.identifiertoken.IdentifierType;
 import parser.laststage.BlockType;
 import parser.laststage.LastStageMain;
 import parser.reallylaststage.AbstractSyntaxTree;
+import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeBlock;
+import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeStatement;
 import parser.reallylaststage.Variable;
 import parser.reallylaststage.Type;
 
@@ -198,6 +200,10 @@ public class Main {
             System.out.println(token);
         }
 
+        FunctionCodeBlock functionCodeBlock = new FunctionCodeBlock(tokens.get(7), tokens);
+        for(FunctionCodeStatement codeStatement : functionCodeBlock.functionCodeStatements) {
+            System.out.println(codeStatement);
+        }
 
 
 
