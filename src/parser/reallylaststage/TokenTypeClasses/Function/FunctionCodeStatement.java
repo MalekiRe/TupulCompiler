@@ -1,4 +1,4 @@
-package parser.reallylaststage.TokenTypeClasses;
+package parser.reallylaststage.TokenTypeClasses.Function;
 
 import parser.Token;
 import parser.TokenType;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class FunctionCodeStatement {
     public ArrayList<Token> tokenArrayList;
     public FunctionCodeStatement(Token startToken, ArrayList<Token> tokens) {
+        /*
         int position = -1;
         if(startToken.tokenType == TokenType.LOGIC) {
 
@@ -17,5 +18,7 @@ public class FunctionCodeStatement {
             position = i;
         }
         tokenArrayList.add(tokens.get(position+1));
+
+         */
     }
 }

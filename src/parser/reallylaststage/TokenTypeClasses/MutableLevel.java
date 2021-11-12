@@ -1,4 +1,6 @@
 package parser.reallylaststage.TokenTypeClasses;
 
-public class VariableDeclaration {
+public enum MutableLevel {
+    MUTABLE,
+    FINAL
 }
