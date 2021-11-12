@@ -1,11 +1,10 @@
-package parser.laststage;
+package archived.laststage;
 
 import parser.Token;
 import parser.TokenType;
 
 import java.util.*;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 public class LastStageMain {
     public static Map<BlockType, BiPredicate<Token, ArrayList<Token>>> tokenBlockTypeMap = new LinkedHashMap<>();

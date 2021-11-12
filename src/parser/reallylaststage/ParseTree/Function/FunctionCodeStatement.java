@@ -1,4 +1,4 @@
-package parser.reallylaststage.TokenTypeClasses.Function;
+package parser.reallylaststage.ParseTree.Function;
 
 import parser.Token;
 import parser.TokenType;

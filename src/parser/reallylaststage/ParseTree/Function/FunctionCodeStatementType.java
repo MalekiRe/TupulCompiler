@@ -1,4 +1,4 @@
-package parser.reallylaststage.TokenTypeClasses.Function;
+package parser.reallylaststage.ParseTree.Function;
 
 enum FunctionCodeStatementType {
     LOGIC_STATEMENT,

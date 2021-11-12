@@ -1,4 +1,4 @@
-package parser.laststage;
+package archived.laststage;
 
 public enum BlockType {
     VAR_DEC,

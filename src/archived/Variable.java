@@ -1,9 +1,8 @@
-package parser.reallylaststage;
+package archived;
 
 import parser.PrimitiveType;
 import parser.Token;
 import parser.TokenType;
-import parser.laststage.LastStageMain;
 
 import java.util.ArrayList;
 

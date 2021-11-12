@@ -1,4 +1,4 @@
-package parser.reallylaststage.TokenTypeClasses;
+package parser.reallylaststage.ParseTree;
 
 public enum StaticLevel {
     STATIC,

@@ -1,10 +1,10 @@
-package parser.reallylaststage.TokenTypeClasses.Function;
+package parser.reallylaststage.ParseTree.Function;
 
 import parser.Token;
 import parser.TokenType;
-import parser.reallylaststage.TokenTypeClasses.AccessLevel;
-import parser.reallylaststage.TokenTypeClasses.MutableLevel;
-import parser.reallylaststage.TokenTypeClasses.StaticLevel;
+import parser.reallylaststage.ParseTree.AccessLevel;
+import parser.reallylaststage.ParseTree.MutableLevel;
+import parser.reallylaststage.ParseTree.StaticLevel;
 
 import java.util.ArrayList;
 

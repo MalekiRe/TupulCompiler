@@ -6,18 +6,10 @@ import parser.Token;
 import parser.TokenType;
 import parser.identifiertoken.IdentifierToken;
 import parser.identifiertoken.IdentifierType;
-import parser.laststage.BlockType;
-import parser.laststage.LastStageMain;
-import parser.reallylaststage.AbstractSyntaxTree;
-import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeBlock;
-import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeStatement;
-import parser.reallylaststage.TokenTypeClasses.Function.FunctionDeclaration;
-import parser.reallylaststage.Variable;
-import parser.reallylaststage.Type;
+import parser.reallylaststage.ParseTree.Function.FunctionDeclaration;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
