@@ -163,7 +163,10 @@ public class Main {
         return IdentifierType.VARIABLE;
     }
 
+
+
     public static Map<TokenType, ArrayList<Token>> tokenTypeMap = new LinkedHashMap<>();
+    public static Map<Token, Pair<Token, Token>> tokenPairMap = new LinkedHashMap<>();
     public static void main(String[] args) throws Exception {
         File file = new File(Main.class.getClassLoader().getResource("main/fileTest.txt").getFile());
         String[] tokens1 = tokenize(readFromInputStream(new FileInputStream(file)));
@@ -194,6 +197,10 @@ public class Main {
         for(Token token : tokens) {
             System.out.println(token);
         }
+
+
+
+
 
 
         //For now we will simply do stuff based on semicolons, will have to change when we implement classes and functions

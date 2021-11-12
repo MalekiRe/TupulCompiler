@@ -46,7 +46,7 @@ public class AbstractSyntaxTree {
     Map<Token, ArrayList<Token>> mapForAST = new LinkedHashMap<>();
     /*
         We have classes which are just
-        <class-dec> ::= 'class' <identifier> <code-block>
+        <class-dec> ::= 'class' <identifier> <class-code-block>
         <func-dec> ::= <access-and-static-mod> <return-type> <identifier> '(' <func-var-list> ')' <code-block>
 
         <mut-access-static-mod> ::= <mutable-opt> <access-opt> <static-type-opt> | <access-opt> <mutable-opt> <static-type-opt> | //You can figure out the rest, its just every combo of these lmao.
@@ -59,6 +59,10 @@ public class AbstractSyntaxTree {
         <access> ::= 'public' | 'protected' | 'private'
         <static-type> ::= 'non-static' | 'static'
 
+
+        <class-code-block> ::= <class-code-statements>
+        <class-code-statements> ::= <class-code-statement-opt> <class-code-statement-opt>
+        <class-code-statement-opt> ::= <class-code-statement> | NOTHING
 
         <optional-code-statement> ::= <code-statement> | NOTHING
 

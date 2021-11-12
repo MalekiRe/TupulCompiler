@@ -72,8 +72,10 @@ public class MainParser {
             throw new Exception("error in parsing Math Operator token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
         }
         if(type == LOGIC) {
+            System.out.println("LOGIC2");
             for(TokenType tokenType : LOGIC_BODY) {
                 if(tokenDict.get(tokenType).test(token.str)) {
+                    System.out.println("LOGIC3");
                     return tokenType;
                 }
             }

@@ -12,6 +12,7 @@ public class Token {
         this.position = position;
         this.tokenType = tokenType;
         if(MainParser.higherLevelTokens.contains(tokenType)) {
+            System.out.println(tokenType);
             furtherTokenTypes.add(MainParser.determineFurtherTokenType(this, tokenType));
             while(MainParser.higherLevelTokens.contains(furtherTokenTypes.get(furtherTokenTypes.size()-1))) {
                 furtherTokenTypes.add(MainParser.determineFurtherTokenType(this, furtherTokenTypes.get(furtherTokenTypes.size()-1)));
@@ -22,6 +23,10 @@ public class Token {
 
     @Override
     public String toString() {
-        return "string : " + str + ", position : " + position + ", tokenType : " + tokenType;
+        String s = "string : " + str + ", position : " + position + ", tokenType : " + tokenType;
+        for(TokenType type : furtherTokenTypes) {
+            s += ", furtherTokenType : " + type;
+        }
+        return s;
     }
 }
