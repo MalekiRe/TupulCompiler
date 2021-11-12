@@ -39,6 +39,17 @@ public enum TokenType {
     LESS_THAN,
     GREATER_THAN,
     EQUALS_EQUALS,
+    ACCESS_MODIFIER,
+    ACCESS_LEVEL,
+    MUTABLE_LEVEL,
+    STATIC_LEVEL,
+    PUBLIC,
+    PROTECTED,
+    PRIVATE,
+    MUTABLE,
+    FINAL,
+    STATIC,
+    NON_STATIC,
     IDENTIFIER,
 
 }

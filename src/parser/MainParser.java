@@ -5,6 +5,7 @@ import parser.identifiertoken.IdentifierToken;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static parser.TokenType.*;
@@ -37,6 +38,14 @@ public class MainParser {
     public static ArrayList<TokenType> LOGIC_BODY = new ArrayList<>();
 
     public static ArrayList<TokenType> MATH_OPERATORS = new ArrayList<>();
+
+    public static ArrayList<TokenType> ACCESS_MODIFIERS = new ArrayList<>();
+
+    public static ArrayList<TokenType> ACCESS_LEVELS = new ArrayList<>();
+
+    public static ArrayList<TokenType> MUTABLE_LEVELS = new ArrayList<>();
+
+    public static ArrayList<TokenType> STATIC_LEVELS = new ArrayList<>();
 
     public static ArrayList<TokenType> TOKEN_TYPES_FOR_ITERATION = new ArrayList<>();
 
@@ -72,16 +81,46 @@ public class MainParser {
             throw new Exception("error in parsing Math Operator token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
         }
         if(type == LOGIC) {
-            System.out.println("LOGIC2");
             for(TokenType tokenType : LOGIC_BODY) {
                 if(tokenDict.get(tokenType).test(token.str)) {
-                    System.out.println("LOGIC3");
                     return tokenType;
                 }
             }
             throw new Exception("error in parsing LOGIC BODY token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
         }
+        if(type == ACCESS_MODIFIER) {
+            for(TokenType tokenType : LOGIC_BODY) {
+                if(tokenDict.get(tokenType).test(token.str)) {
+                    return tokenType;
+                }
+            }
+            throw new Exception("error in parsing " + type + " token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
+        }
+        Optional<TokenType> optionalTokenType = getTokenTypeFromHigherLevel(token, type, STATIC_LEVEL, STATIC_LEVELS);
+        if(optionalTokenType.isPresent()) {
+            return optionalTokenType.get();
+        }
+        optionalTokenType = getTokenTypeFromHigherLevel(token, type, MUTABLE_LEVEL, MUTABLE_LEVELS);
+        if(optionalTokenType.isPresent()) {
+            return optionalTokenType.get();
+        }
+        optionalTokenType = getTokenTypeFromHigherLevel(token, type, ACCESS_LEVEL, ACCESS_LEVELS);
+        if(optionalTokenType.isPresent()) {
+            return optionalTokenType.get();
+        }
         throw new Exception("error in parsing token type to lower level, is not a lower level of any kind, this should never happen, something has gone horribly wrong. MainParser");
+    }
+
+    private static Optional<TokenType> getTokenTypeFromHigherLevel(Token token, TokenType type, TokenType comparison, ArrayList<TokenType> comparisonList) throws Exception {
+        if(type == comparison) {
+            for(TokenType tokenType : comparisonList) {
+                if(tokenDict.get(tokenType).test(token.str)) {
+                    return Optional.of(tokenType);
+                }
+            }
+            throw new Exception("error in parsing " + type + " token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
+        }
+        return Optional.empty();
     }
 
     static {
@@ -98,6 +137,22 @@ public class MainParser {
         TOKEN_TYPES_FOR_ITERATION.add(RIGHT_BRAC);
         TOKEN_TYPES_FOR_ITERATION.add(CLASS);
         TOKEN_TYPES_FOR_ITERATION.add(LOGIC);
+        TOKEN_TYPES_FOR_ITERATION.add(ACCESS_MODIFIER);
+
+        ACCESS_MODIFIERS.add(STATIC_LEVEL);
+        ACCESS_MODIFIERS.add(MUTABLE_LEVEL);
+        ACCESS_MODIFIERS.add(ACCESS_LEVEL);
+
+        STATIC_LEVELS.add(STATIC);
+        STATIC_LEVELS.add(NON_STATIC);
+
+        ACCESS_LEVELS.add(PROTECTED);
+        ACCESS_LEVELS.add(PUBLIC);
+        ACCESS_LEVELS.add(PRIVATE);
+
+        MUTABLE_LEVELS.add(MUTABLE);
+        MUTABLE_LEVELS.add(FINAL);
+
 
         constTokenTypes.add(CHAR_CONST);
         constTokenTypes.add(DOUBLE_CONST);
@@ -182,11 +237,9 @@ public class MainParser {
         tokenDict.put(LONG_CONST, (str) -> tokenDict.get(INT_CONST).test(str));
 
         tokenDict.put(MATH_OPERATOR, (str) -> {
-            for(TokenType type : MATH_OPERATORS) {
-                if(tokenDict.get(type).test(str)) {
+            for(TokenType type : MATH_OPERATORS)
+                if(tokenDict.get(type).test(str))
                     return true;
-                }
-            }
             return false;
         });
 
@@ -205,11 +258,9 @@ public class MainParser {
         tokenDict.put(LEFT_BRAC, (str) -> str.equals("{"));
         tokenDict.put(RIGHT_BRAC, (str) -> str.equals("}"));
         tokenDict.put(LOGIC, (str) -> {
-            for(TokenType type : LOGIC_BODY) {
-                if(tokenDict.get(type).test(str)) {
+            for(TokenType type : LOGIC_BODY)
+                if(tokenDict.get(type).test(str))
                     return true;
-                }
-            }
             return false;
         });
         //tokenDict.put(LOGIC, (str) -> tokenDict.get(IF).test(str) || tokenDict.get(WHILE).test(str) || tokenDict.get(ELIF).test(str) || tokenDict.get(ELSE).test(str));
@@ -227,15 +278,29 @@ public class MainParser {
                 return false;
             if(tokenDict.get(LOGIC).test(str))
                 return false;
-            if(tokenDict.get(PRIMITIVE_TYPE).test(str)) {
+            if(tokenDict.get(PRIMITIVE_TYPE).test(str))
                 return false;
-            }
-            if(tokenDict.get(CLASS).test(str)) {
+            if(tokenDict.get(CLASS).test(str))
                 return false;
-            }
+            if(tokenDict.get(ACCESS_MODIFIER).test(str))
+                return false;
             return true;
         });//make sure to do this check last.
 
+        tokenDict.put(ACCESS_MODIFIER, (str) -> tokenDict.get(MUTABLE_LEVEL).test(str) || tokenDict.get(STATIC_LEVEL).test(str) || tokenDict.get(ACCESS_LEVEL).test(str));
+        tokenDict.put(MUTABLE_LEVEL, (str) -> tokenDict.get(MUTABLE).test(str) || tokenDict.get(FINAL).test(str));
+        tokenDict.put(STATIC_LEVEL, (str) -> tokenDict.get(STATIC).test(str) || tokenDict.get(NON_STATIC).test(str));
+        tokenDict.put(ACCESS_LEVEL, (str) -> tokenDict.get(PUBLIC).test(str) || tokenDict.get(PROTECTED).test(str) || tokenDict.get(PRIVATE).test(str));
+
+        tokenDict.put(MUTABLE, (str) -> str.equals("mutable"));
+        tokenDict.put(FINAL, (str) -> str.equals("final"));
+        tokenDict.put(STATIC, (str) -> str.equals("static"));
+        tokenDict.put(NON_STATIC, (str) -> str.equals("nonstatic"));
+        tokenDict.put(PUBLIC, (str) -> str.equals("public"));
+        tokenDict.put(PROTECTED, (str) -> str.equals("protected"));
+        tokenDict.put(PRIVATE, (str) -> str.equals("private"));
+
+        higherLevelTokens.add(ACCESS_MODIFIER);
         higherLevelTokens.add(MATH_OPERATOR);
         higherLevelTokens.add(CONST);
         higherLevelTokens.add(PRIMITIVE_TYPE);
