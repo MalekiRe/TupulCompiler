@@ -11,6 +11,7 @@ import parser.laststage.LastStageMain;
 import parser.reallylaststage.AbstractSyntaxTree;
 import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeBlock;
 import parser.reallylaststage.TokenTypeClasses.Function.FunctionCodeStatement;
+import parser.reallylaststage.TokenTypeClasses.Function.FunctionDeclaration;
 import parser.reallylaststage.Variable;
 import parser.reallylaststage.Type;
 
@@ -199,11 +200,13 @@ public class Main {
         for(Token token : tokens) {
             System.out.println(token);
         }
-
-        FunctionCodeBlock functionCodeBlock = new FunctionCodeBlock(tokens.get(7), tokens);
-        for(FunctionCodeStatement codeStatement : functionCodeBlock.functionCodeStatements) {
-            System.out.println(codeStatement);
-        }
+        System.out.println("token : " + tokens.get(4));
+        FunctionDeclaration functionDeclaration = new FunctionDeclaration(tokens.get(4), tokens);
+        System.out.println(functionDeclaration);
+//        FunctionCodeBlock functionCodeBlock = new FunctionCodeBlock(tokens.get(7), tokens);
+//        for(FunctionCodeStatement codeStatement : functionCodeBlock.functionCodeStatements) {
+//            System.out.println(codeStatement);
+//        }
 
 
 

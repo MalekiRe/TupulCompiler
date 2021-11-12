@@ -12,4 +12,14 @@ public class FunctionVarDecList {
             tokenArrayList.add(tokens.get(i));
         }
     }
+
+    @Override
+    public String toString() {
+        String s = "FunctionVarDecList : ";
+        for(Token token : tokenArrayList) {
+            s += "  \n" + token;
+        }
+        return s;
+
+    }
 }

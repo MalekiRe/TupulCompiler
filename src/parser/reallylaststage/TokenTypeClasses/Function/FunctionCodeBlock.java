@@ -24,5 +24,15 @@ public class FunctionCodeBlock {
         }
     }
 
+    @Override
+    public String toString() {
+        String s = "";
+        for(FunctionCodeStatement functionCodeStatement : functionCodeStatements) {
+            s += "      \n" + functionCodeStatement;
+        }
+        return s;
+    }
+
+
 }
 

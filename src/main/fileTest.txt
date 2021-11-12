@@ -1,5 +1,5 @@
 class mainClass {
-    main ( ) {
+    void main ( int arg ) {
         int b ;
         int a ;
         b = a + a * 1 - 5 ;
