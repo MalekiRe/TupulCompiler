@@ -2,6 +2,8 @@ package parser;
 
 import java.util.ArrayList;
 
+import static main.Main.createSpacedString;
+
 public class Token {
     final public String str;
     final public int position;
@@ -24,6 +26,14 @@ public class Token {
     @Override
     public String toString() {
         String s = "string : " + str + ", position : " + position + ", tokenType : " + tokenType;
+        for(TokenType type : furtherTokenTypes) {
+            s += ", furtherTokenType : " + type;
+        }
+        return s;
+    }
+
+    public String toSpacedString(int i) {
+        String s = createSpacedString(i) + "string : " + str + ", position : " + position + ", tokenType : " + tokenType;
         for(TokenType type : furtherTokenTypes) {
             s += ", furtherTokenType : " + type;
         }

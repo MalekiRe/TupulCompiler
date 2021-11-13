@@ -5,6 +5,8 @@ import parser.TokenType;
 
 import java.util.ArrayList;
 
+import static main.Main.createSpacedString;
+
 public class FunctionCodeBlock {
     public ArrayList<FunctionCodeStatement> functionCodeStatements = new ArrayList<>();
 
@@ -24,15 +26,15 @@ public class FunctionCodeBlock {
         }
     }
 
-    @Override
-    public String toString() {
+
+
+
+    public String toSpacedString(int i) {
         String s = "";
         for(FunctionCodeStatement functionCodeStatement : functionCodeStatements) {
-            s += "      \n" + functionCodeStatement;
+            s += createSpacedString(i) + functionCodeStatement.toSpacedString(i+1);
         }
         return s;
     }
-
-
 }
 

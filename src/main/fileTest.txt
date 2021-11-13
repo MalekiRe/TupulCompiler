@@ -1,4 +1,5 @@
 class mainClass {
+    static Object test ;
     void main ( int arg ) {
         int b ;
         int a ;

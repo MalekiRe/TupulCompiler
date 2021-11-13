@@ -89,7 +89,7 @@ public class MainParser {
             throw new Exception("error in parsing LOGIC BODY token type to lower level, is not a lower level, this should never happen, something has gone horribly wrong. MainParser");
         }
         if(type == ACCESS_MODIFIER) {
-            for(TokenType tokenType : LOGIC_BODY) {
+            for(TokenType tokenType : ACCESS_MODIFIERS) {
                 if(tokenDict.get(tokenType).test(token.str)) {
                     return tokenType;
                 }

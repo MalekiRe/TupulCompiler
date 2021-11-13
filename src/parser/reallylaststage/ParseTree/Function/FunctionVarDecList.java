@@ -5,6 +5,8 @@ import parser.TokenType;
 
 import java.util.ArrayList;
 
+import static main.Main.createSpacedString;
+
 public class FunctionVarDecList {
     ArrayList<Token> tokenArrayList = new ArrayList<>();
     public FunctionVarDecList(Token token, ArrayList<Token> tokens) {
@@ -13,13 +15,13 @@ public class FunctionVarDecList {
         }
     }
 
-    @Override
-    public String toString() {
-        String s = "FunctionVarDecList : ";
+
+    public String toSpacedString(int i) {
+        String s = createSpacedString(i);
+        s += "Function Variable Declaration List : ";
         for(Token token : tokenArrayList) {
-            s += "  \n" + token;
+            s += "\n" + token.toSpacedString(i+1);
         }
         return s;
-
     }
 }

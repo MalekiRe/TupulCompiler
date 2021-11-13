@@ -3,12 +3,16 @@ package parser.reallylaststage.ParseTree.Function;
 import parser.Token;
 import parser.TokenType;
 import parser.reallylaststage.ParseTree.AccessLevel;
+import parser.reallylaststage.ParseTree.Class.ClassCodeStatement;
+import parser.reallylaststage.ParseTree.Class.ClassCodeStatementType;
 import parser.reallylaststage.ParseTree.MutableLevel;
 import parser.reallylaststage.ParseTree.StaticLevel;
 
 import java.util.ArrayList;
 
-public class FunctionDeclaration {
+import static main.Main.createSpacedString;
+
+public class FunctionDeclaration extends ClassCodeStatement {
 
     AccessLevel accessLevel = AccessLevel.PUBLIC;
     MutableLevel mutableLevel = MutableLevel.MUTABLE;
@@ -19,18 +23,38 @@ public class FunctionDeclaration {
     FunctionCodeBlock functionCodeBlock;
     FunctionVarDecList functionVarDecList;
     public FunctionDeclaration(Token token, ArrayList<Token> tokens) throws Exception {
-        this.token = token;
-        this.returnTypeToken = tokens.get(token.position-1);
+        this.classCodeStatementType = ClassCodeStatementType.FUNCTION;
+        int i = token.position;
+        while (tokens.get(i).tokenType == TokenType.ACCESS_MODIFIER) {
+            i++;
+        }
+        //This is now the var type
+        this.returnTypeToken = tokens.get(i);
+        i++;
+        this.token = tokens.get(i);
         functionCodeBlock = new FunctionCodeBlock(tokens.get(getPositionOfStartOfCodeBlock(token.position, tokens)+1), tokens);
         functionVarDecList = new FunctionVarDecList(tokens.get(getPositionOfLeftParen(token.position, tokens)), tokens);
-        //returnType = new ReturnType(tokens.get(token.position-1));
     }
 
-    @Override
-    public String toString() {
-        String s = "function decleration : ";
-        s += "\nreturn type is : " + returnTypeToken;
-        s+= "\n"+ functionCodeBlock + "\n" + functionVarDecList;
+    public int getEndOfCodeBlock(ArrayList<Token> tokens) throws Exception {
+        int bracketNum = 1;
+        for(int i = token.position; i < tokens.size(); i++) {
+            switch (tokens.get(i).tokenType) {
+                case LEFT_BRAC -> bracketNum++;
+                case RIGHT_BRAC -> bracketNum--;
+            }
+            if(bracketNum == 0) {
+                return i;
+            }
+        }
+        throw new Exception("Exception for getting the end of a code block in a function decleration, didn't find the end of the code block, some brackets may be incorrect.");
+    }
+
+    public String toSpacedString(int spacing) {
+        String s = createSpacedString(spacing);
+        s += "function decleration : ";
+        s += "\n" + createSpacedString(spacing) + "return type is : " + returnTypeToken.toSpacedString(0);
+        s+= "\n" + functionCodeBlock.toSpacedString(spacing+1) + "\n" + createSpacedString(spacing-3) + functionVarDecList.toSpacedString(spacing+1);
         return s;
     }
 

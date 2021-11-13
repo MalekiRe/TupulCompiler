@@ -1,7 +1,7 @@
 package parser.identifiertoken;
 
 public enum IdentifierType {
-    CLASS,
-    VARIABLE,
-    FUNCTION,
+    CLASS_DECLARATION,
+    VARIABLE_DECLARATION,
+    FUNCTION_DECLARATION,
 }

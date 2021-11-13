@@ -5,6 +5,8 @@ import parser.TokenType;
 
 import java.util.ArrayList;
 
+import static main.Main.createSpacedString;
+
 public class FunctionCodeStatement {
     public ArrayList<Token> tokenArrayList = new ArrayList<>();
 
@@ -56,11 +58,12 @@ public class FunctionCodeStatement {
         throw new Exception("tried to set tokens for function code statement, but missing semicolon");
     }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder("statement of size : " + tokenArrayList.size());
+
+
+    public String toSpacedString(int i) {
+        StringBuilder s = new StringBuilder(createSpacedString(i) + "\namount of code statements : " + tokenArrayList.size());
         for (Token token : tokenArrayList) {
-            s.append("\n  ").append(token);
+            s.append("\n").append(createSpacedString(i)).append(token.toSpacedString(0));
         }
         return s.toString();
     }

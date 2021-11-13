@@ -6,6 +6,7 @@ import parser.Token;
 import parser.TokenType;
 import parser.identifiertoken.IdentifierToken;
 import parser.identifiertoken.IdentifierType;
+import parser.reallylaststage.ParseTree.Class.ClassDeclaration;
 import parser.reallylaststage.ParseTree.Function.FunctionDeclaration;
 
 import java.io.*;
@@ -150,14 +151,21 @@ public class Main {
 
     public static IdentifierType getIdentifierType(Token token, ArrayList<Token> tokens) {
         if(tokens.get(token.position-1).tokenType == TokenType.CLASS) {
-            return IdentifierType.CLASS;
+            return IdentifierType.CLASS_DECLARATION;
         }
         if(tokens.get(token.position+1).tokenType == TokenType.LEFT_PAREN) {
-            return IdentifierType.FUNCTION;
+            return IdentifierType.FUNCTION_DECLARATION;
         }
-        return IdentifierType.VARIABLE;
+        return IdentifierType.VARIABLE_DECLARATION;
     }
 
+    public static String createSpacedString(int spacing) {
+        String s = "";
+        for(int i = 0; i < spacing; i++) {
+            s+= "   ";
+        }
+        return s;
+    }
 
 
     public static Map<TokenType, ArrayList<Token>> tokenTypeMap = new LinkedHashMap<>();
@@ -192,9 +200,16 @@ public class Main {
         for(Token token : tokens) {
             System.out.println(token);
         }
-        System.out.println("token : " + tokens.get(4));
-        FunctionDeclaration functionDeclaration = new FunctionDeclaration(tokens.get(4), tokens);
-        System.out.println(functionDeclaration);
+
+        ClassDeclaration classDeclaration = new ClassDeclaration(tokens.get(0), tokens);
+        System.out.println(classDeclaration);
+
+//        System.out.println("token : " + tokens.get(3));
+//        FunctionDeclaration functionDeclaration = new FunctionDeclaration(tokens.get(3), tokens);
+//        System.out.println(functionDeclaration);
+
+//        int i = functionDeclaration.getEndOfCodeBlock(tokens);
+//        System.out.println("end of codeblock is " + tokens.get(i));
 //        FunctionCodeBlock functionCodeBlock = new FunctionCodeBlock(tokens.get(7), tokens);
 //        for(FunctionCodeStatement codeStatement : functionCodeBlock.functionCodeStatements) {
 //            System.out.println(codeStatement);
