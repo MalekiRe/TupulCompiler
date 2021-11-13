@@ -66,10 +66,12 @@ public class ClassCodeBlock {
             i++;
         }
         if(!isPrimitiveVarTypeOrClassName(i, tokens)) {
+            System.out.println("is not variable dec becasue " + tokens.get(i).toSpacedString(0) + " is not a primitive or var class name");
             return false;
         }
         i++;
         if(tokens.get(i).tokenType != TokenType.IDENTIFIER) {
+            System.out.println("is not variable dec becasue " + tokens.get(i).toSpacedString(0) + " is not an identifier");
             return false;
         }
         return true;

@@ -15,14 +15,15 @@ public class FunctionCodeBlock {
         BracketNum bracketNum = new BracketNum();
         bracketNum.num = 1;
         while(i < tokens.size() && bracketNum.num != 0) {
-            FunctionCodeStatement functionCodeStatement = new FunctionCodeStatement();
-            i = functionCodeStatement.setTokensForFunctionCodeStatement(tokens.get(i), tokens, bracketNum);
-            functionCodeStatements.add(functionCodeStatement);
-
             //TODO::THIS MAY BREAK IT, TEMPERATORY FIX MAYBE? Might be fine
             if(tokens.get(i+1).tokenType == TokenType.RIGHT_BRAC) {
                 break;
             }
+            FunctionCodeStatement functionCodeStatement = new FunctionCodeStatement();
+            i = functionCodeStatement.setTokensForFunctionCodeStatement(tokens.get(i), tokens, bracketNum);
+            functionCodeStatements.add(functionCodeStatement);
+
+
         }
     }
 
