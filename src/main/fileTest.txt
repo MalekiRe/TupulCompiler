@@ -2,7 +2,7 @@ class mainClass {
     static Object test ;
     int c = 1 ;
     int abc = 3 ;
-    private nonstatic mutable int testInt = c * abc - ( 5 * 1 ) ;
+    private nonstatic mutable int testInt = 6 * 4 - ( 5 * 1 ) ;
     void main ( int arg ) {
         int b ;
         int a ;

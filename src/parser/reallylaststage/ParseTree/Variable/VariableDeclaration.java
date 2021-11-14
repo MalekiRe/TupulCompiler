@@ -14,7 +14,7 @@ public class VariableDeclaration extends ClassCodeStatement {
     Token token;
     Token beginningOfStatementToken;
     Optional<VariableAssignment> variableAssignmentOptional = Optional.empty();
-    public VariableDeclaration(Token token, ArrayList<Token> tokens) {
+    public VariableDeclaration(Token token, ArrayList<Token> tokens) throws Exception {
         this.beginningOfStatementToken = token;
         this.classCodeStatementType = ClassCodeStatementType.VARIABLE;
         int i = token.position;
