@@ -2,10 +2,14 @@ class mainClass {
     static Object test ;
     int c = 1 ;
     int abc = 3 ;
-    private nonstatic mutable int testInt = 6 * 4 - ( 5 * 1 ) ;
+    private nonstatic mutable int testInt = 6 * 4 - ( 5 * 1 ) + abc ;
+    int tryingStuff = 1 + this . addOne ( 4 , 5 , andOne ( 6 , 3 ) ) ;
     void main ( int arg ) {
         int b ;
         int a ;
         b = a + a * 1 - 5 ;
+    }
+    public static int addOne ( int val ) {
+        return val + 1 ;
     }
 }

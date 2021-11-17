@@ -51,5 +51,8 @@ public enum TokenType {
     STATIC,
     NON_STATIC,
     IDENTIFIER,
+    PERIOD,
+    COMMA,
+
 
 }

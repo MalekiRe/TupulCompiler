@@ -22,8 +22,6 @@ public class FunctionCodeBlock {
             FunctionCodeStatement functionCodeStatement = new FunctionCodeStatement();
             i = functionCodeStatement.setTokensForFunctionCodeStatement(tokens.get(i), tokens, bracketNum);
             functionCodeStatements.add(functionCodeStatement);
-
-
         }
     }
 

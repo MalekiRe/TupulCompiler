@@ -186,6 +186,7 @@ public class Main {
         }
 
         for(Token token : tokens) {
+            System.out.println("trying token : " + token.toSpacedString(0));
             tokenTypeMap.get(token.tokenType).add(token);
             for(TokenType type : token.furtherTokenTypes) {
                 tokenTypeMap.get(type).add(token);

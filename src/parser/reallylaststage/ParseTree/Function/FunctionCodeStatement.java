@@ -13,6 +13,7 @@ public class FunctionCodeStatement {
     public FunctionCodeStatementType functionCodeStatementType;
 
     public FunctionCodeStatement() {
+        //Get if its a variable assignment.
 
     }
     public FunctionCodeStatementType getType() {

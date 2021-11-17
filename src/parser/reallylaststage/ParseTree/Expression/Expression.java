@@ -55,7 +55,7 @@ public class Expression implements ExpressionInterface{
                 expressionInterface = valueExpression;
                 return;
             }
-            throw new Exception("AAAA tokens in the expression couldn't be parsed, didn't match any known type : " + tokenStart.tokenType);
+            throw new Exception("AAAA tokens in the expression couldn't be parsed, didn't match any known type : " + tokenStart.tokenType + "token was " + tokenStart.toSpacedString(0));
         }
         else {
             System.out.println("yay");

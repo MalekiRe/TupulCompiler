@@ -138,6 +138,8 @@ public class MainParser {
         TOKEN_TYPES_FOR_ITERATION.add(CLASS);
         TOKEN_TYPES_FOR_ITERATION.add(LOGIC);
         TOKEN_TYPES_FOR_ITERATION.add(ACCESS_MODIFIER);
+        TOKEN_TYPES_FOR_ITERATION.add(PERIOD);
+        TOKEN_TYPES_FOR_ITERATION.add(COMMA);
 
         ACCESS_MODIFIERS.add(STATIC_LEVEL);
         ACCESS_MODIFIERS.add(MUTABLE_LEVEL);
@@ -229,7 +231,10 @@ public class MainParser {
                         if (!Character.isDigit(str.charAt(i2)))
                             return false;
                     }
-                    return true;
+                    if(str.length() > 1) {
+                        return true;
+                    }
+                    return false;
                 }
             }
             return false;
@@ -299,6 +304,9 @@ public class MainParser {
         tokenDict.put(PUBLIC, (str) -> str.equals("public"));
         tokenDict.put(PROTECTED, (str) -> str.equals("protected"));
         tokenDict.put(PRIVATE, (str) -> str.equals("private"));
+
+        tokenDict.put(PERIOD, (str) -> str.equals("."));
+        tokenDict.put(COMMA, (str) -> str.equals(","));
 
         higherLevelTokens.add(ACCESS_MODIFIER);
         higherLevelTokens.add(MATH_OPERATOR);
