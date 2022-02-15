@@ -1,11 +1,11 @@
 package idk;
 
+import idk.node.Node;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static idk.MainClass.layerAddition;
-import static idk.MainClass.recursivlyPrintThing;
 import static idk.MainClass2ElectricBoogaloo.ReturnState.*;
 import static idk.TokenState.*;
 
@@ -17,6 +17,15 @@ public class MainClass2ElectricBoogaloo {
         SHIFT,
         ERROR
     }
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
     //Most cases the first list will be empty, its everything before, the second item is a higher level abstraction of itself and the third item / second list is everything after.
     static Map<TokenState, Set<Triple<List<TokenState>, TokenState, List<TokenState>>>> mapping = new LinkedHashMap<>();
     static Map<TokenState, Set<List<TokenState>>> invertedMap = new LinkedHashMap<>();
@@ -57,9 +66,10 @@ public class MainClass2ElectricBoogaloo {
     }
     
     static List<Pair<TokenState, String>> pairList = new ArrayList<>();
-    static String input = "int hi = 5 + 6;";
+    static String input = "int hi = 5 + 6 * 10 + 8;";
     static int realMaxLength;
     static Matcher matcher = end.matcher(input);
+    static List<Node> nodeList = new ArrayList<>();
     public static void main(String[] args) {
         
 
@@ -89,6 +99,7 @@ public class MainClass2ElectricBoogaloo {
             firstRoundPairPosToStates.put(i, stack.peek());
             pairStackMap.put(new Pair<>(i, pairList.get(i).first()), stack2);
             nonParentedNodes.add(Pair.of(i, pairList.get(i).first()));
+            nodeList.add(new Node(Node.EMPTY_NODE, pairList.get(i).first()));
         }
         realMaxLength = pairPosToStates.size();
 //        boolean valid = doThing2(0);
@@ -116,33 +127,39 @@ public class MainClass2ElectricBoogaloo {
             doThing7();
     }
 
-
     public static void printThingsInOrder(int pos) {
-        System.out.println("printing things");
+        System.out.println(ANSI_BLUE + "printing things of size : " + pos + ANSI_RESET);
+        System.out.println("size of nodelist is : " + nodeList.size());
         for(int i = 0; i <= pos; i++) {
-            System.out.println(layerAddition(4) + pairPosToStates.get(i));
+            System.out.println(nodeList.get(i));
         }
+
     }
     public static void doThing7() {
-        int pos = 0;
+        IntegerWrapper pos = new IntegerWrapper(0);
         ReturnState currentState = ReturnState.REDUCE;
         while(currentState != ReturnState.ERROR) {
             switch (currentState) {
                 case SHIFT -> {
-                    pos++;
                     currentState = acceptToken(pos);
-                    printThingsInOrder(pos);
+                    printThingsInOrder(pos.integer);
                 }
                 case REDUCE -> {
+                    globalFlag++;
+                    if(globalFlag == 80) {
+                        return;
+                    }
                     currentState = doReduceLoop(pos);
-                    printThingsInOrder(pos);
+                    if(currentState != SHIFT) {
+                        printThingsInOrder(pos.integer);
+                    }
                 }
             }
         }
     }
-    public static ReturnState doReduceLoop(int pos) {
+    public static ReturnState doReduceLoop(IntegerWrapper pos) {
         //We priortize shifting over reducing.
-        for(int i = 0; i <= pos; i++) {
+        for(int i = 0; i <= pos.integer; i++) {
             switch (tryToReduce(i, pos)) {
                 case NEEDS_OTHER_REDUCTION -> {
                     System.out.println("needs other reduction");
@@ -167,7 +184,7 @@ public class MainClass2ElectricBoogaloo {
     static ReduceState checkBeforeList(List<TokenState> beforeList, int pos, int max) {
         pos -= 1;
         for (int i = 0; i < beforeList.size(); i++) {
-            if (!pairPosToStates.get(pos - i).contains(beforeList.get(i))) {
+            if (!nodeList.get(pos - i).contains(beforeList.get(i))) {
                 return ReduceState.NEEDS_OTHER_REDUCTION;
             }
         }
@@ -177,9 +194,9 @@ public class MainClass2ElectricBoogaloo {
         pos += 1;
         for(int i = 0; i < afterList.size(); i++) {
             //We can check if it contains the correct thing!
-            System.out.println(" position is : " + pos+i + " pairPosStates is : " + pairPosToStates.get(pos+i));
-            if(!pairPosToStates.get(pos+i).contains(afterList.get(i))) {
-                System.out.println("falseness is for : " + pairPosToStates.get(pos+i));
+            System.out.println(" position is : " + pos+i + " pairPosStates is : " + nodeList.get(pos+i));
+            if(!nodeList.get(pos+i).contains(afterList.get(i))) {
+                System.out.println("falseness is for : " + nodeList.get(pos+i));
                 return ReduceState.NEEDS_OTHER_REDUCTION;
             }
         }
@@ -192,8 +209,8 @@ public class MainClass2ElectricBoogaloo {
         }
         return beforeReduceState;
     }
-    public static ReduceState tryToReduce(int position, int max) {
-        TokenState tokenState = pairPosToStates.get(position).peek();
+    public static ReduceState tryToReduce(int position, IntegerWrapper max) {
+        TokenState tokenState = nodeList.get(position).getTokenState();
         Set<Triple<List<TokenState>, TokenState, List<TokenState>>> tripleSet = mapping.get(tokenState);
         //We try to get a working triple, if any one of the triples in the set needs more info, we return that we need more info.
         //Two triples should never accept the entire thing If they do then error, this is an issue with my grammar.
@@ -207,14 +224,15 @@ public class MainClass2ElectricBoogaloo {
             //We never encounter ReduceState.ERROR here.
 
             //This is our check for if there are not enough tokens
-            if(testTriple.third().size() + position > max) {
+            System.out.println(layerAddition(10) + "possible mutation is : " + testTriple);
+            if(testTriple.third().size() + position > max.integer) {
                 return ReduceState.NEEDS_SHIFT;
             }
             //And this is our check for if there are not enough items for before.
             if(position - testTriple.first().size() < 0) {
                 continue;
             }
-            ReduceState state = tripleMatches(testTriple, position, max);
+            ReduceState state = tripleMatches(testTriple, position, max.integer);
             if(state == ReduceState.SUCCESSFUL_REDUCTION) {
                 if(workingTriple == null) {
                     workingTriple = testTriple;
@@ -232,14 +250,16 @@ public class MainClass2ElectricBoogaloo {
 
         return ReduceState.NEEDS_OTHER_REDUCTION;
     }
+    static int globalFlag = 0;
     enum ReduceState {
         NEEDS_OTHER_REDUCTION,
         SUCCESSFUL_REDUCTION,
         NEEDS_SHIFT,
         ERROR
     }
-    public static ReturnState acceptToken(int pos) {
-        if(pos > pairList.size()) {
+    public static ReturnState acceptToken(IntegerWrapper pos) {
+        pos.integer++;
+        if(pos.integer > pairList.size()) {
             return ReturnState.ERROR;
         }
         return ReturnState.REDUCE;
@@ -409,39 +429,48 @@ public class MainClass2ElectricBoogaloo {
 //        }
 //        return false;
 //    }
-    public static void addTripleToEverything(Triple<List<TokenState>, TokenState, List<TokenState>> triple, int pos, int max) {
+    public static void addTripleToEverything(Triple<List<TokenState>, TokenState, List<TokenState>> triple, int pos, IntegerWrapper max) {
         State2 newState = new State2(triple.second());
-        System.out.println("adding " + triple);
-        pairStateMap.put(Pair.of(pos, pairPosToStates.get(pos).peek()), newState);
-        pairPosToStates.get(pos).push(newState.state);
-        addToBeforeList(triple.first(), pos, newState, max);
-        addToAfterList(triple.third(), pos, newState, max);
+        System.out.println(ANSI_YELLOW + "adding " + triple + ANSI_RESET);
+        Node tempNode = nodeList.get(pos);
+        Node newTempNode = new Node(tempNode, triple.second());
+        addToBeforeList(newTempNode, triple.first(), pos, newState, max);
+        addToAfterList(newTempNode, triple.third(), pos, newState, max);
+        int adjustedInt = triple.third().size() > 0 ? triple.third().size()+1 : 0;
+        System.out.println("max before : " + max.integer);
+        max.integer = max.integer - triple.third().size() - triple.first().size();
+        System.out.println("max after : " + max.integer);
+        System.out.println(layerAddition(15) + "Sublist is : " + nodeList.subList(pos-triple.first().size(), pos+triple.third().size()));
+        nodeList.removeAll(nodeList.subList(pos-triple.first().size(), pos+triple.third().size()));
+        nodeList.set(pos-triple.first().size(), newTempNode);
         System.out.println("working triple found was : " + triple + " for : " + pos);
     }
-    public static void addToBeforeList(List<TokenState> beforeList, int pos, State2 state, int max) {
+    public static void addToBeforeList(Node node, List<TokenState> beforeList, int pos, State2 state, IntegerWrapper max) {
         if(pos-beforeList.size() < 0) {
+            System.out.println("encountering invalid in beforelist");
             callInvalid();
             return;
         }
         pos -= 1;
         for(int i = 0; i < beforeList.size(); i++) {
-            pairStateMap.put(Pair.of(pos-i, pairPosToStates.get(pos-i).peek()), state);
-            pairPosToStates.get(pos-i).push(state.state);
+            node.addRightNode(nodeList.get(pos-i));
         }
+        //max.integer = max.integer - beforeList.size();
     }
-    public static void addToAfterList(List<TokenState> afterList, int pos, State2 state, int max) {
-        if(afterList.size() + pos > max) { //TODO might need to be max-1 or max+1 or something i don't know
-            callInvalid();
+    public static void addToAfterList(Node node, List<TokenState> afterList, int pos, State2 state, IntegerWrapper max) {
+        if(afterList.size() + pos > max.integer) { //TODO might need to be max-1 or max+1 or something i don't know\
+            System.out.println("encountering invalid in afterList");
+            System.out.println("after list size is : " + afterList.size());
+            System.out.println("pos is : " + pos);
+            System.out.println("max size is : " + max.integer);
+           callInvalid();
            return;
         }
         pos += 1;
         for(int i = 0; i < afterList.size(); i++) {
-            //We can check if it contains the correct thing!
-            if(pairPosToStates.get(pos+i).contains(afterList.get(i))) {
-                pairStateMap.put(Pair.of(pos+i, pairPosToStates.get(pos+i).peek()), state);
-                pairPosToStates.get(pos+i).push(state.state);
-            }
+            node.addRightNode(nodeList.get(pos+i));
         }
+        //max.integer = max.integer - afterList.size();
     }
 //    public static boolean tripleMatches(Triple<List<TokenState>, TokenState, List<TokenState>> testTriple, int pos, int max) {
 //        return checkBeforeList(testTriple.first(), pos, max) && checkAfterList(testTriple.third(), pos, max);
