@@ -145,10 +145,10 @@ public class MainClass2ElectricBoogaloo {
                     printThingsInOrder(pos.integer);
                 }
                 case REDUCE -> {
-                    globalFlag++;
-                    if(globalFlag == 80) {
-                        return;
-                    }
+//                    globalFlag++;
+//                    if(globalFlag == 80) {
+//                        return;
+//                    }
                     currentState = doReduceLoop(pos);
                     if(currentState != SHIFT) {
                         printThingsInOrder(pos.integer);
