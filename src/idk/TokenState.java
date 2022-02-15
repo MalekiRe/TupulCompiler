@@ -11,14 +11,14 @@ public enum TokenState {
     ' ' things between these quotes are actual strings of things.
      */
     FINISHED_FILE, //::= ~CODE_BLOCK~
-    CODE_BLOCK, //::= VAR_ASSIGNMENT ';' | VAR_DEC ';'
+    CODE_BLOCK, //::= VAR_ASSIGNMENT ';' | VAR_DEC
     FINAL_VALUE, //::= SUM
     SUM, //::= SUM_ADD SUM | PRODUCT
     PRODUCT, //::= PRODUCT_MULTI PRODUCT | VALUE
     SUM_ADD, //::= SUM '+'
     PRODUCT_MULTI, //::= PRODUCT '*'
     VALUE, //::= LITERAL_VALUE
-    VARIABLE_DEC, //::= PRIMITIVE_TYPE ID | PRIMITIVE_TYPE VAR_ASSIGNMENT
+    VARIABLE_DEC, //::= PRIMITIVE_TYPE ID ';' | PRIMITIVE_TYPE VAR_ASSIGNMENT ';'
     PRIMITIVE_TYPE, //::= 'int'
     VAR_ASSIGNMENT, //::= ID '=' FINAL_VALUE
     //TERMINALS

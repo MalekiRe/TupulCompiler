@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static idk.MainClass.layerAddition;
+import static idk.MainClass.recursivlyPrintThing;
+import static idk.MainClass2ElectricBoogaloo.ReturnState.*;
 import static idk.TokenState.*;
 
 public class MainClass2ElectricBoogaloo {
@@ -26,14 +29,16 @@ public class MainClass2ElectricBoogaloo {
         Remember that if this doesn't work, we have to code it so it only takes an action when its certian it CAN take an action.
          */
         invertedMap.put(FINISHED_FILE, Set.of(List.of(CODE_BLOCK))); //TODO::doesn't actually work i don't think? is okay for now just doesn't do the whole "can have more than one" thing.
-        invertedMap.put(CODE_BLOCK, Set.of(List.of(VAR_ASSIGNMENT, SEMICOLON), List.of(VARIABLE_DEC, SEMICOLON)));
+        invertedMap.put(CODE_BLOCK, Set.of(List.of(VAR_ASSIGNMENT, SEMICOLON), List.of(VARIABLE_DEC)));
         invertedMap.put(FINAL_VALUE, Set.of(List.of(SUM)));
         invertedMap.put(SUM, Set.of(List.of(SUM_ADD, SUM), List.of(PRODUCT)));
         invertedMap.put(PRODUCT, Set.of(List.of(PRODUCT_MULTI, PRODUCT), List.of(VALUE)));
         invertedMap.put(SUM_ADD, Set.of(List.of(SUM, ADD_OP)));
         invertedMap.put(PRODUCT_MULTI, Set.of(List.of(PRODUCT, MULTI_OP)));
         invertedMap.put(VALUE, Set.of(List.of(LITERAL_VALUE)));
-        invertedMap.put(VARIABLE_DEC, Set.of(List.of(PRIMITIVE_TYPE, ID), List.of(PRIMITIVE_TYPE, VAR_ASSIGNMENT)));
+        invertedMap.put(VARIABLE_DEC, Set.of(List.of(PRIMITIVE_TYPE, ID, SEMICOLON), List.of(PRIMITIVE_TYPE, VAR_ASSIGNMENT, SEMICOLON)));
+        invertedMap.put(PRIMITIVE_TYPE, Set.of(List.of(INT_LIT)));
+        invertedMap.put(VAR_ASSIGNMENT, Set.of(List.of(ID, EQUALS_LIT, FINAL_VALUE)));
 
         for(TokenState state : TokenState.values()) {
             mapping.put(state, new LinkedHashSet<>());
@@ -108,6 +113,7 @@ public class MainClass2ElectricBoogaloo {
             //doThing4();
 //            doThing5();
             //doThing6();
+            doThing7();
     }
 
 
@@ -128,13 +134,109 @@ public class MainClass2ElectricBoogaloo {
                     printThingsInOrder(pos);
                 }
                 case REDUCE -> {
-                    //We priortize shifting over reducing.
-                    for(int i = 0; i <= pos; i++) {
-
-                    }
+                    currentState = doReduceLoop(pos);
+                    printThingsInOrder(pos);
                 }
             }
         }
+    }
+    public static ReturnState doReduceLoop(int pos) {
+        //We priortize shifting over reducing.
+        for(int i = 0; i <= pos; i++) {
+            switch (tryToReduce(i, pos)) {
+                case NEEDS_OTHER_REDUCTION -> {
+                    System.out.println("needs other reduction");
+                }
+                case ERROR -> {
+                    System.out.println("error");
+                    return ReturnState.ERROR;
+                }
+                case SUCCESSFUL_REDUCTION -> {
+                    System.out.println("succesful reduction");
+                    return REDUCE;
+                }
+                case NEEDS_SHIFT -> {
+                    System.out.println("needs shift");
+                    return SHIFT;
+                }
+            }
+        }
+        return ReturnState.ERROR;
+    }
+
+    static ReduceState checkBeforeList(List<TokenState> beforeList, int pos, int max) {
+        pos -= 1;
+        for (int i = 0; i < beforeList.size(); i++) {
+            if (!pairPosToStates.get(pos - i).contains(beforeList.get(i))) {
+                return ReduceState.NEEDS_OTHER_REDUCTION;
+            }
+        }
+        return ReduceState.SUCCESSFUL_REDUCTION;
+    }
+    static ReduceState checkAfterList(List<TokenState> afterList, int pos, int max) {
+        pos += 1;
+        for(int i = 0; i < afterList.size(); i++) {
+            //We can check if it contains the correct thing!
+            System.out.println(" position is : " + pos+i + " pairPosStates is : " + pairPosToStates.get(pos+i));
+            if(!pairPosToStates.get(pos+i).contains(afterList.get(i))) {
+                System.out.println("falseness is for : " + pairPosToStates.get(pos+i));
+                return ReduceState.NEEDS_OTHER_REDUCTION;
+            }
+        }
+        return ReduceState.SUCCESSFUL_REDUCTION;
+    }
+    public static ReduceState tripleMatches(Triple<List<TokenState>, TokenState, List<TokenState>> testTriple, int position, int max) {
+        ReduceState beforeReduceState = checkBeforeList(testTriple.first(), position, max);
+        if (checkBeforeList(testTriple.first(), position, max) == ReduceState.SUCCESSFUL_REDUCTION) {
+            return checkAfterList(testTriple.third(), position, max);
+        }
+        return beforeReduceState;
+    }
+    public static ReduceState tryToReduce(int position, int max) {
+        TokenState tokenState = pairPosToStates.get(position).peek();
+        Set<Triple<List<TokenState>, TokenState, List<TokenState>>> tripleSet = mapping.get(tokenState);
+        //We try to get a working triple, if any one of the triples in the set needs more info, we return that we need more info.
+        //Two triples should never accept the entire thing If they do then error, this is an issue with my grammar.
+        //If we have exactly one working then we return Reduce, otherwise we tell it Error.
+        Triple<List<TokenState>, TokenState, List<TokenState>> workingTriple = null;
+        System.out.println(layerAddition(2) + "trying to reduce the state " + tokenState);
+        for(Triple<List<TokenState>, TokenState, List<TokenState>> testTriple : tripleSet) {
+            //Basically, if we want to do this we need to say that if there are not enough tokens, we know for sure that we need to shift
+            //If there are enough tokens, but we don't have a single successful reduction then we need more reduction on other tokens
+            //Finally, if it actually works then we want to make sure two of them don't work, cause if two of them work, we want to return that it needs more reduction.
+            //We never encounter ReduceState.ERROR here.
+
+            //This is our check for if there are not enough tokens
+            if(testTriple.third().size() + position > max) {
+                return ReduceState.NEEDS_SHIFT;
+            }
+            //And this is our check for if there are not enough items for before.
+            if(position - testTriple.first().size() < 0) {
+                continue;
+            }
+            ReduceState state = tripleMatches(testTriple, position, max);
+            if(state == ReduceState.SUCCESSFUL_REDUCTION) {
+                if(workingTriple == null) {
+                    workingTriple = testTriple;
+                }
+                else {
+                    return ReduceState.NEEDS_OTHER_REDUCTION;
+                }
+            }
+        }
+        if(workingTriple != null) {
+            //TODO add code to add everything from it to the top of the list.
+            addTripleToEverything(workingTriple, position, max);
+            return ReduceState.SUCCESSFUL_REDUCTION;
+        }
+
+        return ReduceState.NEEDS_OTHER_REDUCTION;
+    }
+    enum ReduceState {
+        NEEDS_OTHER_REDUCTION,
+        SUCCESSFUL_REDUCTION,
+        NEEDS_SHIFT,
+        ERROR
     }
     public static ReturnState acceptToken(int pos) {
         if(pos > pairList.size()) {
