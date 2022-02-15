@@ -23,4 +23,8 @@ class Triple<T, Y, Z> {
     }
 
     public Z third() {return z;}
+
+    public static <T, Y, Z> Triple<T, Y, Z> of(T t, Y y, Z z) {
+        return new Triple<>(t, y, z);
+    }
 }

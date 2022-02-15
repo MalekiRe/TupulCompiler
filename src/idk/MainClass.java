@@ -9,6 +9,49 @@ import java.util.regex.Pattern;
 import static idk.ParsingState.*;
 
 public class MainClass {
+    /*
+    FINISHED_VALUE ::= SUM
+    SUM ::= SUM - SUM | SUM + SUM
+    SUM ::= PRODUCT
+    PRODUCT ::= PRODUCT * PRODUCT | PRODUCT/PRODUCT
+    PRODUCT ::= VALUE
+    VALUE ::= LITERAL_VALUE
+
+    5 + 6 * 7 + 8
+
+
+    VALUE
+
+    PRODUCT
+
+    PRODUCT +
+
+    SUM +
+
+    SUM + VALUE
+
+    SUM + PRODUCT
+
+    SUM + PRODUCT * VALUE
+
+    SUM + PRODUCT * PRODUCT
+
+    SUM + PRODUCT +
+
+    SUM + SUM +
+
+    SUM + VALUE
+
+    SUM + PRODUCT
+
+    SUM + SUM
+
+    SUM
+
+    FINISHED_VALUE
+
+
+     */
     //MARKER 1
     static Pattern end = Pattern.compile("\\G(.*)?");
 
@@ -30,47 +73,11 @@ public class MainClass {
     static Map<ParsingState, Set<Triple<List<ParsingState>, ParsingState, List<ParsingState>>>> mapping = new LinkedHashMap<>();
     static Map<ParsingState, Set<Triple<List<ParsingState>, ParsingState, List<ParsingState>>>> invertedMapping = new LinkedHashMap<>();
     static {
-        mapping.put(INT_LIT, Set.of(new Triple<>(List.of(), PRIMITIVE_TYPE, List.of())));
-        mapping.put(PRIMITIVE_TYPE, Set.of(
-                new Triple<>(List.of(), VAR_DEC, List.of(ID)),
-                new Triple<>(List.of(), VAR_DEC, List.of(VAR_ASSIGNMENT))));
-        mapping.put(ID, Set.of(
-                new Triple<>(List.of(PRIMITIVE_TYPE), VAR_DEC, List.of()),
-                new Triple<>(List.of(), VAR_ASSIGNMENT, List.of(EQUALS_LIT, VAL))
-        ));
-        mapping.put(EQUALS_LIT, Set.of(new Triple<>(List.of(ID), VAR_ASSIGNMENT, List.of(VAL))));
-        mapping.put(LIT_VAL, Set.of(new Triple<>(List.of(), VAL, List.of())));
-        mapping.put(VAR_ASSIGNMENT, Set.of(
-                new Triple<>(List.of(PRIMITIVE_TYPE), VAR_DEC, List.of())
-        ));
-        mapping.put(VAR_DEC, Set.of(
-                new Triple<>(List.of(), CODE_BLOCK, List.of(SEMICOLON))
-        ));
-        mapping.put(ADD, Set.of(
-                new Triple<>(List.of(), BI_MATH_OP, List.of())
-        ));
-        mapping.put(MULTIPLY, Set.of(
-                new Triple<>(List.of(), BI_MATH_OP, List.of())
-        ));
-        mapping.put(BI_MATH_OP, Set.of(
-                new Triple<>(List.of(VAL), VAL, List.of(VAL))
-        ));
-        mapping.put(VAL, Set.of(
-                new Triple<>(List.of(ID, EQUALS_LIT), VAR_ASSIGNMENT, List.of())
-        ));
-        mapping.put(SEMICOLON, Set.of(
-                new Triple<>(List.of(VAR_DEC), CODE_BLOCK, List.of()),
-                new Triple<>(List.of(VAR_ASSIGNMENT), CODE_BLOCK, List.of())
-        ));
-        mapping.put(CODE_BLOCK, Set.of(
-                new Triple<>(List.of(), MULTI_CODE_BLOCK, List.of())
-        ));
-
-        mapping.put(MULTI_CODE_BLOCK, Set.of(
-                new Triple<>(List.of(CODE_BLOCK), MULTI_CODE_BLOCK, List.of()),
-                new Triple<>(List.of(), MULTI_CODE_BLOCK, List.of(CODE_BLOCK)),
-                new Triple<>(List.of(), CODE_BLOCK, List.of())
-        ));
+//        mapping.put(INT_LIT, Set.of(new Triple<>(List.of(), PRIMITIVE_TYPE, List.of())));
+//        mapping.put(PRIMITIVE_TYPE, Set.of(
+//                new Triple<>(List.of(), VAR_DEC, List.of(ID)),
+//                new Triple<>(List.of(), VAR_DEC, List.of(VAR_ASSIGNMENT))));
+        mapping.put(VAR_ASSIGNMENT, Set.of(Triple.of(List.of(), CODE_BLOCK, List.of(SEMICOLON))));
 
         for(ParsingState state : mapping.keySet()) {
             invertedMapping.put(state, new HashSet<>());
@@ -85,6 +92,7 @@ public class MainClass {
             }
         }
     }
+
     static List<Pair<ParsingState, String>> pairList = new ArrayList<>();
     static String input = "int hi = 5 + 6;";
     static Matcher matcher = end.matcher(input);
