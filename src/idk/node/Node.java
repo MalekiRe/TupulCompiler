@@ -19,6 +19,7 @@ public class Node {
     public static final String ANSI_RESET = "\u001B[0m";
 
     TokenState tokenState;
+    String originalString = null;
     public static final Node EMPTY_NODE = new Node(null, null);
     Node leftNode;
     List<Node> rightNodes = new ArrayList<>();
@@ -26,6 +27,11 @@ public class Node {
         this.leftNode = tempNode;
         this.tokenState = state;
     }
+    public Node(Node tempNode, TokenState state, String originalString) {
+        this(tempNode, state);
+        this.originalString = originalString;
+    }
+
     public void addRightNode(Node tempNode) {
         this.rightNodes.add(tempNode);
     }
@@ -44,10 +50,8 @@ public class Node {
     public boolean contains(TokenState tokenState) {
         return getTokenState().equals(tokenState);
     }
-
     public String toString() {
         return ANSI_GREEN + printNodeTree(3) + ANSI_RESET;
-
     }
     public static String getAnsiBackground(int i) {
         return switch (i % 4) {
@@ -62,8 +66,11 @@ public class Node {
         if(this.tokenState == null) {
             return "";
         }
-        if(this.leftNode == null) {
-            return "" + tokenState + ";";
+        if(this.leftNode == null || this.leftNode == EMPTY_NODE) {
+            if(this.originalString != null) {
+                return ANSI_YELLOW + tokenState + ":" + originalString + ANSI_GREEN;
+            }
+            return ANSI_YELLOW + tokenState + ANSI_GREEN;
         }
         String s = tokenState + ANSI_RESET + getAnsiBackground(layer) + "[" + ANSI_RESET + ANSI_GREEN;
         s += this.leftNode.printNodeTree(layer+1);
@@ -75,23 +82,6 @@ public class Node {
                 s += this.rightNodes.get(i).printNodeTree(layer+1) + ", ";
         }
         return s + ANSI_RESET + getAnsiBackground(layer) + "]" + ANSI_RESET + ANSI_GREEN;
-//        if(this.tokenState == null) {
-//            return "";
-//        }
-//        StringBuilder s = new StringBuilder(layerAddition(layer) + "" + tokenState + " : ");
-//        if(this.leftNode == null) {
-//            return "\n" + layerAddition(layer) + "" + tokenState;
-//        }
-//        if(this.rightNodes == null) {
-//            return s + "\n" + leftNode.printNodeTree(layer+1);
-//        }
-//        for (Node rightNode : rightNodes) {
-//            s.append("\n");
-//            s.append(rightNode.printNodeTree(layer + 1));
-//        }
-//        s.append("\n");
-//        s.append(leftNode.printNodeTree(layer + 1));
-//        return s.toString();
     }
 
 }

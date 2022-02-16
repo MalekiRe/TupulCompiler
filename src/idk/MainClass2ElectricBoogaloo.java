@@ -99,7 +99,7 @@ public class MainClass2ElectricBoogaloo {
             firstRoundPairPosToStates.put(i, stack.peek());
             pairStackMap.put(new Pair<>(i, pairList.get(i).first()), stack2);
             nonParentedNodes.add(Pair.of(i, pairList.get(i).first()));
-            nodeList.add(new Node(Node.EMPTY_NODE, pairList.get(i).first()));
+            nodeList.add(new Node(Node.EMPTY_NODE, pairList.get(i).first(), pairList.get(i).second()));
         }
         realMaxLength = pairPosToStates.size();
 //        boolean valid = doThing2(0);
