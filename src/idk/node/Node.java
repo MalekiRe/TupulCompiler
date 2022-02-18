@@ -19,7 +19,7 @@ public class Node {
     public static final String ANSI_RESET = "\u001B[0m";
 
     TokenState tokenState;
-    String originalString = null;
+    public String originalString = null;
     public static final Node EMPTY_NODE = new Node(null, null);
     Node leftNode;
     List<Node> rightNodes = new ArrayList<>();
@@ -61,6 +61,14 @@ public class Node {
             case 3 -> ANSI_GREEN_BACKGROUND;
             default -> ANSI_RED_BACKGROUND;
         };
+    }
+    public ArrayList<Node> allChildNodes() {
+        if(this.leftNode == null) {
+            return null;
+        }
+        ArrayList<Node> list = new ArrayList<>(rightNodes);
+        list.add(leftNode);
+        return list;
     }
     public String printNodeTree(int layer) {
         if(this.tokenState == null) {

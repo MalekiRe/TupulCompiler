@@ -125,8 +125,26 @@ public class MainClass2ElectricBoogaloo {
 //            doThing5();
             //doThing6();
             doThing7();
+            printTreePretty(0, nodeList.get(0));
     }
+    public static void printTreePretty(int depth, Node node) {
+        String s = "";
+        for(int i = 0; i < depth; i++) {
+            s += "  |";
+        }
+        if(node.allChildNodes() == null) {
+            return;
+        }
+        s += "  |-" + node.getTokenState();
+        if(node.originalString != null) {
+            s += " : '" + node.originalString + "'";
+        }
+        System.out.println(s);
 
+        for(Node childNode : node.allChildNodes()) {
+            printTreePretty(depth+1, childNode);
+        }
+    }
     public static void printThingsInOrder(int pos) {
         System.out.println(ANSI_BLUE + "printing things of size : " + pos + ANSI_RESET);
         System.out.println("size of nodelist is : " + nodeList.size());
