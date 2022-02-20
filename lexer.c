@@ -152,9 +152,28 @@ Token variablePhrase() {
         buffer += i+1;
         return STRING_TYPE_VAL;
     }
+    if(*(buffer) == '\'') {
+        if(strlen(buffer+1) == 0 || strlen(buffer+2) == 0 || strlen(buffer+3) == 0) {
+            printf("too short\n");
+            return -2;
+        }
+        if(*(buffer+1) == '\\') {
+            if(*(buffer+3) == '\'') {
+                buffer += 4;
+                return CHAR_TYPE_VAL;
+            }
+            ASSERT(false);
+        } else {
+            if(*(buffer+2) == '\'') {
+                buffer += 3;
+                return CHAR_TYPE_VAL;
+            }
+            ASSERT(false);
+        }
+    }
     return -1;
 }
-Token strToPhrase(char* string) {
+Token setupBufferFromStr(char* string) {
     //This means we are continuing from a prev string.
     if(string != NULL) {
         if(firstTime == false) {
@@ -171,7 +190,17 @@ Token strToPhrase(char* string) {
             return -2;
         }
     }
-    Token returnPhrase = simpleFirst();
+    return -5;
+}
+Token strToPhrase(char* string) {
+    Token returnPhrase;
+
+    returnPhrase = setupBufferFromStr(string);
+    if(returnPhrase != -5) {
+        return returnPhrase;
+    }
+
+    returnPhrase = simpleFirst();
     if(returnPhrase != -1) {
         buffer += 1;
         return returnPhrase;

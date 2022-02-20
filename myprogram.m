@@ -1,1 +1,1 @@
-int i = "hi";//hi
+int i = '\n';
