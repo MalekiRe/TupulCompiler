@@ -94,9 +94,46 @@ Token wordPhrase() {
         if(wordPhraseWorks("int", x)) {
             workingWordPhrase = INT_LIT;
         }
-        if(workingWordPhrase != -1) {
-            buffer += x;
+        else if(wordPhraseWorks("double", x)) {
+            workingWordPhrase = DOUBLE_LIT;
         }
+        else if(wordPhraseWorks("char", x)) {
+            workingWordPhrase = CHAR_LIT;
+        }
+        else if(wordPhraseWorks("enum", x)) {
+            workingWordPhrase = ENUM_LIT;
+        }
+        else if(wordPhraseWorks("struct", x)) {
+            workingWordPhrase = STRUCT_LIT;
+        }
+        else if(wordPhraseWorks("class", x)) {
+            workingWordPhrase = CLASS_LIT;
+        }
+        else if(wordPhraseWorks("void", x)) {
+            workingWordPhrase = VOID_LIT;
+        }
+        else if(wordPhraseWorks("return", x)) {
+            workingWordPhrase = RETURN;
+        }
+        else if(wordPhraseWorks("pure", x)) {
+            workingWordPhrase = PURE;
+        }
+        else if(wordPhraseWorks("const", x)) {
+            workingWordPhrase = CONST;
+        }
+        else if(wordPhraseWorks("public", x)) {
+            workingWordPhrase = PUBLIC;
+        }
+        else if(wordPhraseWorks("protected", x)) {
+            workingWordPhrase = PROTECTED;
+        }
+        else if(wordPhraseWorks("private", x)) {
+            workingWordPhrase = PRIVATE;
+        }
+        else if(wordPhraseWorks("null", x)) {
+            workingWordPhrase = NULL_LIT;
+        }
+        buffer += x;
         return workingWordPhrase;
     }
     return -1;

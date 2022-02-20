@@ -1,1 +1,1 @@
-int i = 1.0;<
+public protected void double int x = 5;
