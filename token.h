@@ -58,7 +58,7 @@ typedef enum token{
     DOUBLE_RIGHT_ANGLE_BRACKET,
     LEFT_ANGLE_BRACKET,
     RIGHT_ANGLE_BRACKET,
-    TILDE_OP,
+    TILDE_OP, //this one actually isn't a multisymbol, just don't wanna move it cause pain //TODO::move this to the normal single symbol area.
 
     //Variable Types
     DOUBLE_TYPE_VAL,

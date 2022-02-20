@@ -21,32 +21,57 @@ Token simpleFirst() {
         case '}': return RIGHT_BRACKET;
         case '[': return LEFT_SQUARE_BRACKET;
         case ']': return RIGHT_SQUARE_BRACKET;
+        case '-': return MINUS_OP;
+        case '+': return ADD_OP;
+        case '/': return DIV_OP;
+        case '%': return MODULO_OP;
+        case '*': return MULTI_OP;
+        case '^': return CARET_OP;
+        case ',': return COMMA;
+        case '.': return DOT;
+        case '~': return TILDE_OP;
         default: return -1;
     }
 }
-Token equalsCheck() {
+Token multiCharOperatorPhrase() {
+    if(strlen(buffer) == 1) {
+        return -2;
+    }
     if(*(buffer) == '=') {
-        if(strlen(buffer) == 1) {
-            return -2;
-        } else {
-            if(*(buffer+1) == '=') {
-                return DOUBLE_EQUALS_LIT;
-            } else {
-                return EQUALS_LIT;
-            }
+        if(*(buffer+1) == '=') {
+            return DOUBLE_EQUALS_LIT;
         }
+        return EQUALS_LIT;
     }
     if(*buffer == '!') {
-        if(strlen(buffer) == 1) {
-            return -2;
+        if(*(buffer+1) == '=') {
+            return NOT_EQUALS_LIT;
         }
-        else {
-            if(*(buffer+1) == '=') {
-                return NOT_EQUALS_LIT;
-            } else {
-                return NOT_LIT;
-            }
+        return NOT_LIT;
+    }
+    if(*(buffer) == '&') {
+        if(*(buffer+1) == '&') {
+            return DOUBLE_AND_OP;
         }
+        return AND_OP;
+    }
+    if(*(buffer) == '|') {
+        if(*(buffer+1) == '|') {
+            return DOUBLE_OR_OP;
+        }
+        return OR_OP;
+    }
+    if(*(buffer) == '<') {
+        if(*(buffer+1) == '<') {
+            return DOUBLE_LEFT_ANGLE_BRACKET;
+        }
+        return LEFT_ANGLE_BRACKET;
+    }
+    if(*(buffer) == '>') {
+        if(*(buffer+1) == '>') {
+            return DOUBLE_RIGHT_ANGLE_BRACKET;
+        }
+        return RIGHT_ANGLE_BRACKET;
     }
     return -1;
 }
@@ -232,12 +257,22 @@ Token strToPhrase(char* string) {
     if(returnPhrase != -1) {
         return returnPhrase;
     }
-    returnPhrase = equalsCheck();
+    returnPhrase = multiCharOperatorPhrase();
     if(returnPhrase != -1) {
-        if(returnPhrase == DOUBLE_EQUALS_LIT || returnPhrase == NOT_EQUALS_LIT) {
+        if(returnPhrase == DOUBLE_EQUALS_LIT
+        || returnPhrase == NOT_EQUALS_LIT
+        || returnPhrase == DOUBLE_RIGHT_ANGLE_BRACKET
+        || returnPhrase == DOUBLE_LEFT_ANGLE_BRACKET
+        || returnPhrase == DOUBLE_OR_OP
+        || returnPhrase == DOUBLE_AND_OP) {
             buffer += 2;
         }
-        else if(returnPhrase == EQUALS_LIT || returnPhrase == NOT_LIT) {
+        else if(returnPhrase == EQUALS_LIT
+        || returnPhrase == NOT_LIT
+        || returnPhrase == AND_OP
+        || returnPhrase == OR_OP
+        || returnPhrase == LEFT_ANGLE_BRACKET
+        || returnPhrase == RIGHT_ANGLE_BRACKET) {
             buffer += 1;
         }
         return returnPhrase;
