@@ -13,6 +13,7 @@ int main() {
     char fileBuff[255];
     int i = 0;
     while(fgets(fileBuff, 255, file) != NULL) {
+        printf("%s\n", fileBuff);
         Token phrase = strToPhrase(fileBuff);
         while(phrase != -2) {
             printToken(phrase);

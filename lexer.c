@@ -135,6 +135,25 @@ Token commentPhrase() {
         return COMMENT;
     }
 }
+Token variablePhrase() {
+    if(*(buffer) == '"') { //Could be a string.
+        int i = 1;
+        restartLoop :
+        while(*(buffer+i) != '"') {
+            if(strlen(buffer+i) == 0) {
+                return -2;
+            }
+            i++;
+        }
+        if(*(buffer+i-1) == '\\') {
+            i++;
+            goto restartLoop;
+        }
+        buffer += i+1;
+        return STRING_TYPE_VAL;
+    }
+    return -1;
+}
 Token strToPhrase(char* string) {
     //This means we are continuing from a prev string.
     if(string != NULL) {
@@ -152,7 +171,6 @@ Token strToPhrase(char* string) {
             return -2;
         }
     }
-
     Token returnPhrase = simpleFirst();
     if(returnPhrase != -1) {
         buffer += 1;
@@ -177,6 +195,10 @@ Token strToPhrase(char* string) {
         return returnPhrase;
     }
     returnPhrase = commentPhrase();
+    if(returnPhrase != -1) {
+        return returnPhrase;
+    }
+    returnPhrase = variablePhrase();
     if(returnPhrase != -1) {
         return returnPhrase;
     }
