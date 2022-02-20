@@ -171,6 +171,29 @@ Token variablePhrase() {
             ASSERT(false);
         }
     }
+    if(isdigit(*(buffer))) {
+        int i = 0;
+        while(isdigit(*(buffer+i))) {
+            if(strlen(buffer+i) == 0) {
+                return -2;
+            }
+            i++;
+        }
+        if(*(buffer+i) == '.') {
+            i++;
+            while(isdigit(*(buffer+i))) {
+                if(strlen(buffer+i) == 0) {
+                    return -2;
+                }
+                i++;
+            }
+            buffer += i;
+            return DOUBLE_TYPE_VAL;
+        } else {
+            buffer += i;
+            return INT_TYPE_VAL;
+        }
+    }
     return -1;
 }
 Token setupBufferFromStr(char* string) {
