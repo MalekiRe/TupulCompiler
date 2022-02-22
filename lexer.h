@@ -14,6 +14,6 @@
  * @param posPtr
  * @return -1 on failure or a Token on success.
  */
-Token strToPhrase(char* string);
+Token strToToken(char* string);
 
 #endif //MLANG_LEXER_H

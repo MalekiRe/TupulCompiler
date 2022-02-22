@@ -277,7 +277,7 @@ Token setupBufferFromStr(char* string) {
     }
     return -5;
 }
-Token strToPhrase(char* string) {
+Token strToToken(char* string) {
     Token returnPhrase;
 
     returnPhrase = setupBufferFromStr(string);

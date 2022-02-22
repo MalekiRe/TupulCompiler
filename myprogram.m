@@ -1,1 +1,1 @@
-public protected void double int x = 5;
+5 + 5;

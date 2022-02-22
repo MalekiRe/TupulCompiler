@@ -8,4 +8,5 @@
 #include <stdbool.h>
 
 char *strAppend(char *str1, const char *str2, bool isOnHeap);
+char *strCharAppend(char *str1, char char1);
 #endif //MLANG_STRINGUTIL_H
