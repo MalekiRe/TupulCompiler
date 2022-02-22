@@ -1,11 +1,8 @@
 #include <stdio.h>
-#include <string.h>
-#include <malloc.h>
 #include <stdbool.h>
 #include <f2fs_fs.h>
 #include "token.h"
 #include "lexer.h"
-#include "stringutil.h"
 #include "phrase.h"
 typedef enum state {
     SHIFT,
@@ -13,24 +10,6 @@ typedef enum state {
     ACCEPT,
     ERROR
 } State;
-static Phrase tempPhraseThingy(int pos) {
-    switch (pos) {
-        case 0: return int_type_val;
-        case 1: return add_op;
-        case 2: return int_type_val;
-        case 3: return semicolon;
-        default:return END_OF_FILE;
-    }
-}
-//First thing at pos 0 is reserved for what it will turn into should the following two be true.
-
-
-enum MatchPhraseReturnType {
-    FALSE,
-    TRUE,
-    NEEDS_SHIFT
-};
-
 bool matchesPhraseWithoutToken(Phrase* stack, const Phrase* phrases) {
     size_t actualLength = phraseLen(phrases);
     //Note, if the stack was too small it would already have said to shift in the other matches phrase function
@@ -61,24 +40,6 @@ bool matchesPhraseWithToken(Phrase* stack, const Phrase* phrases, Phrase lookAhe
     //Check if end of the phrase matches the token
     if(phrases[actualLength-1] != lookAheadToken) {
         return false;
-    }
-    return true;
-}
-bool matchesPhrase(Phrase* stack, const Phrase* phrases, Phrase lookAheadToken) {
-    size_t actualLength = phraseLen(phrases);
-    Phrase* tempStack = stack;
-    if(lookAheadToken != NULL_TERMINATOR) {
-        printPhrases(stack);
-        tempStack = phraseConcatWithoutRealloc(stack, lookAheadToken);
-    }
-    if(phraseLen(tempStack) < actualLength) {
-        return false;
-    }
-    size_t stackLen = phraseLen(tempStack);
-    for(int i = 0; i < actualLength; i++) {
-        if(*(tempStack+stackLen-actualLength+i) != phrases[i]) {
-            return false;
-        }
     }
     return true;
 }
@@ -281,101 +242,6 @@ void doParsing() {
 }
 int main() {
     addAllThingsToPhraseComboList();
-//    for(int i1 = 0; i1 < getPhraseComboList().size; i1++) {
-//        PhraseCombo phraseCombo = *getPhraseComboList().phraseCombo[i1];
-//        Phrase *longestMatchingPhrases = NULL;
-//        printf("%s\n", getStrRep(phraseCombo.phraseToTurnInto));
-//        printf("%zu\n", phraseCombo.size);
-//    }
-//    Phrase *tempStack = createPhraseArray(((Phrase[]){NULL_TERMINATOR}));
-//    push(&tempStack, SUM);
-//    push(&tempStack, add_op);
-//    reduceStateFunction(&tempStack, NULL_TERMINATOR);
-//    push(&tempStack, SUM);
-//    reduceStateFunction(&tempStack, NULL_TERMINATOR);
-//
-//    printPhrases(tempStack);
-    //We will check our current stack against just the right hand first, and then again against the peek ahead.
     doParsing();
-
-//    while(state != ACCEPT) {
-//        if(*(stack) == FINISHED_COMP) {
-//            state = ACCEPT;
-//        }
-//        terminalLoop--;
-//        if(terminalLoop == 0) {
-//            break;
-//        }
-//        if(state == SHIFT) {
-//            stack = phraseConcat(stack, lookAheadPhrase);
-//            lookAheadPhrase = getNextPhrase();
-//            printPhrase(lookAheadPhrase);
-//            printf("\n");
-//            if(lookAheadPhrase == END_OF_FILE) {
-//                lookAheadPhrase = NULL_TERMINATOR;
-//            }
-//            state = REDUCE;
-//        }
-//        if(state == REDUCE) {
-//
-//            state = shiftFunc(stack, lookAheadPhrase);
-//
-//        }
-//        if(state == ERROR) {
-//            ASSERT(false);
-//        }
-//    }
-//    char* tempStr = strdup("hi");
-//    tempStr = strCharAppend(tempStr, 'h');
-//    printf("%s\n", tempStr);
-//    tempStr = strCharAppend(tempStr, 'e');
-//    printf("%s\n", tempStr);
-//    while(state != ACCEPT) {
-//        i++;
-//        if(i > 20) {
-//            break;
-//        }
-//        if(strcmp(stack, &acceptStr) == 0) {
-//            state = ACCEPT;
-//        }
-//        if(state == SHIFT) {
-//            lookAheadToken = (char) tempPhraseThingy(pos);
-//            printf("look ahead token: ");
-//            printPhrase(lookAheadToken);
-//            printf("\n");
-//            stack = strCharAppend(stack, lookAheadToken);
-//            if(lookAheadToken == END_OF_FILE) {
-//                lookAheadToken = -1;
-//            }
-//            pos++;
-//            state = SHIFT;
-//            printf("printing stack : \n");
-//            printStack(stack);
-//        }
-//        if(state == REDUCE) {
-//            for(int i1 = 0; i1 < sizeof(rightHandReductions); i1++) {
-//                if(state == SHIFT) {
-//                    break;
-//                }
-//                bool matches = false;
-//                for(int i2 = 0; i2 < 2; i2++) {
-//                    if(matchesPhrase(stack, rightHandReductions[i1][i2]+1, lookAheadToken)) {
-//                        if(matches == false) {
-//                            matches = true;
-//                        }
-//                        else {
-//                            state = SHIFT;
-//                            break;//this means we have more than one match
-//                        }
-//                    }
-//                }
-//            }
-//            state = SHIFT;
-//            printf("printing stack in reduce :\n");
-//            printStack(stack);
-//
-//        }
-//
-//    }
     return 0;
 }

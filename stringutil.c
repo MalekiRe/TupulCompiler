@@ -21,8 +21,3 @@ char *strAppend(char *str1, const char *str2, bool isOnHeap) {
     str1 = tempStr;
     return str1;
 }
-char *strCharAppend(char *str1, char char1) {
-    str1 = realloc(str1, strlen(str1)+2);
-    strncat(str1, &char1, 1);
-    return str1;
-}

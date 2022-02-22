@@ -1,9 +1,7 @@
 //
 // Created by malek on 2/19/22.
 //
-
 #include <stdbool.h>
-#include <malloc.h>
 #include <string.h>
 #include <ctype.h>
 #include <f2fs_fs.h>
