@@ -152,6 +152,16 @@ void addAllThingsToPhraseComboList() {
     combo = addPhraseList(combo,
                           createPhraseArray((Phrase[]){PRODUCT}));
     addToPhraseComboList(combo);
+    printf("combo 1 is : ");
+    printPhrases(combo->phrases[0]);
+    printf("\ncombo2 is : ");
+    printPhrases(combo->phrases[1]);
+    printf("\n");
+    for(int i = 0; i < getPhraseComboList().size; i++) {
+        for(int i2 = 0; i2 < getPhraseComboList().phraseCombo[i]->size; i2++) {
+            printf("phrase to turn into is : %s\n", getStrRep(getPhraseComboList().phraseCombo[i]->phraseToTurnInto));
+        }
+    }
 
 
 }

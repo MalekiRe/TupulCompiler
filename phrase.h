@@ -37,6 +37,7 @@ size_t phraseLen(const Phrase *phraseArr);
 Phrase *phraseDup(Phrase *phraseArr);
 Phrase *phraseConcat(Phrase *phraseArr, Phrase phrase1);
 Phrase *phraseConcatWithoutRealloc(Phrase *phraseArr, Phrase phrase1);
+char* getStrRep(Phrase phrase);
 Phrase *pop(Phrase** phraseArray);
 Phrase *popN(Phrase** phraseArray, size_t amount);
 Phrase *push(Phrase** phraseArray, Phrase phrase);

@@ -119,26 +119,32 @@ Phrase getNextPhrase() {
 State reduceStateFunction(Phrase **stack, Phrase lookAheadToken) {
 
     //Now account for special case where if lookAheadToken == NULL_TERMINATOR
-    if(lookAheadToken == NULL_TERMINATOR) {
-        goto afterPossibleShift;
-    }
-    /*
-     * if stack + lookAheadPhrase matches currentThing {
-                return shift;
-            }
-     */
-    for(int i1 = 0; i1 < getPhraseComboList().size; i1++) {
-        PhraseCombo phraseCombo = *getPhraseComboList().phraseCombo[i1];
-        for(int i2 = 0; i2 < phraseCombo.size; i2++) {
-            Phrase *phrases = phraseCombo.phrases[i2];
-            if(matchesPhraseWithToken(*stack, phrases, lookAheadToken)) {
-                return SHIFT;
+    if (lookAheadToken != NULL_TERMINATOR) {
+
+        /*
+         * if stack + lookAheadPhrase matches currentThing {
+                    return shift;
+                }
+         */
+        for (int i1 = 0; i1 < getPhraseComboList().size; i1++) {
+            PhraseCombo phraseCombo = *getPhraseComboList().phraseCombo[i1];
+            for (int i2 = 0; i2 < phraseCombo.size; i2++) {
+                Phrase *phrases = phraseCombo.phrases[i2];
+                if (matchesPhraseWithToken(*stack, phrases, lookAheadToken)){
+                    printf("%s matched phrase with token\n", getStrRep(lookAheadToken));
+                    printf("the phrase that matched was : ");
+                    printPhrases(phrases);
+                    printf("\n");
+                    if(phraseLen(phrases) > 1) {
+                        return SHIFT;
+                    }
+                }
             }
         }
     }
-    afterPossibleShift :
     /*
      * if stack matches currentThing {
+                make the reduction happen on the longest thing that matches.
                 doReduction() {
                     stack.pop(currentThing.length);
                     stack.push(currentThing.parent);
@@ -146,21 +152,44 @@ State reduceStateFunction(Phrase **stack, Phrase lookAheadToken) {
                 return reduce;
             }
      */
+    Phrase *longestMatchingPhrases = NULL;
+    Phrase phraseToTurnInto;
     for(int i1 = 0; i1 < getPhraseComboList().size; i1++) {
         PhraseCombo phraseCombo = *getPhraseComboList().phraseCombo[i1];
+
         for(int i2 = 0; i2 < phraseCombo.size; i2++) {
             Phrase *phrases = phraseCombo.phrases[i2];
+            printf("trying : %s\n", getStrRep(phraseCombo.phraseToTurnInto));
             if(matchesPhraseWithoutToken(*stack, phrases)) {
-                {//Do Reduce
-                    printf("reducing : ");
-                    printPhrases(*stack);
-                    printf("\n");
-                    popN(stack, phraseLen(phrases));
-                    push(stack, phraseCombo.phraseToTurnInto);
+                printf("this matches: %s\n", getStrRep(phraseCombo.phraseToTurnInto));
+                if(longestMatchingPhrases == NULL) {
+                    longestMatchingPhrases = phrases;
+                    phraseToTurnInto = phraseCombo.phraseToTurnInto;
                 }
-                return REDUCE;
+                else {
+                    if(phraseLen(phrases) > phraseLen(longestMatchingPhrases)) {
+                        longestMatchingPhrases = phrases;
+                        phraseToTurnInto = phraseCombo.phraseToTurnInto;
+                    }
+                }
             }
         }
+    }
+    if(longestMatchingPhrases != NULL) {
+        {//Do Reduce
+            printf("reducing : ");
+            printPhrases(*stack);
+            printf("\n");
+            printf(" by : " );
+            printPhrases(longestMatchingPhrases);
+            printf("\n");
+            popN(stack, phraseLen(longestMatchingPhrases));
+            push(stack, phraseToTurnInto);
+            printf("after reduction : ");
+            printPhrases(*stack);
+            printf("\n");
+        }
+        return REDUCE;
     }
     /*
      * for(currentThing : allThings) {
@@ -184,25 +213,25 @@ State reduceStateFunction(Phrase **stack, Phrase lookAheadToken) {
     return ERROR;
 }
 void doParsing() {
-    State currState = REDUCE;
+    State currState = SHIFT;
     Phrase *stack = createPhraseArray(((Phrase[]){NULL_TERMINATOR}));
     Phrase lookAheadToken = getNextPhrase();
+
     Phrase prevLookAheadToken;
     while(currState != ACCEPT) {
         if(currState == ERROR) {
             ASSERT(false);
         }
         if(currState == SHIFT) {
-            if(lookAheadToken == NULL_TERMINATOR) {
+            printf("shifting %s onto the stack \n", getStrRep(lookAheadToken));
+            if(lookAheadToken == END_OF_FILE) {
                 printf("we are at the end of the file\n");
+                lookAheadToken = NULL_TERMINATOR;
+                printPhrases(stack);
+                printf("\n");
             } else {
-                prevLookAheadToken = lookAheadToken;
                 push(&stack, lookAheadToken);
                 lookAheadToken = getNextPhrase();
-                if (prevLookAheadToken == END_OF_FILE && lookAheadToken == END_OF_FILE) {
-                    printf("now were at end of file do some weird stuff\n");
-                    lookAheadToken = NULL_TERMINATOR;
-                }
             }
             currState = REDUCE;
         }
@@ -252,9 +281,20 @@ void doParsing() {
 }
 int main() {
     addAllThingsToPhraseComboList();
-    Phrase *tempStack = createPhraseArray(((Phrase[]){NULL_TERMINATOR}));
-    push(&tempStack, int_type_val);
-    push(&tempStack, semicolon);
+//    for(int i1 = 0; i1 < getPhraseComboList().size; i1++) {
+//        PhraseCombo phraseCombo = *getPhraseComboList().phraseCombo[i1];
+//        Phrase *longestMatchingPhrases = NULL;
+//        printf("%s\n", getStrRep(phraseCombo.phraseToTurnInto));
+//        printf("%zu\n", phraseCombo.size);
+//    }
+//    Phrase *tempStack = createPhraseArray(((Phrase[]){NULL_TERMINATOR}));
+//    push(&tempStack, SUM);
+//    push(&tempStack, add_op);
+//    reduceStateFunction(&tempStack, NULL_TERMINATOR);
+//    push(&tempStack, SUM);
+//    reduceStateFunction(&tempStack, NULL_TERMINATOR);
+//
+//    printPhrases(tempStack);
     //We will check our current stack against just the right hand first, and then again against the peek ahead.
     doParsing();
 
