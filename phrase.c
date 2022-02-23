@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <f2fs_fs.h>
 #include "phrase.h"
+#include "token.h"
+
 size_t phraseLen(const Phrase *phraseArr) {
     int i = 0;
     while(*(phraseArr+i) != NULL_TERMINATOR) { i++;}
@@ -39,6 +41,49 @@ Phrase *phraseConcatWithoutRealloc(Phrase *phraseArr, Phrase phrase1) {
 }
 char* getStrRep(Phrase phrase) {
     switch (phrase) {
+        case equals: return "equals";
+        case left_paren: return "left_paren";
+        case right_paren: return "right_paren";
+        case left_bracket: return "left_bracket";
+        case right_bracket: return "right_bracket";
+        case left_square_bracket: return "left_square_bracket";
+        case right_square_bracket: return "right_square_bracket";
+        case left_angle_bracket: return "left_angle_bracket";
+        case right_angle_bracket: return "right_angle_bracket";
+        case minus_op: return "minus_op";
+        case div_op: return "div_op";
+        case modulo_op: return "modulo_op";
+        case caret_op: return "caret_op";
+        case comma: return "comma";
+        case dot: return "dot";
+        case int_lit: return "int_lit";
+        case double_lit: return "double_lit";
+        case char_lit: return "char_lit";
+        case enum_lit: return "enum_lit";
+        case struct_lit: return "struct_lit";
+        case class_lit: return "class_lit";
+        case void_lit: return "void_lit";
+        case return_lit: return "return_lit";
+        case pure_lit: return "pure_lit";
+        case const_lit: return "const_lit";
+        case public_lit: return "public_lit";
+        case protected_lit: return "protected_lit";
+        case private_lit: return "private_lit";
+        case null_lit: return "null_lit";
+        case double_equals: return "double_equals";
+        case not_equals_lit: return "not_equals_lit";
+        case not_lit: return "not_lit";
+        case double_and_op: return "double_and_op";
+        case and_op: return "and_op";
+        case or_op: return "or_op";
+        case double_or_op: return "double_or_op";
+        case double_left_angle_bracket: return "double_left_angle_bracket";
+        case double_right_angle_bracket: return "double_right_angle_bracket";
+        case tilde_op: return "tilde_op";
+        case double_type_val: return "double_type_val";
+        case char_type_val: return "char_type_val";
+        case string_type_val: return "string_type_val";
+        case identifier: return "identifier";
         case int_type_val:
             return ("int_type_val"); break;
         case add_op:
@@ -65,7 +110,7 @@ char* getStrRep(Phrase phrase) {
             return("NULL_TERMINATOR"); break;
         case FINISHED_COMP:
             return("FINISHED_COMP"); break;
-        default: ASSERT(false);
+        default: printf("%d\n", phrase); ASSERT(false);
     }
 }
 
@@ -81,7 +126,64 @@ void printPhrases(Phrase* phrase) {
     }
     printf("\n");
 }
+Phrase getPhraseEquivOfToken(Token token) {
+    switch (token) {
+        case SEMICOLON: return semicolon;
+        case LEFT_PAREN: return left_paren;
+        case RIGHT_PAREN: return right_paren;
+        case LEFT_BRACKET: return left_bracket;
+        case RIGHT_BRACKET: return right_bracket;
+        case LEFT_SQUARE_BRACKET: return left_square_bracket;
+        case RIGHT_SQUARE_BRACKET: return right_square_bracket;
+        case MINUS_OP: return minus_op;
+        case ADD_OP: return add_op;
+        case DIV_OP: return div_op;
+        case MODULO_OP: return modulo_op;
+        case MULTI_OP: return multi_op;
+        case CARET_OP: return caret_op;
+        case COMMA: return comma;
+        case DOT: return dot;
+        case INT_LIT: return int_lit;
+        case DOUBLE_LIT: return double_lit;
+        case CHAR_LIT: return char_lit;
+        case ENUM_LIT: return enum_lit;
+        case STRUCT_LIT: return struct_lit;
+        case CLASS_LIT: return class_lit;
+        case VOID_LIT: return void_lit;
+        case RETURN: return return_lit;
+        case PURE: return pure_lit;
+        case CONST: return const_lit;
+        case PUBLIC: return public_lit;
+        case PROTECTED: return protected_lit;
+        case PRIVATE: return private_lit;
+        case NULL_LIT: return null_lit;
+        case DOUBLE_EQUALS_LIT: return double_equals;
+        case EQUALS_LIT: return equals;
+        case NOT_LIT: return not_lit;
+        case DOUBLE_AND_OP: return double_and_op;
+        case DOUBLE_OR_OP: return double_or_op;
+        case AND_OP: return and_op;
+        case OR_OP: return or_op;
+        case DOUBLE_LEFT_ANGLE_BRACKET: return double_left_angle_bracket;
+        case DOUBLE_RIGHT_ANGLE_BRACKET: return double_right_angle_bracket;
+        case LEFT_ANGLE_BRACKET: return left_angle_bracket;
+        case RIGHT_ANGLE_BRACKET: return right_angle_bracket;
+        case TILDE_OP: return tilde_op;
+        case DOUBLE_TYPE_VAL: return double_type_val;
+        case CHAR_TYPE_VAL: return char_type_val;
+        case STRING_TYPE_VAL: return string_type_val;
+        case INT_TYPE_VAL: return int_type_val;
+        case IDENTIFIER: return identifier;
 
+
+
+
+
+        case NEEDS_MORE_BUFFER: return END_OF_FILE;
+        default:
+            printToken(token); ASSERT(false);
+    }
+}
 PhraseCombo* createPhraseCombo(Phrase phraseToTurnInto) {
     PhraseCombo* phraseCombo = malloc(sizeof(PhraseCombo));
     phraseCombo->size = 0;
@@ -152,16 +254,12 @@ void addAllThingsToPhraseComboList() {
     combo = addPhraseList(combo,
                           createPhraseArray((Phrase[]){PRODUCT}));
     addToPhraseComboList(combo);
-    printf("combo 1 is : ");
-    printPhrases(combo->phrases[0]);
-    printf("\ncombo2 is : ");
-    printPhrases(combo->phrases[1]);
-    printf("\n");
-    for(int i = 0; i < getPhraseComboList().size; i++) {
-        for(int i2 = 0; i2 < getPhraseComboList().phraseCombo[i]->size; i2++) {
-            printf("phrase to turn into is : %s\n", getStrRep(getPhraseComboList().phraseCombo[i]->phraseToTurnInto));
-        }
-    }
+
+//    for(int i = 0; i < getPhraseComboList().size; i++) {
+//        for(int i2 = 0; i2 < getPhraseComboList().phraseCombo[i]->size; i2++) {
+//            printf("phrase to turn into is : %s\n", getStrRep(getPhraseComboList().phraseCombo[i]->phraseToTurnInto));
+//        }
+//    }
 
 
 }

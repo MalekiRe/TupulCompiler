@@ -43,17 +43,6 @@ bool matchesPhraseWithToken(Phrase* stack, const Phrase* phrases, Phrase lookAhe
     }
     return true;
 }
-Phrase getPhraseEquivOfToken(Token token) {
-    switch (token) {
-        case INT_TYPE_VAL: return int_type_val;
-        case ADD_OP: return add_op;
-        case MULTI_OP: return multi_op;
-        case SEMICOLON: return semicolon;
-        case NEEDS_MORE_BUFFER: return END_OF_FILE;
-        default:
-            printToken(token); ASSERT(false);
-    }
-}
 char fileBuff[255];
 Token token = -2;
 FILE *file = NULL;
@@ -177,8 +166,6 @@ void doParsing() {
     State currState = SHIFT;
     Phrase *stack = createPhraseArray(((Phrase[]){NULL_TERMINATOR}));
     Phrase lookAheadToken = getNextPhrase();
-
-    Phrase prevLookAheadToken;
     while(currState != ACCEPT) {
         if(currState == ERROR) {
             ASSERT(false);
