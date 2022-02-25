@@ -25,4 +25,5 @@ NodeList *popNode(NodeList *nodeList);
 NodeList *popNodeN(NodeList *nodeList, size_t amount);
 NodeList *createNodeList();
 NodeList* replaceNodesWithNode(NodeList *nodeList, size_t numToPop, Node *node);
+void printNodeTree(Node *node, size_t layerDeep);
 #endif //MLANG_NODETREE_H

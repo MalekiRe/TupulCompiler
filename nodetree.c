@@ -49,3 +49,17 @@ NodeList *popNodeN(NodeList *nodeList, size_t amount) {
     return nodeList;
 }
 
+
+
+void printNodeTree(Node *node, size_t layerDeep) {
+    if(layerDeep != 0) {
+        for(int i = 0; i < layerDeep; i++) {
+            printf(" |");
+        }
+        printf("-");
+    }
+    printf("%s\n", getStrRep(node->phrase));
+    for(size_t i = 0; i < node->childNodes->size; i++) {
+        printNodeTree(node->childNodes->listStart[i], layerDeep+1);
+    }
+}

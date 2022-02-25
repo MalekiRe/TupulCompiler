@@ -241,15 +241,16 @@ int main() {
     nodeList = createNodeList();
     addAllThingsToPhraseComboList();
     doParsing();
-    Node* node = createNode(semicolon);
-    Node* nodeTemp = createNode(VALUE);
-    Node* node2 = createNode(int_type_val);
-    addItemToNodeList(node->childNodes, node2);
-    addItemToNodeList(node->childNodes, createNode(equals));
-    addItemToNodeList(node->childNodes, createNode(left_paren));
-    addItemToNodeList(node->childNodes, createNode(right_paren));
-    addItemToNodeList(node->childNodes, createNode(minus_op));
-    replaceNodesWithNode(node->childNodes, 3, nodeTemp);
+    printNodeTree(nodeList->listStart[0], 0);
+//    Node* node = createNode(semicolon);
+//    Node* nodeTemp = createNode(VALUE);
+//    Node* node2 = createNode(int_type_val);
+//    addItemToNodeList(node->childNodes, node2);
+//    addItemToNodeList(node->childNodes, createNode(equals));
+//    addItemToNodeList(node->childNodes, createNode(left_paren));
+//    addItemToNodeList(node->childNodes, createNode(right_paren));
+//    addItemToNodeList(node->childNodes, createNode(minus_op));
+//    replaceNodesWithNode(node->childNodes, 3, nodeTemp);
 //    for(int i = 0; i < node->childNodes->size; i++) {
 //        printf("%s\n", getStrRep(node->childNodes->listStart[i]->phrase));
 //    }
