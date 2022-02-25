@@ -4,6 +4,9 @@
 #include "token.h"
 #include "lexer.h"
 #include "phrase.h"
+#include "nodetree.h"
+
+NodeList *nodeList;
 typedef enum state {
     SHIFT,
     REDUCE,
@@ -133,6 +136,12 @@ State reduceStateFunction(Phrase **stack, Phrase lookAheadToken) {
             printf(" by : " );
             printPhrases(longestMatchingPhrases);
             printf("\n");
+
+            //Doing it for the Node nodeList
+            Node* tempNode = createNode(phraseToTurnInto);
+            nodeList = replaceNodesWithNode(nodeList, phraseLen(longestMatchingPhrases), tempNode);
+            //Doing it for the stack now
+
             popN(stack, phraseLen(longestMatchingPhrases));
             push(stack, phraseToTurnInto);
             printf("after reduction : ");
@@ -178,6 +187,7 @@ void doParsing() {
                 printPhrases(stack);
                 printf("\n");
             } else {
+                addItemToNodeList(nodeList, createNode(lookAheadToken));
                 push(&stack, lookAheadToken);
                 lookAheadToken = getNextPhrase();
             }
@@ -228,7 +238,25 @@ void doParsing() {
      */
 }
 int main() {
+    nodeList = createNodeList();
     addAllThingsToPhraseComboList();
     doParsing();
+    Node* node = createNode(semicolon);
+    Node* nodeTemp = createNode(VALUE);
+    Node* node2 = createNode(int_type_val);
+    addItemToNodeList(node->childNodes, node2);
+    addItemToNodeList(node->childNodes, createNode(equals));
+    addItemToNodeList(node->childNodes, createNode(left_paren));
+    addItemToNodeList(node->childNodes, createNode(right_paren));
+    addItemToNodeList(node->childNodes, createNode(minus_op));
+    replaceNodesWithNode(node->childNodes, 3, nodeTemp);
+//    for(int i = 0; i < node->childNodes->size; i++) {
+//        printf("%s\n", getStrRep(node->childNodes->listStart[i]->phrase));
+//    }
+//    for(int i = 0; i < nodeTemp->childNodes->size; i++) {
+//        printf("%s\n", getStrRep(nodeTemp->childNodes->listStart[i]->phrase));
+//    }
+//    printf("%s", getStrRep(node->phrase));
+//    printf("%s", getStrRep(node->childNodes->listStart[0]->phrase));
     return 0;
 }
