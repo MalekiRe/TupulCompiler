@@ -20,6 +20,7 @@ MULTI_OP            : '*' ;
 REF_OP              : '&' ;
 DIV_OP              : '/' ;
 SUB_OP              : '-' ;
+POINTER             : '@' ;
 INT_TYPE            : 'int' ;
 FLOAT_TYPE          : 'float' ;
 DOUBLE_TYPE         : 'double' ;
