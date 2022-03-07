@@ -4,9 +4,7 @@ import generated.malek.TupulBaseVisitor;
 import generated.malek.TupulParser;
 import malek.scope.GlobalScope;
 import malek.scope.Scope;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeProperty;
-import org.antlr.v4.runtime.tree.RuleNode;
+import org.antlr.v4.runtime.tree.*;
 
 import static malek.VisitorType.*;
 
@@ -120,14 +118,14 @@ public class OutputVisitor extends TupulBaseVisitor<StringPair> {
     }
 
     @Override public StringPair visitFunCodeBlock(TupulParser.FunCodeBlockContext ctx) {
-        StringPair myStringPair = StringPair.of(FUNC_CODE_BLOCK, "{");
+        StringPair myStringPair = StringPair.of(FUNC_CODE_BLOCK, "");
         int n = ctx.getChildCount();
         for (int i=0; i<n; i++) {
             ParseTree c = ctx.getChild(i);
             StringPair childResult = c.accept(this);
-            myStringPair.second += childResult.toString();
+            myStringPair.second += childResult.second;
         }
-        myStringPair.second +="}";
+        //myStringPair.second +="";
         return myStringPair;
     }
 
@@ -136,6 +134,7 @@ public class OutputVisitor extends TupulBaseVisitor<StringPair> {
         if(ctx.functionCodeBlock() instanceof TupulParser.FunCodeBlockContext funCodeBlockContext) {
             myStringPair.second = visitFunCodeBlock(funCodeBlockContext).second;
         } else {
+            System.out.println("not having brackets");
             myStringPair.second += "{" + ctx.getChild(0).accept(this) + "}";
         }
         return myStringPair;
@@ -165,6 +164,7 @@ public class OutputVisitor extends TupulBaseVisitor<StringPair> {
 
     @Override
     protected StringPair aggregateResult(StringPair aggregate, StringPair nextResult) {
+        System.out.println("agreegating results");
         if(aggregate == null) {
             System.out.println("next result is : " + nextResult);
             return nextResult;
@@ -195,7 +195,6 @@ public class OutputVisitor extends TupulBaseVisitor<StringPair> {
             if (!shouldVisitNextChild(node, result)) {
                 break;
             }
-
             ParseTree c = node.getChild(i);
             StringPair childResult = c.accept(this);
             result = aggregateResult(result, childResult);
@@ -203,6 +202,19 @@ public class OutputVisitor extends TupulBaseVisitor<StringPair> {
 
         return result;
     }
+    @Override
+    public StringPair visitErrorNode(ErrorNode node) {
+        return StringPair.of(ERROR, "");
+    }
+
+    @Override
+    public StringPair visitTerminal(TerminalNode node) {
+        if(node.getText().equals("<EOF>")) {
+            return StringPair.of(EOF, "");
+        }
+        return StringPair.of(TERMINAL, node.getText());
+    }
+
     @Override
     protected StringPair defaultResult() {
         return StringPair.of(AGGREGATE, "");

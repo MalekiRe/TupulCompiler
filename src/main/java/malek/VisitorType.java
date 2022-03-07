@@ -10,4 +10,7 @@ public enum VisitorType {
     FUNC_CODE,
     FUNC_CODE_BLOCK,
     FULL_FILE, RETURN_FUNC,
+    ERROR,
+    TERMINAL,
+    EOF,
 }
