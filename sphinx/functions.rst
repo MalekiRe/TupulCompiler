@@ -23,7 +23,7 @@ Functions can have 3 different levels of purity.
 
 pure > tidy > dirty
 
-
+All functions default to pure, and must be specified otherwise.
 
 dirty
 =====
@@ -74,9 +74,11 @@ a safer more repeatable style of programming.
 Immutable Functions
 -------------------
 
-functions can have 3 different levels of immutability
+Functions can have 3 different levels of immutability.
 
 fixed > const > fluid
+
+All functions default to Fixed and must be specified otherwise.
 
 fluid
 =====
