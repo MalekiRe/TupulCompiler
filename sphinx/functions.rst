@@ -55,6 +55,7 @@ This comes with some interesting consequences to give the maximum amount of flex
 You can call any pure function from within your pure function with any variables as arguments.
 The only variables that are in scope are the function parameters, and the variables declared inside the function.
 You can call tidy or functions in pure functions provided:
+
     * The arguments are not parameters to the enclosing function
     * The function is not called on a parameter to the enclosing function
 

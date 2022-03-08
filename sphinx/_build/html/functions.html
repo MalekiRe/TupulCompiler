@@ -120,10 +120,16 @@ class.myFunction();
 This comes with some interesting consequences to give the maximum amount of flexibility while still holding true.</p>
 <p>You can call any pure function from within your pure function with any variables as arguments.
 The only variables that are in scope are the function parameters, and the variables declared inside the function.
-You can call</p>
+You can call tidy or functions in pure functions provided:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The arguments are not parameters to the enclosing function</p></li>
+<li><p>The function is not called on a parameter to the enclosing function</p></li>
+</ul>
+</div></blockquote>
 <p>These rules would allow you to, for example, create a map inside a pure function and use it, even though all the operations done on a map are not pure in the
 functional language sense. Purity is more of a container around groups of things, and you get less pure as you climb up the ladder.
-The ideal is to create a function as pure as you can, and aim for creating objects composed entirely of tidy-const, tidy and pure functions.</p>
+The ideal is to create a function as pure as you can.</p>
 <p>These restrictions by the compiler allow for full control, hackery, and tomfoolery when needed, but also help safe-guard and enforce
 a safer more repeatable style of programming.</p>
 </section>
@@ -145,14 +151,15 @@ a safer more repeatable style of programming.</p>
 You promise to not modify the parameters passed into the function, however, any variables that are not parameters,
 such as static or non-static variables within the enclosing class are free game.</p>
 <ul class="simple">
-<li><p>If you don’t pass a const parameter as an argument, then you can call dirty, pure, or tidy functions within your const function. If you <strong>do</strong> pass a const parameter, then the function must be const.</p></li>
+<li><p>If you don’t pass a const parameter as an argument, then you can call any function within your const function.</p></li>
+<li><p>If you <strong>do</strong> pass a const parameter as an argument then the function you call must be const or fixed.</p></li>
 </ul>
 </section>
 <section id="fixed">
 <h3>fixed<a class="headerlink" href="#fixed" title="Permalink to this headline"></a></h3>
-<p>A fixed function is like a higher level of a C++ const, fixed means the function not only promises to not change the values of parameters,
+<p>A fixed function is like a higher level of a C++ const. fixed means the function not only promises to not change the values of parameters,
 but it promises to not change any variables in any enclosing class. A side effect of this is that all variables except for the return value are automatically freed if
-they are on the stack.</p>
+they are on the stack or created within the function.</p>
 <ul class="simple">
 <li><p>You can <strong>only</strong> call fixed functions within fixed functions.</p></li>
 </ul>
