@@ -70,6 +70,27 @@ These restrictions by the compiler allow for full control, hackery, and tomfoole
 a safer more repeatable style of programming.
 
 
+.. code-block::
+
+    myClass {
+      static field1;
+
+      field2;
+
+      dirty func1() {
+        if(field1)//Valid
+        if(field2)//Valid
+      }
+      tidy func2() {
+        if(field1) //Invalid
+        if(field2) //Valid
+      }
+      pure func3() {
+        if(field1)//Invalid
+        if(field2)//Invalid
+      }
+    }
+
 
 Immutable Functions
 -------------------
@@ -140,4 +161,4 @@ A fixed function is like a higher level of a C++ const. fixed means the function
 but it promises to not change any variables in any enclosing class. A side effect of this is that all variables except for the return value are automatically freed if
 they are on the stack or created within the function.
 
-* You can **only** call fixed functions within fixed functions.
+* the only function you can call within fixed functions are other fixed functions.

@@ -99,6 +99,7 @@ class.myFunction();
 <h2>Purity<a class="headerlink" href="#purity" title="Permalink to this headline"></a></h2>
 <p>Functions can have 3 different levels of purity.</p>
 <p>pure &gt; tidy &gt; dirty</p>
+<p>All functions default to pure, and must be specified otherwise.</p>
 <section id="dirty">
 <h3>dirty<a class="headerlink" href="#dirty" title="Permalink to this headline"></a></h3>
 <p>The first level is dirty this is the default for most imperative programming languages.</p>
@@ -133,12 +134,33 @@ functional language sense. Purity is more of a container around groups of things
 The ideal is to create a function as pure as you can.</p>
 <p>These restrictions by the compiler allow for full control, hackery, and tomfoolery when needed, but also help safe-guard and enforce
 a safer more repeatable style of programming.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myClass</span> <span class="p">{</span>
+  <span class="n">static</span> <span class="n">field1</span><span class="p">;</span>
+
+  <span class="n">field2</span><span class="p">;</span>
+
+  <span class="n">dirty</span> <span class="n">func1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field1</span><span class="p">)</span><span class="o">//</span><span class="n">Valid</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field2</span><span class="p">)</span><span class="o">//</span><span class="n">Valid</span>
+  <span class="p">}</span>
+  <span class="n">tidy</span> <span class="n">func2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field1</span><span class="p">)</span> <span class="o">//</span><span class="n">Invalid</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field2</span><span class="p">)</span> <span class="o">//</span><span class="n">Valid</span>
+  <span class="p">}</span>
+  <span class="n">pure</span> <span class="n">func3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field1</span><span class="p">)</span><span class="o">//</span><span class="n">Invalid</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">field2</span><span class="p">)</span><span class="o">//</span><span class="n">Invalid</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="immutable-functions">
 <h2>Immutable Functions<a class="headerlink" href="#immutable-functions" title="Permalink to this headline"></a></h2>
-<p>functions can have 3 different levels of immutability</p>
+<p>Functions can have 3 different levels of immutability.</p>
 <p>fixed &gt; const &gt; fluid</p>
+<p>All functions default to Fixed and must be specified otherwise.</p>
 <section id="fluid">
 <h3>fluid<a class="headerlink" href="#fluid" title="Permalink to this headline"></a></h3>
 <p>fluid is what would be the “default” in most programming languages.</p>
