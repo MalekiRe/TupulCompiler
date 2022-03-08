@@ -94,6 +94,41 @@ such as static or non-static variables within the enclosing class are free game.
 
 * If you don't pass a const parameter as an argument, then you can call any function within your const function.
 * If you **do** pass a const parameter as an argument then the function you call must be const or fixed.
+* You can call fixed functions on your parameters.
+
+In order to assure that const functions do not modify parameters some additional safety checks and requirements are made.
+
+* A variable assigned to a const parameter is considered the same as that parameter for immutability purposes.
+* If an object that is equivalent to a parameter is returned, a copy-reference-object of that object is returned which is a pointer to the object and is equivalent to the object, except only fixed functions can be run on it. This does **not** affect the original parameter returned.
+
+.. code-block::
+
+    class Main {
+        class Foo {
+            //data
+            const myFunction() {...}
+            fixed secondFunction() {...}
+        }
+
+        const Foo getGreater(Foo bar, Foo baz) {
+            return bar > baz ? bar : baz;
+        }
+        fluid main() {
+            Foo first;
+            Foo second;
+
+            Foo returnValue = getGreater(first, second);
+
+            first.myFunction(); //This is valid
+            first.secondFunction(); //Also valid
+            second.myFunction(); //This is also valid
+            second.myFunction(); //Also valid
+
+            returnValue.myFunction(); //This is invalid!
+            returnValue.secondFunction(); //But this is valid!
+
+        }
+    }
 
 
 fixed
