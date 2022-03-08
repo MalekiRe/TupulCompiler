@@ -41,6 +41,8 @@ The tidy function is useful mostly only in how it can be used for pure functions
 
 * All variables or functions in the class that are modified or affected by a static variable are out-of-scope.
 
+The reason an I/O operation is not valid for tidy is that a file is considered for the purposes of purity to be a static variable.
+
 
 
 
