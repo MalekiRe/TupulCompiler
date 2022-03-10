@@ -8,7 +8,7 @@ The first difference is that any variable, unless it is specifically the value '
 
 This means any function you run, unless it is of a boolean subset, like the '.optional' type, will return true when evaluated in a conditional.
 
-You can extract an instance of a variable when using a function
+You can extract an instance of a variable when using a function:
 
 .. code-block:: Java
 
