@@ -90,7 +90,7 @@ If you want to check if a type is a subset of another you use the subset keyword
         //This is true
     }
 
-    if(myInt.class strictsubset mySecondInt) {
+    if(myInt.class strictsubset PosIntString) {
         //This is false becuase 'string' isn't a part of the 'int' type
     }
 

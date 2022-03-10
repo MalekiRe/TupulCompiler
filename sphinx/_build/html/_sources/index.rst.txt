@@ -7,12 +7,21 @@ Welcome to Tupul's documentation!
 =================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
    conditionals
    functions
    setTypes
+
+
+.. toctree::
+   :maxdepth: 4
+   :caption: In-Progress:
+
+   type
+   interface
+
 
 Indices and tables
 ==================

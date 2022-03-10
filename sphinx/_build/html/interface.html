@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interface &mdash; Tupul 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Type" href="type.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Tupul
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="conditionals.html">Conditionals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setTypes.html">Set Types</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">In-Progress:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="type.html">Type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interface</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Tupul</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Interface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/interface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interface">
+<h1>Interface<a class="headerlink" href="#interface" title="Permalink to this headline"></a></h1>
+<p>Interfaces exist. You cannot use an interface as a type, you must create a type that implements that interface.
+A type and an interface can have the same name however, as how they are used are completely different.
+An interface is more similar to an Abstract Class in Java, then a Java interface.</p>
+<p>An interface:</p>
+<ol class="arabic simple">
+<li><p>Defines functions (hopefully with documentation on why it exists).</p></li>
+<li><p>Defines static and non-static variables.</p></li>
+<li><p>May implement functions.</p></li>
+<li><p>Extends other interfaces.</p></li>
+<li><p>Overrides other interfaces methods.</p></li>
+</ol>
+<p>All of these should be understandable by anyone who has used Java or C/C++ before, except for how the overriding of methods works.</p>
+<p>Simply put, if an interface extends another interface, and they share the same names, return values, and arguments for a function the extending interface
+does <strong>not</strong> override that parent interface inherently.
+This is because, with the design philosophy of Tupul, everything that could cause (and has caused me) confusion and headaches should
+instead be stated explicitly. There are actually very few times where overriding is necessary, so it must happen explicitly.
+Instead, you must prefix with the ‘override’ keyword if you wish to override a method. You must also prefix the method name with
+the interface you are overriding it from. You also <strong>cannot</strong> name a method with the same arguments in a interface without overriding the one where
+it originates from.
+For example:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="nf">myFunc</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//...some code</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">interface</span> <span class="nc">Bar</span> <span class="kd">extends</span> <span class="n">Foo</span><span class="p">{</span>
+    <span class="kt">void</span> <span class="nf">myFunc</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//is invalid syntax.</span>
+
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="nf">myFunc</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//...some code</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">interface</span> <span class="nc">Bar</span> <span class="kd">extends</span> <span class="n">Foo</span><span class="p">{</span>
+    <span class="c1">//Prefer to have the &#39;override&#39; keyword on its own line, but not necessary.</span>
+    <span class="n">override</span>
+    <span class="kt">void</span> <span class="n">Foo</span><span class="p">::</span><span class="n">myFunc</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//Is valid syntax</span>
+        <span class="c1">//..some code.</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is to make it so you can’t accidentally override a method without realizing it, and cause a headache for yourself or anyone looking through
+your code.</p>
+<p>You need to use the keyword ‘implement’ when implementing an unimplemented function from extending interface</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Foo</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="nf">myFunc</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">interface</span> <span class="nc">Bar</span> <span class="kd">extends</span> <span class="n">Foo</span> <span class="p">{</span>
+    <span class="n">implement</span>
+    <span class="kt">void</span> <span class="n">Foo</span><span class="p">::</span><span class="n">myFunc</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//...code</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is so as to not accidentally think you are writing your own function, and instead implementing some other function with the same name
+and parameters.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="type.html" class="btn btn-neutral float-left" title="Type" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Malek.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
