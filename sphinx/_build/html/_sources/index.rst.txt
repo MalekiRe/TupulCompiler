@@ -10,9 +10,9 @@ Welcome to Tupul's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   contextFreeGrammar
-   pointers
+   conditionals
    functions
+   setTypes
 
 Indices and tables
 ==================

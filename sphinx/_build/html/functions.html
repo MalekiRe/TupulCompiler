@@ -18,7 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Pointers" href="pointers.html" /> 
+    <link rel="next" title="Set Types" href="setTypes.html" />
+    <link rel="prev" title="Conditionals" href="conditionals.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,10 +39,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="contextFreeGrammar.html">Context Free Grammar</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pointers.html">Pointers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conditionals.html">Conditionals</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#access-level">Access Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#return-values">Return Values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#purity">Purity</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dirty">dirty</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tidy">tidy</a></li>
@@ -56,6 +57,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="setTypes.html">Set Types</a></li>
 </ul>
 
         </div>
@@ -89,11 +91,56 @@
 <h2>Access Level<a class="headerlink" href="#access-level" title="Permalink to this headline"></a></h2>
 <p>If a function is in a class, it can be made <code class="docutils literal notranslate"><span class="pre">public</span></code>, or <code class="docutils literal notranslate"><span class="pre">private</span></code>.
 A public function can be called directly by accessing the Object instance:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MyClass class = new MyClass();
-class.myFunction();
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MyClass</span> <span class="n">myObject</span> <span class="o">=</span> <span class="n">new</span> <span class="n">MyClass</span><span class="p">();</span>
+<span class="n">myObject</span><span class="o">.</span><span class="n">myFunction</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>A private function can only be called on by classes the extend the class within the class</p>
+</section>
+<section id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h2>
+<p>A function can be set up like a classic C function with a single return value</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">myFunc</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">myFunc</span><span class="p">();</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">hi</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;1&quot;</span>
+</pre></div>
+</div>
+<p>A function can also be setup to return multiple return values</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span> <span class="n">myFunc</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;hi&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="p">(</span><span class="nb">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">string</span> <span class="n">myStr</span><span class="p">)</span> <span class="o">=</span> <span class="n">myFunc</span><span class="p">();</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">num</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;1&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">myStr</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;hi&quot;</span>
+
+<span class="nb">int</span> <span class="n">firstVar</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">string</span> <span class="n">secondVar</span><span class="p">;</span>
+
+<span class="p">(</span><span class="n">firstVar</span><span class="p">,</span> <span class="n">secondVar</span><span class="p">)</span> <span class="o">=</span> <span class="n">myFunc</span><span class="p">();</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">firstVar</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;1&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">secondVar</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;hi&quot;</span>
+
+<span class="nb">int</span> <span class="n">dummyInt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">(</span><span class="n">dummyInt</span><span class="p">,</span> <span class="n">string</span> <span class="n">dummyString</span><span class="p">)</span> <span class="o">=</span> <span class="n">myFunc</span><span class="p">();</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dummyInt</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;1&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dummyString</span><span class="p">);</span> <span class="o">//</span><span class="n">prints</span> <span class="s2">&quot;hi&quot;</span>
+
+<span class="o">//</span><span class="n">You</span> <span class="n">can</span> <span class="n">also</span> <span class="n">just</span> <span class="n">access</span> <span class="n">the</span> <span class="n">values</span> <span class="n">like</span> <span class="n">an</span> <span class="n">array</span>
+
+<span class="n">myFunc</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">this</span> <span class="ow">is</span> <span class="s1">&#39;1&#39;</span>
+
+<span class="n">myFunc</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">this</span> <span class="ow">is</span> <span class="s1">&#39;&quot;hi&quot;&#39;</span>
+</pre></div>
+</div>
 </section>
 <section id="purity">
 <h2>Purity<a class="headerlink" href="#purity" title="Permalink to this headline"></a></h2>
@@ -122,7 +169,7 @@ class.myFunction();
 This comes with some interesting consequences to give the maximum amount of flexibility while still holding true.</p>
 <p>You can call any pure function from within your pure function with any variables as arguments.
 The only variables that are in scope are the function parameters, and the variables declared inside the function.
-You can call tidy or functions in pure functions provided:</p>
+You can call tidy or pure functions in pure functions provided:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The arguments are not parameters to the enclosing function</p></li>
@@ -218,7 +265,7 @@ such as static or non-static variables within the enclosing class are free game.
 but it promises to not change any variables in any enclosing class. A side effect of this is that all variables except for the return value are automatically freed if
 they are on the stack or created within the function.</p>
 <ul class="simple">
-<li><p>You can <strong>only</strong> call fixed functions within fixed functions.</p></li>
+<li><p>the only function you can call within fixed functions are other fixed functions.</p></li>
 </ul>
 </section>
 </section>
@@ -228,7 +275,8 @@ they are on the stack or created within the function.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pointers.html" class="btn btn-neutral float-left" title="Pointers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="conditionals.html" class="btn btn-neutral float-left" title="Conditionals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="setTypes.html" class="btn btn-neutral float-right" title="Set Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
