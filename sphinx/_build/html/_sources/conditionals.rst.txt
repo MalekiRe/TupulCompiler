@@ -4,11 +4,11 @@ Conditionals
 
 Conditionals operate similarly to C/C++ and Java but with some caviates(or bonuses depending on how you look at it).
 
-The first difference is that any variable, unless it is specifically the value 'false' of a boolean or boolean subset, is true.
+The first difference is that any variable, unless it is specifically the value 'null' of a boolean or boolean subset, is true.
 
 This means any function you run, unless it is of a boolean subset, like the '.optional' type, will return true when evaluated in a conditional.
 
-You can extract an instance of a variable when using a function
+You can extract an instance of a variable when using a function:
 
 .. code-block:: Java
 
@@ -41,3 +41,11 @@ With multiple return values, if you declare them as above, you can actually use 
     if( (myFunc() : (int savedInt, string myStr, bool myBoolean)) && savedInt == 1 && myStr.equals("hi") && !myBoolean) {
         //code
     }
+
+.. warning::
+
+    boolean.optional does NOT work like any other optional, because the return type of a boolean.optional is inherntly a truthy and falsy value,
+    you MUST use .isNull() on the .optional.
+
+.isNull() is also a valid syntax, though not preferred for anything other than a boolean.optional, because any object that would have
+.isNull() return true, would evaluate to false inside a conditional.

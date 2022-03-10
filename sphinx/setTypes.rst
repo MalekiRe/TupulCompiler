@@ -41,7 +41,22 @@ any other type.
 
     ItemOptional getItem(int i){//...code}
 
-However, because having an optional thing is so common, all types have a .optional extension that is this.
+However, because having an optional thing is so common, all types have a .optional extension that is this:
+
+.. code-block:: Java
+
+    Object.optional : Object union null
+
+null only exists in this .optional type, and is falsy. It is not a classic null, you can only use it in unions and return types.
+You cannot assign anything to null unless it is a subtype of null.
+So
+
+.. code-block:: Java
+
+    Class myObject; //Invalid
+    Class myOtherObject = null; //Also Invalid
+
+null is falsy, and everything else is truthy.
 
 .. code-block:: Java
 
