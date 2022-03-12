@@ -9,4 +9,8 @@ Tupul also aims to prevent invalid states of programs through a system of "tags"
 
 Tupul's priorities are #1 safety, #2 speed, and #3 memory, which means sacrifices in memory are made to ensure certain checks, but most of Tupul's abstractions are Zero cost.
 
+#The Goal of Tupul
 Tupul aims to be as safe as a Systems language can get, while still being nearly on par with languages like C or Rust.
+
+#Relevant Links
+https://tupulcompiler.readthedocs.io/en/latest/index.html
