@@ -21,6 +21,7 @@ Welcome to Tupul's documentation!
 
    type
    interface
+   tags
 
 
 Indices and tables
