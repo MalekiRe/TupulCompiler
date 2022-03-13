@@ -1,4 +1,4 @@
-// Generated from /home/malek/IdeaProjects/TupulCompiler3/src/main/java/malek/Tupul.g4 by ANTLR 4.9.2
+// Generated from /home/malek/IdeaProjects/TupulCompiler3/src/main/java/malek/Tupul.g4 by ANTLR 4.9.3
 package generated.malek;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -11,104 +11,101 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#fullFile}.
+	 * Visit a parse tree produced by {@link TupulParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFullFile(TupulParser.FullFileContext ctx);
+	T visitType(TupulParser.TypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#varDec}.
+	 * Visit a parse tree produced by {@link TupulParser#file}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarDec(TupulParser.VarDecContext ctx);
+	T visitFile(TupulParser.FileContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#varAssignment}.
+	 * Visit a parse tree produced by {@link TupulParser#importSomething}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarAssignment(TupulParser.VarAssignmentContext ctx);
+	T visitImportSomething(TupulParser.ImportSomethingContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IntFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Visit a parse tree produced by {@link TupulParser#interfaceFile}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntFunctionType(TupulParser.IntFunctionTypeContext ctx);
+	T visitInterfaceFile(TupulParser.InterfaceFileContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FloatFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Visit a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFloatFunctionType(TupulParser.FloatFunctionTypeContext ctx);
+	T visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code DoubleFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Visit a parse tree produced by {@link TupulParser#interfaceExtensions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDoubleFunctionType(TupulParser.DoubleFunctionTypeContext ctx);
+	T visitInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CharFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Visit a parse tree produced by {@link TupulParser#interfaceCodeBlock}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharFunctionType(TupulParser.CharFunctionTypeContext ctx);
+	T visitInterfaceCodeBlock(TupulParser.InterfaceCodeBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code VoidFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Visit a parse tree produced by {@link TupulParser#interfaceFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVoidFunctionType(TupulParser.VoidFunctionTypeContext ctx);
+	T visitInterfaceFunctionDeclaration(TupulParser.InterfaceFunctionDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code IntVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Visit a parse tree produced by {@link TupulParser#typeFile}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntVariableType(TupulParser.IntVariableTypeContext ctx);
+	T visitTypeFile(TupulParser.TypeFileContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code FloatVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Visit a parse tree produced by {@link TupulParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFloatVariableType(TupulParser.FloatVariableTypeContext ctx);
+	T visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code DoubleVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Visit a parse tree produced by {@link TupulParser#typeCodeBlock}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDoubleVariableType(TupulParser.DoubleVariableTypeContext ctx);
+	T visitTypeCodeBlock(TupulParser.TypeCodeBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code CharVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Visit a parse tree produced by {@link TupulParser#typeFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharVariableType(TupulParser.CharVariableTypeContext ctx);
+	T visitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionDec}.
+	 * Visit a parse tree produced by {@link TupulParser#universalFunctionModifiers}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDec(TupulParser.FunctionDecContext ctx);
+	T visitUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionDecArgs}.
+	 * Visit a parse tree produced by {@link TupulParser#functionDecArguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDecArgs(TupulParser.FunctionDecArgsContext ctx);
+	T visitFunctionDecArguments(TupulParser.FunctionDecArgumentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionDecArg}.
+	 * Visit a parse tree produced by {@link TupulParser#functionCallArguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDecArg(TupulParser.FunctionDecArgContext ctx);
+	T visitFunctionCallArguments(TupulParser.FunctionCallArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#functionCodeBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#functionCall}.
 	 * @param ctx the parse tree
@@ -116,118 +113,15 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionCall(TupulParser.FunctionCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionCallArgs}.
+	 * Visit a parse tree produced by {@link TupulParser#finalValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallArgs(TupulParser.FunctionCallArgsContext ctx);
+	T visitFinalValue(TupulParser.FinalValueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionCallArg}.
+	 * Visit a parse tree produced by {@link TupulParser#intermediateValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallArg(TupulParser.FunctionCallArgContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TupulParser#functionCode}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionCode(TupulParser.FunctionCodeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FunCodeBlock}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunCodeBlock(TupulParser.FunCodeBlockContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FuncCodeVarDec}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCodeVarDec(TupulParser.FuncCodeVarDecContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FuncCodeVarAssignment}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCodeVarAssignment(TupulParser.FuncCodeVarAssignmentContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FuncCodeFuncCall}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCodeFuncCall(TupulParser.FuncCodeFuncCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FuncCodeReturn}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCodeReturn(TupulParser.FuncCodeReturnContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NumberInteger}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberInteger(TupulParser.NumberIntegerContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NumberFloat}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberFloat(TupulParser.NumberFloatContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NumberDouble}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberDouble(TupulParser.NumberDoubleContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code NumberChar}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberChar(TupulParser.NumberCharContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TupulParser#expressionValue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressionValue(TupulParser.ExpressionValueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code expNumber}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpNumber(TupulParser.ExpNumberContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code parens}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParens(TupulParser.ParensContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code expFunction}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpFunction(TupulParser.ExpFunctionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ExpBiOp}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpBiOp(TupulParser.ExpBiOpContext ctx);
+	T visitIntermediateValue(TupulParser.IntermediateValueContext ctx);
 }

@@ -1,4 +1,4 @@
-// Generated from /home/malek/IdeaProjects/TupulCompiler3/src/main/java/malek/Tupul.g4 by ANTLR 4.9.2
+// Generated from /home/malek/IdeaProjects/TupulCompiler3/src/main/java/malek/Tupul.g4 by ANTLR 4.9.3
 package generated.malek;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -8,173 +8,165 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface TupulListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#fullFile}.
+	 * Enter a parse tree produced by {@link TupulParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterFullFile(TupulParser.FullFileContext ctx);
+	void enterType(TupulParser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#fullFile}.
+	 * Exit a parse tree produced by {@link TupulParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitFullFile(TupulParser.FullFileContext ctx);
+	void exitType(TupulParser.TypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#varDec}.
+	 * Enter a parse tree produced by {@link TupulParser#file}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarDec(TupulParser.VarDecContext ctx);
+	void enterFile(TupulParser.FileContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#varDec}.
+	 * Exit a parse tree produced by {@link TupulParser#file}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarDec(TupulParser.VarDecContext ctx);
+	void exitFile(TupulParser.FileContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#varAssignment}.
+	 * Enter a parse tree produced by {@link TupulParser#importSomething}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarAssignment(TupulParser.VarAssignmentContext ctx);
+	void enterImportSomething(TupulParser.ImportSomethingContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#varAssignment}.
+	 * Exit a parse tree produced by {@link TupulParser#importSomething}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarAssignment(TupulParser.VarAssignmentContext ctx);
+	void exitImportSomething(TupulParser.ImportSomethingContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code IntFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Enter a parse tree produced by {@link TupulParser#interfaceFile}.
 	 * @param ctx the parse tree
 	 */
-	void enterIntFunctionType(TupulParser.IntFunctionTypeContext ctx);
+	void enterInterfaceFile(TupulParser.InterfaceFileContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code IntFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Exit a parse tree produced by {@link TupulParser#interfaceFile}.
 	 * @param ctx the parse tree
 	 */
-	void exitIntFunctionType(TupulParser.IntFunctionTypeContext ctx);
+	void exitInterfaceFile(TupulParser.InterfaceFileContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FloatFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Enter a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterFloatFunctionType(TupulParser.FloatFunctionTypeContext ctx);
+	void enterInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code FloatFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Exit a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitFloatFunctionType(TupulParser.FloatFunctionTypeContext ctx);
+	void exitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code DoubleFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Enter a parse tree produced by {@link TupulParser#interfaceExtensions}.
 	 * @param ctx the parse tree
 	 */
-	void enterDoubleFunctionType(TupulParser.DoubleFunctionTypeContext ctx);
+	void enterInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code DoubleFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Exit a parse tree produced by {@link TupulParser#interfaceExtensions}.
 	 * @param ctx the parse tree
 	 */
-	void exitDoubleFunctionType(TupulParser.DoubleFunctionTypeContext ctx);
+	void exitInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code CharFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Enter a parse tree produced by {@link TupulParser#interfaceCodeBlock}.
 	 * @param ctx the parse tree
 	 */
-	void enterCharFunctionType(TupulParser.CharFunctionTypeContext ctx);
+	void enterInterfaceCodeBlock(TupulParser.InterfaceCodeBlockContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code CharFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Exit a parse tree produced by {@link TupulParser#interfaceCodeBlock}.
 	 * @param ctx the parse tree
 	 */
-	void exitCharFunctionType(TupulParser.CharFunctionTypeContext ctx);
+	void exitInterfaceCodeBlock(TupulParser.InterfaceCodeBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code VoidFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Enter a parse tree produced by {@link TupulParser#interfaceFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterVoidFunctionType(TupulParser.VoidFunctionTypeContext ctx);
+	void enterInterfaceFunctionDeclaration(TupulParser.InterfaceFunctionDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code VoidFunctionType}
-	 * labeled alternative in {@link TupulParser#functionType}.
+	 * Exit a parse tree produced by {@link TupulParser#interfaceFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitVoidFunctionType(TupulParser.VoidFunctionTypeContext ctx);
+	void exitInterfaceFunctionDeclaration(TupulParser.InterfaceFunctionDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code IntVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Enter a parse tree produced by {@link TupulParser#typeFile}.
 	 * @param ctx the parse tree
 	 */
-	void enterIntVariableType(TupulParser.IntVariableTypeContext ctx);
+	void enterTypeFile(TupulParser.TypeFileContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code IntVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Exit a parse tree produced by {@link TupulParser#typeFile}.
 	 * @param ctx the parse tree
 	 */
-	void exitIntVariableType(TupulParser.IntVariableTypeContext ctx);
+	void exitTypeFile(TupulParser.TypeFileContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code FloatVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Enter a parse tree produced by {@link TupulParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterFloatVariableType(TupulParser.FloatVariableTypeContext ctx);
+	void enterTypeDeclaration(TupulParser.TypeDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code FloatVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Exit a parse tree produced by {@link TupulParser#typeDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitFloatVariableType(TupulParser.FloatVariableTypeContext ctx);
+	void exitTypeDeclaration(TupulParser.TypeDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code DoubleVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Enter a parse tree produced by {@link TupulParser#typeCodeBlock}.
 	 * @param ctx the parse tree
 	 */
-	void enterDoubleVariableType(TupulParser.DoubleVariableTypeContext ctx);
+	void enterTypeCodeBlock(TupulParser.TypeCodeBlockContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code DoubleVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Exit a parse tree produced by {@link TupulParser#typeCodeBlock}.
 	 * @param ctx the parse tree
 	 */
-	void exitDoubleVariableType(TupulParser.DoubleVariableTypeContext ctx);
+	void exitTypeCodeBlock(TupulParser.TypeCodeBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code CharVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Enter a parse tree produced by {@link TupulParser#typeFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterCharVariableType(TupulParser.CharVariableTypeContext ctx);
+	void enterTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code CharVariableType}
-	 * labeled alternative in {@link TupulParser#variableType}.
+	 * Exit a parse tree produced by {@link TupulParser#typeFunctionDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitCharVariableType(TupulParser.CharVariableTypeContext ctx);
+	void exitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionDec}.
+	 * Enter a parse tree produced by {@link TupulParser#universalFunctionModifiers}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDec(TupulParser.FunctionDecContext ctx);
+	void enterUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionDec}.
+	 * Exit a parse tree produced by {@link TupulParser#universalFunctionModifiers}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDec(TupulParser.FunctionDecContext ctx);
+	void exitUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionDecArgs}.
+	 * Enter a parse tree produced by {@link TupulParser#functionDecArguments}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDecArgs(TupulParser.FunctionDecArgsContext ctx);
+	void enterFunctionDecArguments(TupulParser.FunctionDecArgumentsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionDecArgs}.
+	 * Exit a parse tree produced by {@link TupulParser#functionDecArguments}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDecArgs(TupulParser.FunctionDecArgsContext ctx);
+	void exitFunctionDecArguments(TupulParser.FunctionDecArgumentsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionDecArg}.
+	 * Enter a parse tree produced by {@link TupulParser#functionCallArguments}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDecArg(TupulParser.FunctionDecArgContext ctx);
+	void enterFunctionCallArguments(TupulParser.FunctionCallArgumentsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionDecArg}.
+	 * Exit a parse tree produced by {@link TupulParser#functionCallArguments}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDecArg(TupulParser.FunctionDecArgContext ctx);
+	void exitFunctionCallArguments(TupulParser.FunctionCallArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#functionCodeBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#functionCodeBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#functionCall}.
 	 * @param ctx the parse tree
@@ -186,199 +178,23 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitFunctionCall(TupulParser.FunctionCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionCallArgs}.
+	 * Enter a parse tree produced by {@link TupulParser#finalValue}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCallArgs(TupulParser.FunctionCallArgsContext ctx);
+	void enterFinalValue(TupulParser.FinalValueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionCallArgs}.
+	 * Exit a parse tree produced by {@link TupulParser#finalValue}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCallArgs(TupulParser.FunctionCallArgsContext ctx);
+	void exitFinalValue(TupulParser.FinalValueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionCallArg}.
+	 * Enter a parse tree produced by {@link TupulParser#intermediateValue}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCallArg(TupulParser.FunctionCallArgContext ctx);
+	void enterIntermediateValue(TupulParser.IntermediateValueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionCallArg}.
+	 * Exit a parse tree produced by {@link TupulParser#intermediateValue}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCallArg(TupulParser.FunctionCallArgContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionCode}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCode(TupulParser.FunctionCodeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionCode}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCode(TupulParser.FunctionCodeContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FunCodeBlock}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunCodeBlock(TupulParser.FunCodeBlockContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FunCodeBlock}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunCodeBlock(TupulParser.FunCodeBlockContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FuncCodeVarDec}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCodeVarDec(TupulParser.FuncCodeVarDecContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FuncCodeVarDec}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCodeVarDec(TupulParser.FuncCodeVarDecContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FuncCodeVarAssignment}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCodeVarAssignment(TupulParser.FuncCodeVarAssignmentContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FuncCodeVarAssignment}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCodeVarAssignment(TupulParser.FuncCodeVarAssignmentContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FuncCodeFuncCall}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCodeFuncCall(TupulParser.FuncCodeFuncCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FuncCodeFuncCall}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCodeFuncCall(TupulParser.FuncCodeFuncCallContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code FuncCodeReturn}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCodeReturn(TupulParser.FuncCodeReturnContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code FuncCodeReturn}
-	 * labeled alternative in {@link TupulParser#functionCodeBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCodeReturn(TupulParser.FuncCodeReturnContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumberInteger}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberInteger(TupulParser.NumberIntegerContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumberInteger}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberInteger(TupulParser.NumberIntegerContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumberFloat}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberFloat(TupulParser.NumberFloatContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumberFloat}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberFloat(TupulParser.NumberFloatContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumberDouble}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberDouble(TupulParser.NumberDoubleContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumberDouble}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberDouble(TupulParser.NumberDoubleContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code NumberChar}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberChar(TupulParser.NumberCharContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code NumberChar}
-	 * labeled alternative in {@link TupulParser#number}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberChar(TupulParser.NumberCharContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TupulParser#expressionValue}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressionValue(TupulParser.ExpressionValueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TupulParser#expressionValue}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressionValue(TupulParser.ExpressionValueContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code expNumber}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpNumber(TupulParser.ExpNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code expNumber}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpNumber(TupulParser.ExpNumberContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code parens}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterParens(TupulParser.ParensContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code parens}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitParens(TupulParser.ParensContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code expFunction}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpFunction(TupulParser.ExpFunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code expFunction}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpFunction(TupulParser.ExpFunctionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code ExpBiOp}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpBiOp(TupulParser.ExpBiOpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ExpBiOp}
-	 * labeled alternative in {@link TupulParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpBiOp(TupulParser.ExpBiOpContext ctx);
+	void exitIntermediateValue(TupulParser.IntermediateValueContext ctx);
 }
