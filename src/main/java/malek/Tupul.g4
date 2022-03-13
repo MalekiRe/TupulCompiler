@@ -36,7 +36,10 @@ FLOAT_TYPE              : 'float' ;
 DOUBLE_TYPE             : 'double' ;
 CHAR_TYPE               : 'char' ;
 VOID_TYPE               : 'void' ;
+BOOL_TYPE               : 'bool' ;
 NULL_TYPE               : 'null' ;
+FALSE_KEYWORD           : 'false' ;
+TRUE_KEYWORD            : 'true' ;
 UNION_KEYWORD           : 'union' ;
 INSTANCEOF_KEYWORD      : 'instanceof' ;
 SUBSET_KEYWORD          : 'subset' ;
@@ -122,7 +125,7 @@ functionCallArguments           : type IDENTIFIER (',' type IDENTIFIER)*
 
 
 functionCodeBlock               : '{' functionCodeBlock* '}'
-                                | 'return' (finalValue | '(' finalValue ( ',' finalValue )* ')' )?
+                                | 'return' (finalValue | '(' finalValue ( ',' finalValue )* ')' )? ';'
                                 // TODO::finish this off
                                 ;
                                 
@@ -142,4 +145,5 @@ intermediateValue               : IDENTIFIER
                                 | FLOAT
                                 | DOUBLE
                                 | CHAR
+                                | STRING
                                 ;

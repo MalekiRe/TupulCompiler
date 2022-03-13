@@ -4,7 +4,7 @@ interface Bar extends Foo {
 
     override
     void Foo::myFunc()
-        return 0
+        return 0;
 
     implement
     int Foo::secondFunc(int i, HiType var) {
@@ -13,5 +13,9 @@ interface Bar extends Foo {
 
     AnotherType myFunctionTwo(string helloThere) {
 
+    }
+
+    (int, string) testFunc() {
+        return (1, "hi");
     }
 }

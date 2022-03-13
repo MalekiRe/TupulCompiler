@@ -22,7 +22,7 @@ Welcome to Tupul's documentation!
    type
    interface
    tags
-
+   constructor
 
 Indices and tables
 ==================
