@@ -12,17 +12,25 @@ As an example take a slightly modified standard library I/O File implementation.
     type File {
         #tagdef : {closed, opened}
         #invalidScopingTags : {opened} //These are tags that your type cannot have when leaving scope.
-        constructor(this<append:File#closed>) {
+        init()
+        <this += File#closed;>
+        {
             //...code
         }
         static File open(string fileName) {
             if(//can't open file) {
                 return null;
             }
-            File file = Tag.consume(Tag.append(new File(), File#opened), File#closed);
+            File file = new File;
+            file -= File#opened;
+            file += File;
             return file;
         }
-        void close(this<consume:File#opened, append:File#closed>) {
+        void close(this)
+        <
+        this -= File#opened;
+        this += File#closed;
+        >{
             //do whatever io stuff to close the file.
         }
     }
@@ -31,10 +39,18 @@ As an example take a slightly modified standard library I/O File implementation.
         type Iterator implements Iterator {
             //...keeps track of the position in things like files.
         }
-        static boolean hasNext(File file<check:File#opened>, FileReader.Iterator iterator) {
+        static boolean hasNext(File file, FileReader.Iterator iterator)
+        <
+        file == File#opened;
+        >
+        {
             return //...code
         }
-        static String getNextLine(File file<check:File#opened>, FileReader.Iterator iterator) {
+        static String getNextLine(File file, FileReader.Iterator iterator)
+        <
+        file == File#opened;
+        >
+        {
             return //...code to get next line.
         }
 
@@ -43,8 +59,9 @@ As an example take a slightly modified standard library I/O File implementation.
     type MainClass {
         void main(string[] args) {
             File myFile; //Unlike java constructor, if the constructor takes no arguments it is called implicitly, if constructor requires arguments this syntax is invalid and requires the 'new' keyword
+            myFile.init(); //Closed  tag actually isn't really a thing, but is used to show consuming and appending, but so for this example we have 'init' which sets it up with a closed tag.
             if( (File.open("file.txt"): File.optional optionalFile) && optionalFile instanceof File -> myFile) {
-                if(Tag.check(myFile, File#opened)) {
+                if(myFile == File#opened) {
                     print("hey extra check that file was opened that was COMPLETELY UNNECESSARY")
                 }
                 FileReader.Iterator fileIterator;

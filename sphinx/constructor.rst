@@ -22,17 +22,17 @@ Can instead just have the "initialized" tag for example not as a requirement, an
         private double x = 0;
         private double y = 0;
 
-        double calculateDifference(this<check:SpecialBoi#intialized>, double z) {
+        double calculateDifference(this, double z)<this == SpecialBoi#initialized;> {
             return x*y+z;
         }
 
-        void initialize(this<append:SpecialBoi#intialized>, int x, int y) {
+        void initialize(this<append:SpecialBoi#intialized>, int x, int y)<this += SpecialBoi#intialized;> {
             this.x = x;
             this.y = y;
         }
 
         string toString() { //has implicit this.
-            if(this check File#initialized) {
+            if(this == File#initialized) {
                 return "x: " + x + ", y: "+ y;
             } else {
                 return "uninitialized"
@@ -59,7 +59,7 @@ An example of some of the extra guard checks necessary
 
     myObjects.add(new File);
 
-    if( (myObjects.get(0) instanceof File -> File file) && (file check File#closed -> file) ) {
+    if( (myObjects.get(0) instanceof File -> File file) && file == File#closed ) { //If we do the check, then our scope considers anything below scope to have it be t rue.
         file.open();
         //read the file whatever
         file.close(); //don't forget to close the file
