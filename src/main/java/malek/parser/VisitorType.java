@@ -1,4 +1,4 @@
-package malek;
+package malek.parser;
 
 public enum VisitorType {
     NUM,

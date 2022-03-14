@@ -8,6 +8,8 @@ fragment DIGIT          : [0-9] ;
 INTEGER                 : DIGIT+ ;
 FLOAT                   : DIGIT+ ([.,] DIGIT+)?'f' ;
 DOUBLE                  : DIGIT+ ([.,] DIGIT+)? ;
+PLUS_EQUALS             : '+=' ;
+MINUS_EQUALS            : '-=' ;
 DOUBLE_EQUALS_LIST      : '==' ;
 EQUALS_LIT              : '=' ;
 RETURN_LIT              : 'return' ;
@@ -31,6 +33,7 @@ POINTER                 : '@' ;
 COMMA                   : ',' ;
 DOUBLE_OR               : '||' ;
 DOUBLE_AND              : '&&' ;
+THIS_KEYWORD            : 'this' ;
 INT_TYPE                : 'int' ;
 FLOAT_TYPE              : 'float' ;
 DOUBLE_TYPE             : 'double' ;
@@ -62,12 +65,15 @@ IDENTIFIER              : [a-zA-Z]+[A-Za-z0-9]* ;
  * Parser Rules
  */
 
-type                            : IDENTIFIER | 'int' | 'char' | 'double' | 'float'
+allMultipleLinkedFiles          : file+
                                 ;
 
 
-file                            : interfaceFile
-                                | typeFile
+file                            : declarePackage importSomething* (typeDeclaration | interfaceDeclaration)
+                                ;
+
+//Declare the thing
+declarePackage                  : 'file' (IDENTIFIER '.')* IDENTIFIER ';'
                                 ;
 
 
@@ -76,8 +82,6 @@ importSomething                 : 'import' ( IDENTIFIER '.' )* IDENTIFIER ';'
                                 ;
 
 //INTERFACE STUFF
-interfaceFile                   : importSomething* interfaceDeclaration
-                                ;
 
 interfaceDeclaration            : 'interface' IDENTIFIER ('extends' interfaceExtensions)? interfaceCodeBlock
                                 ;
@@ -89,17 +93,18 @@ interfaceCodeBlock              : '{' (interfaceCodeBlock)* '}'
                                 | interfaceFunctionDeclaration
                                 | interfaceDeclaration
                                 | typeDeclaration
+                                | interfaceAbstractFuncDec
                                 ;
 
 
-interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' IDENTIFIER '(' functionDecArguments? ')' functionCodeBlock
-                                | universalFunctionModifiers IDENTIFIER '(' functionDecArguments? ')' functionCodeBlock
+interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalPostIdentifierFuncDec functionCodeBlock
+                                | universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
+                                ;
+
+interfaceAbstractFuncDec        : universalFunctionModifiers universalPostIdentifierFuncDec ';'
                                 ;
 
 //TYPE FILE STUFF
-
-typeFile                        : importSomething* typeDeclaration
-                                ;
 
 typeDeclaration                 : 'type' IDENTIFIER ('extends' interfaceExtensions)? typeCodeBlock
                                 ;
@@ -110,8 +115,8 @@ typeCodeBlock                   : '{' (typeCodeBlock)* '}'
                                 | interfaceDeclaration
                                 ;
 
-typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' IDENTIFIER '(' functionDecArguments? ')' functionCodeBlock
-                                | universalFunctionModifiers IDENTIFIER '(' functionDecArguments? ')' functionCodeBlock
+typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalPostIdentifierFuncDec functionCodeBlock
+                                | universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
                                 ;
 
 //FUNCTION STUFF
@@ -120,30 +125,133 @@ universalFunctionModifiers      : ( ( type | 'void' ) | '(' (type | 'void') ( ',
 
 functionDecArguments            : type IDENTIFIER (',' type IDENTIFIER)*
                                 ;
-functionCallArguments           : type IDENTIFIER (',' type IDENTIFIER)*
+functionCallArguments           : IDENTIFIER (',' IDENTIFIER)*
                                 ;
 
+universalPostIdentifierFuncDec  : IDENTIFIER '(' functionDecArguments? ')' ( '<' (functionTagOperation ';' )* '>' )?
+                                ;
+
+//Tag Stuff
+
+functionTagOperation            : ( functionTagAppend | functionTagRemove | functionTagEquals )
+                                ;
+
+functionTagAppend               : finalValue '+=' tagID
+                                ;
+
+functionTagRemove               : finalValue '-=' tagID
+                                ;
+
+functionTagEquals               : finalValue '==' tagID
+                                ;
+
+functionTagNotEquals            : finalValue '!=' tagID
+                                ;
+
+tagID                           : IDENTIFIER'#'IDENTIFIER
+                                ;
 
 functionCodeBlock               : '{' functionCodeBlock* '}'
+                                | functionCall ';'
                                 | 'return' (finalValue | '(' finalValue ( ',' finalValue )* ')' )? ';'
+                                | functionTagOperation ';'
+                                | chainedIfStatement
+                                | whileLoop
+                                | forLoop
+                                | singleVarDec ';'
+                                | singleVarAssignment ';'
+                                | multiVarAssignment ';'
+                                | variableSwap ';'
+                                | variableIncrement
+                                | variableDecrement ';'
+                                | ';'
                                 // TODO::finish this off
                                 ;
-                                
+
 functionCall                    : IDENTIFIER '(' functionCallArguments ')'
                                 ;
 
+//Logic Control Stuff
+
+whileLoop                       : 'while' '(' conditional ')' functionCodeBlock
+                                ;
+
+forLoop                         : 'for' '(' functionCodeBlock ';'? conditional ';' functionCodeBlock ';'? ')' functionCodeBlock
+                                ;
+
+specialForLoop                  : 'for' '(' IDENTIFIER IDENTIFIER ':' IDENTIFIER ')' functionCodeBlock
+                                ;
+
+chainedIfStatement              : ifStatement (elseIfStatement)* (elseStatement)?
+                                ;
+
+ifStatement                     : 'if' '(' conditional ')' functionCodeBlock
+                                ;
+
+elseStatement                   : 'else' functionCodeBlock
+                                ;
+
+elseIfStatement                 : 'else if' '(' conditional ')' functionCodeBlock
+                                ;
+
+conditional                     : finalValue
+                                ;
 
 
 //Value stuff
 
+type                            : IDENTIFIER | 'int' | 'char' | 'double' | 'float'
+                                ;
+
 finalValue                      : intermediateValue
                                 ;
 
-intermediateValue               : IDENTIFIER
-                                | functionCall
+varID                           : IDENTIFIER
+                                | THIS_KEYWORD
+                                ;
+
+intermediateValue               : functionCall (':' ((type IDENTIFIER | IDENTIFIER) | '(' ( (type IDENTIFIER | IDENTIFIER)+ (',' (type IDENTIFIER | IDENTIFIER))*) ')'))?
+                                | '(' intermediateValue ')'
                                 | INTEGER
                                 | FLOAT
                                 | DOUBLE
                                 | CHAR
                                 | STRING
+                                | intermediateValue '<' intermediateValue
+                                | intermediateValue '<=' intermediateValue
+                                | intermediateValue '>=' intermediateValue
+                                | intermediateValue '>' intermediateValue
+                                | intermediateValue '==' intermediateValue
+                                | intermediateValue '!=' intermediateValue
+                                | intermediateValue '*' intermediateValue
+                                | intermediateValue '/' intermediateValue
+                                | intermediateValue '+' intermediateValue
+                                | intermediateValue '-' intermediateValue
+                                | varID
                                 ;
+
+
+//Variable stuff
+
+singleVarDec                          : type (IDENTIFIER ('=' finalValue)?)+ (',' IDENTIFIER ('=' finalValue)?)*
+                                      ;
+
+singleVarAssignment                   : IDENTIFIER '=' finalValue
+                                      ;
+
+multiVarAssignment                    : '(' (IDENTIFIER | type IDENTIFIER)+ ')' '=' finalValue
+                                      ;
+
+variableSwap                          : IDENTIFIER '<->' IDENTIFIER
+                                      ;
+
+variableIncrement                     : IDENTIFIER '++'
+                                      ;
+
+variableDecrement                     : IDENTIFIER '--'
+                                      ;
+
+//Some default operations
+
+
+

@@ -1,17 +1,15 @@
-package malek.scope;
+package malek.parser.scope;
 
-import malek.symbol.BuiltInTypeSymbol;
-import malek.symbol.Symbol;
-import malek.symbol.Type;
+import malek.parser.symbol.BuiltInTypeSymbol;
+import malek.parser.symbol.Symbol;
+import malek.parser.symbol.Type;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GlobalScope implements Scope{
+public class GlobalScope implements Scope {
     Map<String, Symbol> symbols = new HashMap<>();
     Map<String, Type> types = new HashMap<>();
-    public int numberOfDefinedVar = 0;
     public GlobalScope() {
         initTypeSystem();
     }
@@ -63,15 +61,6 @@ public class GlobalScope implements Scope{
         return types.get(name);
     }
 
-    @Override
-    public void incrDefinedVar() {
-        numberOfDefinedVar++;
-    }
-
-    @Override
-    public int getNumDefinedVar() {
-        return numberOfDefinedVar;
-    }
 
     @Override
     public String uniqueResolveName(String name) {

@@ -1,4 +1,7 @@
+file Hello.World.hi;
+
 import standard.Foo;
+import Hello.there.World.Bar;
 
 interface Bar extends Foo {
 

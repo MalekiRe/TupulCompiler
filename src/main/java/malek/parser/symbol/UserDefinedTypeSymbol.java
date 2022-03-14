@@ -1,7 +1,7 @@
-package malek.symbol;
+package malek.parser.symbol;
 
-public class BuiltInTypeSymbol extends Symbol implements Type{
-    public BuiltInTypeSymbol(String name) {
+public class UserDefinedTypeSymbol extends Symbol implements Type{
+    public UserDefinedTypeSymbol(String name) {
         super(name);
     }
 
@@ -9,6 +9,7 @@ public class BuiltInTypeSymbol extends Symbol implements Type{
     public String getName() {
         return this.name;
     }
+
     @Override
     public String toString() {
         return getName();

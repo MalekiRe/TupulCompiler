@@ -1,25 +1,26 @@
-package malek;
+package malek.parser;
 
 import generated.malek.*;
+import malek.buildtool.printlib.Color;
+import malek.buildtool.printlib.PrintLib;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class MyClass {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         String fileDir = ClassLoader.getSystemResource("myfile.tupul").getFile();
         System.out.println(fileDir);
         TupulLexer lexer = new TupulLexer(CharStreams.fromFileName(fileDir));
         TupulParser parser = new TupulParser(new CommonTokenStream(lexer));
-        ParseTree tree = parser.file();
+        ParseTree tree = parser.allMultipleLinkedFiles();
         System.out.println("hi");
         System.out.println(tree.toStringTree(parser));
+        ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase();
+        scopeAddingPhase.visit(tree);
 //        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
 //        AddingPhase addingPhase = new AddingPhase();
 //        parseTreeWalker.walk(addingPhase, tree);

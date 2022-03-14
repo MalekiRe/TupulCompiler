@@ -1,4 +1,4 @@
-package malek.symbol;
+package malek.parser.symbol;
 
 public interface Type {
     public String getName();

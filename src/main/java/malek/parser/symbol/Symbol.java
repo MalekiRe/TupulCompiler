@@ -1,4 +1,4 @@
-package malek.symbol;
+package malek.parser.symbol;
 
 public class Symbol {
     public String name;

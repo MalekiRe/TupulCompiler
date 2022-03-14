@@ -1,19 +1,58 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'java'
 }
-
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'malek'
+version '1.0'
 apply plugin: 'antlr'
+apply plugin: 'java'
 repositories {
     mavenCentral()
 }
 
+ext {
+    javaMainClass = "malek.buildtool.Potato"
+}
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    shadow 'junit:junit:3.8.2'
     antlr 'org.antlr:antlr4:4.9.3'
+    implementation 'info.picocli:picocli:4.6.3'
 }
+
+
+shadowJar {
+    archiveBaseName.set('potato-test')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
+jar {
+    manifest {
+        attributes "Main-Class": 'malek.buildtool.Potato'
+    }
+}
+//task runWithJavaExec(type: JavaExec) {
+//    group = "Execution"
+//    description = "Run the main class with JavaExecTask"
+//    classpath = sourceSets.main.runtimeClasspath
+//    setMain(javaMainClass)
+//    main = javaMainClass
+//}
+//
+//task runWithExec(type: Exec) {
+//    dependsOn build
+//    group = "Execution"
+//    description = "Run the main class with ExecTask"
+//    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), javaMainClass
+//}
+//
+//task runWithExecJarOnClassPath(type: Exec) {
+//    dependsOn jar
+//    group = "Execution"
+//    description = "Run the mainClass from the output jar in classpath with ExecTask"
+//    commandLine "java", "-classpath", jar.archiveFile.get(), javaMainClass
+//}
 
 test {
     useJUnitPlatform()

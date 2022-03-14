@@ -1,9 +1,7 @@
-package malek.scope;
+package malek.parser.scope;
 
-import malek.symbol.Symbol;
-import malek.symbol.Type;
-
-import java.util.Map;
+import malek.parser.symbol.Symbol;
+import malek.parser.symbol.Type;
 
 public interface Scope {
     public String getScopeName();
@@ -12,8 +10,6 @@ public interface Scope {
     public Symbol resolve(String name);
     public void defineType(Type type);
     public Type resolveType(String name);
-    public void incrDefinedVar();
-    public int getNumDefinedVar();
     public String uniqueResolveName(String name);
     public String uniqueResolveTypeName(String type);
     /*
