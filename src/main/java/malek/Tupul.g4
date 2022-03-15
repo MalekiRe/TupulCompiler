@@ -87,10 +87,14 @@ importSomething                 : 'import' ( IDENTIFIER '.' )* IDENTIFIER ';'
 interfaceDeclaration            : 'interface' IDENTIFIER ('extends' interfaceExtensions)? interfaceCodeBlock
                                 ;
 
-interfaceExtensions             : IDENTIFIER ( ',' interfaceExtensions )*
+interfaceExtensions             : IDENTIFIER ( interfaceExtensionName )*
+                                ;
+
+interfaceExtensionName          : ',' IDENTIFIER
                                 ;
 
 interfaceCodeBlock              : '{' (interfaceCodeBlock)* '}'
+                                | variableDeclaration ';'
                                 | interfaceFunctionDeclaration
                                 | interfaceDeclaration
                                 | typeDeclaration
@@ -98,8 +102,8 @@ interfaceCodeBlock              : '{' (interfaceCodeBlock)* '}'
                                 ;
 
 
-interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalPostIdentifierFuncDec functionCodeBlock
-                                | universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
+interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalFunctionPost
+                                | universalFunctionPost
                                 ;
 
 interfaceAbstractFuncDec        : universalFunctionModifiers universalPostIdentifierFuncDec ';'
@@ -114,10 +118,15 @@ typeCodeBlock                   : '{' (typeCodeBlock)* '}'
                                 | typeFunctionDeclaration
                                 | typeDeclaration
                                 | interfaceDeclaration
+                                | variableDeclaration ';'
                                 ;
 
-typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalPostIdentifierFuncDec functionCodeBlock
-                                | universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
+typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalFunctionPost
+                                | universalFunctionModifiers universalFunctionPost
+                                ;
+
+
+universalFunctionPost           : universalPostIdentifierFuncDec functionCodeBlock
                                 ;
 
 functionWithinFunctionDec       : universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
@@ -240,8 +249,17 @@ intermediateValue               : functionCall (':' ((type IDENTIFIER | IDENTIFI
 
 //Variable stuff
 
+variableDeclaration                   : singleVarDec | multiVarDec
+                                      ;
+
+
+
 singleVarDec                          : type (IDENTIFIER ('=' finalValue)?)+ (',' IDENTIFIER ('=' finalValue)?)*
                                       ;
+
+multiVarDec                           : '(' (type IDENTIFIER)+ ')' '=' finalValue
+                                      ;
+
 
 singleVarAssignment                   : IDENTIFIER '=' finalValue
                                       ;

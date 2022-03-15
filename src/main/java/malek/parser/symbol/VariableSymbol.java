@@ -1,7 +1,7 @@
 package malek.parser.symbol;
 
 public class VariableSymbol extends Symbol{
-    public VariableSymbol(String name, Type type) {
+    public VariableSymbol(Type type, String name) {
         super(name, type);
     }
 }

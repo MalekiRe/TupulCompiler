@@ -35,13 +35,23 @@ public class PrintLib {
             System.out.print(RESET);
             return;
         }
-
         System.out.print(textColorStringMap.get(color) + message + RESET);
     }
     public static void print(String message) {
         System.out.print(message);
     }
 
+    public static String spacing(int space) {
+        StringBuilder s = new StringBuilder();
+        for(int i1 = 0; i1 < space; i1++) {
+            s.append("  ");
+        }
+        return s.toString();
+    }
+
+    public static Color colorFromInt(int i) {
+        return Color.values()[i%7];
+    }
 
 
 }

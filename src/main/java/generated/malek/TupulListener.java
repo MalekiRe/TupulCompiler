@@ -68,6 +68,16 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TupulParser#interfaceExtensionName}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterfaceExtensionName(TupulParser.InterfaceExtensionNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#interfaceExtensionName}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterfaceExtensionName(TupulParser.InterfaceExtensionNameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TupulParser#interfaceCodeBlock}.
 	 * @param ctx the parse tree
 	 */
@@ -127,6 +137,16 @@ public interface TupulListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#universalFunctionPost}.
+	 * @param ctx the parse tree
+	 */
+	void enterUniversalFunctionPost(TupulParser.UniversalFunctionPostContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#universalFunctionPost}.
+	 * @param ctx the parse tree
+	 */
+	void exitUniversalFunctionPost(TupulParser.UniversalFunctionPostContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#functionWithinFunctionDec}.
 	 * @param ctx the parse tree
@@ -378,6 +398,16 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitIntermediateValue(TupulParser.IntermediateValueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TupulParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableDeclaration(TupulParser.VariableDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableDeclaration(TupulParser.VariableDeclarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TupulParser#singleVarDec}.
 	 * @param ctx the parse tree
 	 */
@@ -387,6 +417,16 @@ public interface TupulListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSingleVarDec(TupulParser.SingleVarDecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#multiVarDec}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiVarDec(TupulParser.MultiVarDecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#multiVarDec}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiVarDec(TupulParser.MultiVarDecContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#singleVarAssignment}.
 	 * @param ctx the parse tree

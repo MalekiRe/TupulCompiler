@@ -47,6 +47,12 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TupulParser#interfaceExtensionName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterfaceExtensionName(TupulParser.InterfaceExtensionNameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TupulParser#interfaceCodeBlock}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -82,6 +88,12 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#universalFunctionPost}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUniversalFunctionPost(TupulParser.UniversalFunctionPostContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#functionWithinFunctionDec}.
 	 * @param ctx the parse tree
@@ -233,11 +245,23 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIntermediateValue(TupulParser.IntermediateValueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TupulParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableDeclaration(TupulParser.VariableDeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TupulParser#singleVarDec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSingleVarDec(TupulParser.SingleVarDecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#multiVarDec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiVarDec(TupulParser.MultiVarDecContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#singleVarAssignment}.
 	 * @param ctx the parse tree

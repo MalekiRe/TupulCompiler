@@ -39,18 +39,18 @@ public class FileScope extends NonGlobalScope {
 
     public void printScope() {
         System.out.println("    "+fileLocation.toString());
-        System.out.println("        imported files");
-        for(FileStore fileStore : getImportedThings()) {
-            System.out.println("            file name: "+fileStore.toString());
-        }
-        System.out.println("        types and interfaces");
-        for(String type : getTypesMap().keySet()) {
-            if(types.get(type) instanceof InterfaceScope) {
-                System.out.println("            interface: " + type);
+        if(getImportedThings().size() > 0) {
+            System.out.println("        imported files");
+            for (FileStore fileStore : getImportedThings()) {
+                System.out.println("            file name: " + fileStore.toString());
             }
-            else {
-                System.out.println("aa file name is : " + this.getScopeName());
-                System.out.println("            type: " + type);
+        }
+        if(getTypesMap().size() > 0) {
+            System.out.println("        types and interfaces");
+            for (String type : getTypesMap().keySet()) {
+                if(getTypesMap().get(type) instanceof TypeInterfaceScope) {
+                    ((TypeInterfaceScope) getTypesMap().get(type)).print(4);
+                }
             }
         }
     }

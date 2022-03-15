@@ -1,6 +1,6 @@
 package malek.parser.scope;
 
-import malek.parser.symbol.Symbol;
+import malek.parser.symbol.MultiType;
 import malek.parser.symbol.Type;
 
 public class FunctionScope extends NonGlobalSymbolScope {

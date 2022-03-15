@@ -88,6 +88,18 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterInterfaceExtensionName(TupulParser.InterfaceExtensionNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterfaceExtensionName(TupulParser.InterfaceExtensionNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInterfaceCodeBlock(TupulParser.InterfaceCodeBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,6 +167,18 @@ public class TupulBaseListener implements TupulListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUniversalFunctionPost(TupulParser.UniversalFunctionPostContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUniversalFunctionPost(TupulParser.UniversalFunctionPostContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -460,6 +484,18 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariableDeclaration(TupulParser.VariableDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableDeclaration(TupulParser.VariableDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingleVarDec(TupulParser.SingleVarDecContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -467,6 +503,18 @@ public class TupulBaseListener implements TupulListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSingleVarDec(TupulParser.SingleVarDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiVarDec(TupulParser.MultiVarDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiVarDec(TupulParser.MultiVarDecContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
