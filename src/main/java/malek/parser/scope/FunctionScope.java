@@ -3,7 +3,7 @@ package malek.parser.scope;
 import malek.parser.symbol.Symbol;
 import malek.parser.symbol.Type;
 
-public class FunctionScope extends Symbol implements NonGlobalScope {
+public class FunctionScope extends NonGlobalSymbolScope {
     final Scope enclosingScope;
     public FunctionScope(String name, Type type, Scope enclosingScope) {
         super(name, type);

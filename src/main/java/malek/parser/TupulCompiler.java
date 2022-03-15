@@ -1,15 +1,27 @@
 package malek.parser;
 
 import generated.malek.*;
-import malek.buildtool.printlib.Color;
-import malek.buildtool.printlib.PrintLib;
+import org.antlr.runtime.tree.Tree;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.tool.DOTGenerator;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-public class MyClass {
+public class TupulCompiler {
+    public static String parsedFile = "";
+    public static boolean compileFile(InputStream stream) throws IOException {
+        TupulLexer lexer = new TupulLexer(CharStreams.fromStream(stream));
+        TupulParser parser = new TupulParser(new CommonTokenStream(lexer));
+        ParseTree tree = parser.allMultipleLinkedFiles();
+        parsedFile = tree.toStringTree(parser);
+        ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase();
+        scopeAddingPhase.visit(tree);
+        scopeAddingPhase.global.printGlobalScope();
+        return true;
+    }
 
     public static void main(String[] args) throws IOException {
         String fileDir = ClassLoader.getSystemResource("myfile.tupul").getFile();

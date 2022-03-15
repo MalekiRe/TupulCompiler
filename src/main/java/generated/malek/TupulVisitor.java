@@ -83,6 +83,12 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TupulParser#functionWithinFunctionDec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionWithinFunctionDec(TupulParser.FunctionWithinFunctionDecContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TupulParser#universalFunctionModifiers}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

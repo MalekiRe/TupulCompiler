@@ -1,0 +1,14 @@
+[potato]
+name = "std-lib"
+version = "1.0.0.0"
+mascot-name = "TupulTeam"
+author-names = ["Malek"]
+language = "Tupul"
+language-version = "1.0"
+
+[taters]
+author1-test = "1.0.x.x"
+another-test2 = "2.1.1.x"
+
+[localTaters]
+my-test = "path/to/thing"

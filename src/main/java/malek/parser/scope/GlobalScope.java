@@ -1,15 +1,16 @@
 package malek.parser.scope;
 
-import malek.parser.symbol.BuiltInTypeSymbol;
-import malek.parser.symbol.Symbol;
-import malek.parser.symbol.Type;
+import malek.parser.exception.ParsingException;
+import malek.parser.symbol.*;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalScope implements Scope {
     Map<String, Symbol> symbols = new HashMap<>();
     Map<String, Type> types = new HashMap<>();
+    Map<String, FileScope> files = new HashMap<>();
     public GlobalScope() {
         initTypeSystem();
     }
@@ -19,8 +20,19 @@ public class GlobalScope implements Scope {
         defineType(new BuiltInTypeSymbol("char"));
         defineType(new BuiltInTypeSymbol("float"));
         defineType(new BuiltInTypeSymbol("void"));
+        defineType(new BuiltInTypeSymbol("string"));
+        defineType(TypeType.type);
+        defineType(InterfaceType.type);
         define(new FunctionScope("print", types.get("void"), this));
     }
+
+    public void defineFileScope(FileScope fileScope) throws Exception {
+        if(files.containsKey(fileScope.fileLocation.toString())) {
+            throw new Exception("redefining file twice: " + fileScope.fileLocation.toString());
+        }
+        files.put(fileScope.fileLocation.toString(), fileScope);
+    }
+
     @Override
     public String getScopeName() {
         return "global";
@@ -73,13 +85,19 @@ public class GlobalScope implements Scope {
     }
 
     public void printGlobalScope() {
-        System.out.println("scope is : ");
-        for(String s : symbols.keySet()) {
-            System.out.println("["+s + ", " + symbols.get(s)+"]");
+        System.out.println("global scope");
+        System.out.println("globally defined universal types");
+        for(String typename : types.keySet()) {
+            System.out.println("    "+typename);
         }
-        System.out.println("defined types are : ");
-        for(String s : types.keySet()) {
-            System.out.println("["+s + ", " + types.get(s)+"]");
+        System.out.println("globally defined universal functions");
+        for(String functionName : symbols.keySet()) {
+            System.out.println("    "+functionName);
+        }
+        System.out.println("global, all defined files");
+        for (String fileName : files.keySet()) {
+            System.out.println("file");
+            files.get(fileName).printScope();
         }
     }
 

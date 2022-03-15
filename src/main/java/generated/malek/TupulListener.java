@@ -128,6 +128,16 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TupulParser#functionWithinFunctionDec}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionWithinFunctionDec(TupulParser.FunctionWithinFunctionDecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#functionWithinFunctionDec}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionWithinFunctionDec(TupulParser.FunctionWithinFunctionDecContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TupulParser#universalFunctionModifiers}.
 	 * @param ctx the parse tree
 	 */

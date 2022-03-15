@@ -160,6 +160,18 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunctionWithinFunctionDec(TupulParser.FunctionWithinFunctionDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunctionWithinFunctionDec(TupulParser.FunctionWithinFunctionDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -2,16 +2,17 @@ package malek.parser;
 
 import generated.malek.TupulBaseVisitor;
 import generated.malek.TupulParser;
-import malek.parser.scope.FileScope;
-import malek.parser.scope.GlobalScope;
-import malek.parser.scope.Scope;
+import malek.buildtool.printlib.PrintLib;
+import malek.parser.exception.ParsingException;
+import malek.parser.scope.*;
 import malek.parser.util.FileStore;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
+import static malek.buildtool.printlib.Color.RED;
 
 
-public class ScopeAddingPhase<T> extends TupulBaseVisitor<T> {
+public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
     public ParseTreeProperty<Scope> scopes = new ParseTreeProperty<>();
     public GlobalScope global;
     Scope currentScope;
@@ -21,12 +22,12 @@ public class ScopeAddingPhase<T> extends TupulBaseVisitor<T> {
     }
 
 
-    @Override public T visitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx) {
+    @Override public Object visitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx) {
         global = new GlobalScope();
         currentScope = global;
         return visitChildren(ctx);
     }
-    @Override public T visitFile(TupulParser.FileContext ctx) {
+    @Override public Object visitFile(TupulParser.FileContext ctx) {
         FileStore fileLocation = new FileStore();
         for(int i = 0; i < ctx.declarePackage().IDENTIFIER().size(); i++) {
             if(i+1 == ctx.declarePackage().IDENTIFIER().size()) {
@@ -35,7 +36,7 @@ public class ScopeAddingPhase<T> extends TupulBaseVisitor<T> {
                 fileLocation.folders.add(ctx.declarePackage().IDENTIFIER(i).getText());
             }
         }
-        FileScope fileScope = new FileScope(fileLocation, currentScope);
+        FileScope fileScope = new FileScope(fileLocation, global);
         for(TupulParser.ImportSomethingContext thing : ctx.importSomething()) {
             FileStore fileStore = new FileStore();
             for(int i = 0; i < thing.IDENTIFIER().size(); i++) {
@@ -49,12 +50,28 @@ public class ScopeAddingPhase<T> extends TupulBaseVisitor<T> {
         }
         currentScope = fileScope;
         saveScope(ctx, fileScope);
-        T children = visitChildren(ctx);
-        currentScope = currentScope.getEnclosingScope();
-        return children;
+        if(ctx.interfaceDeclaration() != null) {
+            fileScope.defineType(visitInterfaceDeclaration(ctx.interfaceDeclaration()));
+        } else {
+            fileScope.defineType(visitTypeDeclaration(ctx.typeDeclaration()));
+        }
+        currentScope = global;
+        return null;
     }
-
-
+    @Override public InterfaceScope visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx) {
+        InterfaceScope interfaceScope = new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope);
+        currentScope = interfaceScope;
+        visitInterfaceCodeBlock(ctx.interfaceCodeBlock());
+        currentScope = interfaceScope.getEnclosingScope();
+        return interfaceScope;
+    }
+    @Override public TypeScope visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
+        TypeScope typeScope = new TypeScope(ctx.IDENTIFIER().getText(), currentScope);
+        currentScope = typeScope;
+        visitTypeCodeBlock(ctx.typeCodeBlock());
+        currentScope = typeScope.getEnclosingScope();
+        return typeScope;
+    }
 
 
 }

@@ -6,9 +6,17 @@ import malek.parser.symbol.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class NonGlobalScope implements Scope {
+public abstract class NonGlobalSymbolScope extends Symbol implements Scope {
     Map<String, Symbol> symbols = new HashMap<>();
     Map<String, Type> types = new HashMap<>();
+
+    public NonGlobalSymbolScope(String name, Type type) {
+        super(name, type);
+    }
+
+    public NonGlobalSymbolScope(String name) {
+        super(name);
+    }
 
 
     Map<String, Type> getTypesMap() {

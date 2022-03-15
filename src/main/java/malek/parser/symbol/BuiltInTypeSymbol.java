@@ -1,6 +1,6 @@
 package malek.parser.symbol;
 
-public class BuiltInTypeSymbol extends Symbol implements Type{
+public class BuiltInTypeSymbol extends Symbol implements Type {
     public BuiltInTypeSymbol(String name) {
         super(name);
     }

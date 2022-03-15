@@ -40,6 +40,7 @@ DOUBLE_TYPE             : 'double' ;
 CHAR_TYPE               : 'char' ;
 VOID_TYPE               : 'void' ;
 BOOL_TYPE               : 'bool' ;
+STRING_TYPE             : 'string' ;
 NULL_TYPE               : 'null' ;
 FALSE_KEYWORD           : 'false' ;
 TRUE_KEYWORD            : 'true' ;
@@ -119,6 +120,9 @@ typeFunctionDeclaration         : ('override' | 'implement') universalFunctionMo
                                 | universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
                                 ;
 
+functionWithinFunctionDec       : universalFunctionModifiers universalPostIdentifierFuncDec functionCodeBlock
+                                ;
+
 //FUNCTION STUFF
 universalFunctionModifiers      : ( ( type | 'void' ) | '(' (type | 'void') ( ',' (type | 'void')* ) ')' ) ( 'public' | 'private' )? ( 'fluid' | 'const' | 'fixed' )? ('dirty' | 'tidy' | 'pure')?
                                 ;
@@ -164,11 +168,14 @@ functionCodeBlock               : '{' functionCodeBlock* '}'
                                 | variableSwap ';'
                                 | variableIncrement
                                 | variableDecrement ';'
+                                | typeDeclaration ';'
+                                | interfaceDeclaration ';'
+                                | functionWithinFunctionDec ';'
                                 | ';'
                                 // TODO::finish this off
                                 ;
 
-functionCall                    : IDENTIFIER '(' functionCallArguments ')'
+functionCall                    : IDENTIFIER '(' functionCallArguments? ')'
                                 ;
 
 //Logic Control Stuff
@@ -200,7 +207,7 @@ conditional                     : finalValue
 
 //Value stuff
 
-type                            : IDENTIFIER | 'int' | 'char' | 'double' | 'float'
+type                            : IDENTIFIER | 'int' | 'char' | 'double' | 'float' | 'string'
                                 ;
 
 finalValue                      : intermediateValue

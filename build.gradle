@@ -19,6 +19,7 @@ dependencies {
     shadow 'junit:junit:3.8.2'
     antlr 'org.antlr:antlr4:4.9.3'
     implementation 'info.picocli:picocli:4.6.3'
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
 }
 
 
