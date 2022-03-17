@@ -208,6 +208,18 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTypeWithVoid(TupulParser.TypeWithVoidContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeWithVoid(TupulParser.TypeWithVoidContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionDecArguments(TupulParser.FunctionDecArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}

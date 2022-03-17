@@ -107,6 +107,12 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TupulParser#typeWithVoid}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeWithVoid(TupulParser.TypeWithVoidContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TupulParser#functionDecArguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -168,6 +168,16 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitUniversalFunctionModifiers(TupulParser.UniversalFunctionModifiersContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TupulParser#typeWithVoid}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeWithVoid(TupulParser.TypeWithVoidContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#typeWithVoid}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeWithVoid(TupulParser.TypeWithVoidContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TupulParser#functionDecArguments}.
 	 * @param ctx the parse tree
 	 */

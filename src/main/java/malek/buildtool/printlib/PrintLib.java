@@ -19,6 +19,9 @@ public class PrintLib {
         textColorStringMap.put(WHITE, "\u001B[37m");
     }
     static String RESET = "\u001B[0m";
+    public static void println(String message, int i) {
+        println(message, Color.values()[i%7]);
+    }
     public static void println(String message, Color color) {
         print(message+"\n", color);
     }

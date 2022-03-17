@@ -1,11 +1,10 @@
 package malek.parser;
 
 import generated.malek.*;
-import org.antlr.runtime.tree.Tree;
+import malek.parser.addingphase.ScopeAddingPhase;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.tool.DOTGenerator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +18,8 @@ public class TupulCompiler {
         parsedFile = tree.toStringTree(parser);
         ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase();
         scopeAddingPhase.visit(tree);
-        scopeAddingPhase.global.printGlobalScope();
+        scopeAddingPhase.global.printScope();
+        //scopeAddingPhase.global.printGlobalScope();
         return true;
     }
 

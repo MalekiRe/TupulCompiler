@@ -133,7 +133,10 @@ functionWithinFunctionDec       : universalFunctionModifiers universalPostIdenti
                                 ;
 
 //FUNCTION STUFF
-universalFunctionModifiers      : ( ( type | 'void' ) | '(' (type | 'void') ( ',' (type | 'void')* ) ')' ) ( 'public' | 'private' )? ( 'fluid' | 'const' | 'fixed' )? ('dirty' | 'tidy' | 'pure')?
+universalFunctionModifiers      : ( typeWithVoid | '(' typeWithVoid ( ',' typeWithVoid* ) ')' ) ( 'public' | 'private' )? ( 'fluid' | 'const' | 'fixed' )? ('dirty' | 'tidy' | 'pure')?
+                                ;
+
+typeWithVoid                    : (type | 'void')
                                 ;
 
 functionDecArguments            : type IDENTIFIER (',' type IDENTIFIER)*

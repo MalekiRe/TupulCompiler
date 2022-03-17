@@ -7,7 +7,4 @@ public interface MultiType extends Type{
     default String getName() {
         return getTypes().toString();
     }
-    default String toString() {
-        return getTypes().toString();
-    }
 }
