@@ -1,6 +1,8 @@
 package malek.parser.addingphase.scope;
 
 import malek.parser.addingphase.scope.nonglobals.NonGlobalSymbolScope;
+import malek.parser.addingphase.symbol.SymbolBuiltInType;
+import malek.parser.addingphase.symbol.SymbolType;
 import malek.parser.util.FileStore;
 
 public class FileScope extends NonGlobalSymbolScope {
@@ -9,7 +11,7 @@ public class FileScope extends NonGlobalSymbolScope {
     private final FileStore[] importedThings;
 
     private FileScope(String scopeName, AddingPhaseScope enclosingScope, FileStore fileLocation, FileStore[] importedThings) {
-        super(scopeName, enclosingScope);
+        super(scopeName, SymbolBuiltInType.FILE, enclosingScope);
         this.fileLocation = fileLocation;
         this.importedThings = importedThings;
     }

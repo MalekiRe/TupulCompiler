@@ -2,10 +2,13 @@ package malek.parser.addingphase;
 
 import generated.malek.TupulBaseVisitor;
 import generated.malek.TupulParser;
+import malek.buildtool.printlib.Color;
 import malek.buildtool.printlib.PrintLib;
 import malek.parser.addingphase.scope.*;
-import malek.parser.scope.InterfaceScope;
-import malek.parser.scope.TypeScope;
+import malek.parser.addingphase.scope.typeinterface.InterfaceScope;
+import malek.parser.addingphase.scope.typeinterface.TypeScope;
+import malek.parser.addingphase.symbol.*;
+import malek.parser.addingphase.symbol.VariableSymbol;
 import malek.parser.symbol.*;
 import malek.parser.util.FileStore;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -91,56 +94,95 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
         }
         setCurrentScope(fileScope);
         saveScope(ctx, fileScope);
-
+        if(ctx.typeDeclaration() != null) {
+            visitTypeDeclaration(ctx.typeDeclaration());
+        } else {
+            visitInterfaceDeclaration(ctx.interfaceDeclaration());
+        }
         resetCurrentScope();
-        //currentScope = global;
         return null;
     }
 
-//    @Override public InterfaceScope visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx) {
-//        InterfaceScope interfaceScope = new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope);
-//        currentScope = interfaceScope;
-//        interfaceScope.addExtendingInterfaces(visitInterfaceExtensions(ctx.interfaceExtensions()));
-//        visitInterfaceCodeBlock(ctx.interfaceCodeBlock());
-//        currentScope = interfaceScope.getEnclosingScope();
-//        saveScope(ctx, interfaceScope);
-//        return interfaceScope;
-//    }
-//    @Override public TypeScope visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
-//        TypeScope typeScope = new TypeScope(ctx.IDENTIFIER().getText(), currentScope);
-//        currentScope = typeScope;
-//        typeScope.addExtendingInterfaces(visitInterfaceExtensions(ctx.interfaceExtensions()));
-//        visitTypeCodeBlock(ctx.typeCodeBlock());
-//        currentScope = typeScope.getEnclosingScope();
-//        saveScope(ctx, typeScope);
-//        return typeScope;
-//    }
-//
-//    @Override public List<String> visitInterfaceExtensions(TupulParser.InterfaceExtensionsContext ctx) {
-//        List<String> returnList = new ArrayList<>();
-//        if(ctx == null || ctx.IDENTIFIER() == null) {
-//            return returnList;
-//        }
-//        returnList.add(ctx.IDENTIFIER().getText());
-//        ctx.interfaceExtensionName().forEach((a) -> returnList.add(a.IDENTIFIER().getText()));
-//        return returnList;
-//    }
-//
-//    @Override public Object visitSingleVarDec(TupulParser.SingleVarDecContext ctx) {
-//        String typeString = ctx.type().getText();
-//        Type type = currentScope.resolveType(typeString);
-//        for(int i = 0; i < ctx.IDENTIFIER().size(); i++) {
-//            currentScope.define(new VariableSymbol(type, ctx.IDENTIFIER().get(i).getText()));
-//        }
-//        if(ctx.finalValue() != null) {
-//            for(TupulParser.FinalValueContext a : ctx.finalValue()) {
-//                visitChildren(a);
-//            }
-//        }
-//        return null;
-//    }
+    @Override public Object visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
+        currentScope.defineSymbol(getTypeSymbol(ctx));
+        currentScope = new TypeScope(ctx.IDENTIFIER().getText(), currentScope);
+        //Don't know how to deal with having extended interfaces yet.
+        //For now, only adding it if it isn't overrided or implemented.
+        visitTypeCodeBlock(ctx.typeCodeBlock());
+        resetCurrentScope();
+        return null;
+    }
+
+    @Override public Object visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx) {
+        currentScope.defineSymbol(getInterfaceSymbol(ctx));
+        currentScope = new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope);
+        //Don't know how to deal with having extended interfaces yet.
+        //For now, only adding it if it isn't overrided or implemented.
+        visitInterfaceCodeBlock(ctx.interfaceCodeBlock());
+        resetCurrentScope();
+        return null;
+    }
+
+    private AddingSymbol getInterfaceSymbol(TupulParser.InterfaceDeclarationContext interfaceDeclaration) {
+        return new AddingSymbol(interfaceDeclaration.IDENTIFIER().getText(), SymbolBuiltInType.INTERFACE);
+    }
+
+    private AddingSymbol getTypeSymbol(TupulParser.TypeDeclarationContext typeDeclaration) {
+        return new AddingSymbol(typeDeclaration.IDENTIFIER().getText(), SymbolBuiltInType.TYPE);
+    }
+
 
     @Override public Object visitInterfaceFunctionDeclaration(TupulParser.InterfaceFunctionDeclarationContext ctx) {
+        ValueType[] returnType = ctx.universalFunctionModifiers().typeWithVoid().stream().map(TupulParser.TypeWithVoidContext::getText).map(currentScope::resolveType).collect(Collectors.toList()).toArray(new ValueType[ctx.universalFunctionModifiers().typeWithVoid().size()]);
+        ValueType[] argumentsTypes = ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments().type().stream().map(TupulParser.TypeContext::getText).map(currentScope::resolveType).collect(Collectors.toList()).toArray(new ValueType[ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments().type().size()]);
+        FunctionSymbol functionSymbol = new FunctionSymbol.FunctionSymbolBuilder().addArguments(argumentsTypes).addTypes(returnType).addName(ctx.IDENTIFIER().getText()).build();
+        if(currentScope.resolveSymbol(functionSymbol.getStringRep()) != null) {
+            PrintLib.println("error, function: " + functionSymbol.getName() + " already defined", Color.RED);
+            return null;
+        }
+        currentScope.defineSymbol(functionSymbol.getStringRep(), functionSymbol);
+        return null;
+    }
+
+    @Override public Object visitTypeFunctionDeclaration(TupulParser.TypeFunctionDeclarationContext ctx) {
+        ValueType[] returnType = ctx.universalFunctionModifiers().typeWithVoid().stream().map(TupulParser.TypeWithVoidContext::getText).map(currentScope::resolveType).collect(Collectors.toList()).toArray(new ValueType[ctx.universalFunctionModifiers().typeWithVoid().size()]);
+        ValueType[] argumentsTypes;
+        if(ctx.universalFunctionPost() == null || ctx.universalFunctionPost().universalPostIdentifierFuncDec() == null || ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments() == null || ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments().type() == null) {
+            argumentsTypes = new ValueType[0];
+        } else {
+            argumentsTypes = ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments().type().stream().map(TupulParser.TypeContext::getText).map(currentScope::resolveType).collect(Collectors.toList()).toArray(new ValueType[ctx.universalFunctionPost().universalPostIdentifierFuncDec().functionDecArguments().type().size()]);
+        }
+        FunctionSymbol functionSymbol = new FunctionSymbol.FunctionSymbolBuilder().addArguments(argumentsTypes).addTypes(returnType).addName(ctx.universalFunctionPost().universalPostIdentifierFuncDec().IDENTIFIER().getText()).build();
+        if(currentScope.resolveSymbol(functionSymbol.getStringRep()) != null) {
+            PrintLib.println("error, function: " + functionSymbol.getName() + " already defined", Color.RED);
+            return null;
+        }
+        currentScope.defineSymbol(functionSymbol.getStringRep(), functionSymbol);
+        return null;
+    }
+
+    @Override public Object visitSingleVarDec(TupulParser.SingleVarDecContext ctx) {
+        ValueType type = currentScope.resolveType(ctx.type().getText());
+        if(type == null) {
+            PrintLib.println("error, unknown type: " + ctx.type().IDENTIFIER().getText() + ", for variable: " + ctx.IDENTIFIER(0).getText());
+            return null;
+        }
+        for(int i = 0; i < ctx.IDENTIFIER().size(); i++) {
+            if(currentScope.resolveSymbol(ctx.IDENTIFIER(i).getText()) != null) {
+                PrintLib.println("error, identifier: " + ctx.IDENTIFIER(i) + " already declared as: " + currentScope.resolveSymbol(ctx.IDENTIFIER(i).getText()));
+                return null;
+            }
+            currentScope.defineSymbol(new VariableSymbol(ctx.IDENTIFIER().get(i).getText(), type));
+        }
+        return visitChildren(ctx);
+    }
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override public Object visitMultiVarDec(TupulParser.MultiVarDecContext ctx) {
         return visitChildren(ctx);
     }
 

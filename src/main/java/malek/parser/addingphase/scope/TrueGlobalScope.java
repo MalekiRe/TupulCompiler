@@ -1,21 +1,19 @@
 package malek.parser.addingphase.scope;
 
-import malek.parser.addingphase.symbol.AddingBuiltInType;
-import malek.parser.addingphase.symbol.AddingSymbol;
-import malek.parser.addingphase.symbol.AddingType;
-import malek.parser.addingphase.symbol.FunctionSymbol;
+import malek.parser.addingphase.symbol.*;
 
 import java.util.*;
 
 public class TrueGlobalScope implements AddingPhaseScope {
-    final Map<String, AddingType> types = new HashMap<>();
+    final Map<String, ValueType> types = new HashMap<>();
     final Map<String, AddingSymbol> symbols = new HashMap<>();
-    final String[] builtInTypes = {"int", "string", "char", "float", "double", "bool", "void"};
+    final Set<AddingPhaseScope> childScopes = new HashSet<>();
     final String scopeName = "TrueGlobal";
+    static final private String[] builtinValueTypes = {"int", "double", "float", "string", "char", "void"};
     static TrueGlobalScope trueGlobalScope = new TrueGlobalScope();
     protected TrueGlobalScope() {
-        Arrays.stream(builtInTypes).forEach((str) -> defineType(new AddingBuiltInType(str)));
-        defineSymbol(new FunctionSymbol.FunctionSymbolBuilder("print", types.get("void")).build(types.get("string")));
+        Arrays.stream(builtinValueTypes).map(ConcreteValueType::new).forEach(this::defineType);
+        defineSymbol(new FunctionSymbol.FunctionSymbolBuilder().addTypes(resolveType("void")).addArguments(resolveType("string")).addName("print").build());
     }
     public static TrueGlobalScope get() {
         return trueGlobalScope;
@@ -31,12 +29,17 @@ public class TrueGlobalScope implements AddingPhaseScope {
     }
 
     @Override
+    public Set<AddingPhaseScope> getChildScopes() {
+        return childScopes;
+    }
+
+    @Override
     public Map<String, AddingSymbol> getSymbols() {
         return symbols;
     }
 
     @Override
-    public Map<String, AddingType> getTypes() {
+    public Map<String, ValueType> getValueTypes() {
         return types;
     }
 

@@ -1,19 +1,17 @@
 package malek.parser.addingphase.symbol;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AddingSymbol {
-    String name;
-    AddingType[] types;
-    public AddingSymbol(String name, AddingType ...types) {
+    final String name;
+    final SymbolType type;
+    public AddingSymbol(String name, SymbolType type) {
         this.name = name;
-        this.types = types;
+        this.type = type;
     }
     public String getName() {
         return name;
     }
     public String toString() {
-        return getName();
+        return getSymbolType() + ":" +getName();
     }
+    public SymbolType getSymbolType() {return type;}
 }

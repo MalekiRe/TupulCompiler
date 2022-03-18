@@ -3,70 +3,76 @@ package malek.parser.addingphase.scope;
 import malek.buildtool.printlib.Color;
 import malek.buildtool.printlib.PrintLib;
 import malek.parser.addingphase.symbol.AddingSymbol;
-import malek.parser.addingphase.symbol.AddingType;
-import malek.parser.scope.Scope;
-import malek.parser.symbol.Symbol;
-import malek.parser.symbol.Type;
+import malek.parser.addingphase.symbol.SymbolType;
+import malek.parser.addingphase.symbol.ValueType;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 
 public interface AddingPhaseScope {
     String getScopeName();
     AddingPhaseScope getEnclosingScope();
+    Set<AddingPhaseScope> getChildScopes();
     Map<String, AddingSymbol> getSymbols();
-    Map<String, AddingType> getTypes();
+    Map<String, ValueType> getValueTypes();
+
+    default void addChildScope(AddingPhaseScope scope) {
+        this.getChildScopes().add(scope);
+    }
 
     default void defineSymbol(AddingSymbol symbol) {
-        if(this.getSymbols().containsKey(symbol.getName())) {
+        this.defineSymbol(symbol.getName(), symbol);
+    }
+    default void defineSymbol(String name, AddingSymbol symbol) {
+        if(this.getSymbols().containsKey(name)) {
             PrintLib.println("Error, symbol: " + symbol + " already defined", Color.RED);
         }
         this.getSymbols().put(symbol.getName(), symbol);
     }
-    default void defineType(AddingType type) {
-        if(this.getTypes().containsKey(type.getName())) {
+    default void defineType(ValueType type) {
+        if(this.getValueTypes().containsKey(type.getName())) {
             PrintLib.println("Error, type: " + type + " already defined", Color.RED);
         }
-        getTypes().put(type.getName(), type);
+        getValueTypes().put(type.getName(), type);
     }
     default AddingSymbol resolveSymbol(String name) {
         AddingPhaseScope currentScope = this;
         while(currentScope != null) {
-            if(getSymbols().containsKey(name)) {
-                return getSymbols().get(name);
+            if(currentScope.getSymbols().containsKey(name)) {
+                return currentScope.getSymbols().get(name);
             }
             currentScope = currentScope.getEnclosingScope();
         }
         return null;
     }
-    default AddingType resolveType(String name) {
+    default ValueType resolveType(String name) {
         AddingPhaseScope currentScope = this;
-        while(currentScope != null) {
-            if(getTypes().containsKey(name)) {
-                return getTypes().get(name);
-            }
+        while(true) {
+            if(currentScope == null)
+                return null;
+            if(currentScope.getValueTypes().containsKey(name))
+                return currentScope.getValueTypes().get(name);
             currentScope = currentScope.getEnclosingScope();
         }
-        return null;
     }
 
     default void defineSymbols(AddingSymbol ...symbols) {
         Arrays.stream(symbols).forEach(this::defineSymbol);
     }
 
-    default void defineTypes(AddingType ...types) {
+    default void defineTypes(SymbolType...types) {
         Arrays.stream(types).forEach(this::defineTypes);
     }
 
     default void printScope(int pos) {
         PrintLib.println(PrintLib.spacing(pos)+"Scope Name: " + getScopeName(), pos);
         PrintLib.println(PrintLib.spacing(pos)+"Types", pos);
-        getTypes().keySet().stream().forEach((str) -> PrintLib.println(PrintLib.spacing(pos+1)+str, pos));
+        getValueTypes().keySet().forEach((str) -> PrintLib.println(PrintLib.spacing(pos+1)+str, pos));
         PrintLib.println(PrintLib.spacing(pos)+"Symbols", pos);
-        getSymbols().keySet().stream().forEach((str) -> PrintLib.println(PrintLib.spacing(pos+1)+str, pos));
+        getSymbols().keySet().forEach((str) -> PrintLib.println(PrintLib.spacing(pos+1)+getSymbols().get(str), pos));
         PrintLib.println(PrintLib.spacing(pos)+"Children", pos+1);
-        getSymbols().values().stream().filter((addingSymbol -> addingSymbol instanceof AddingPhaseScope))
-                .map(addingSymbol -> (AddingPhaseScope)addingSymbol).forEach(addingPhaseScope -> addingPhaseScope.printScope(pos+1));
+        getChildScopes().forEach(addingPhaseScope -> addingPhaseScope.printScope(pos+1));
     }
 }

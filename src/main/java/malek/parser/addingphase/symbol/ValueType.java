@@ -1,5 +1,5 @@
 package malek.parser.addingphase.symbol;
 
-public interface AddingType {
+public interface ValueType {
     String getName();
 }

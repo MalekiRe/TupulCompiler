@@ -2,20 +2,25 @@ package malek.parser.addingphase.scope.nonglobals;
 
 import malek.parser.addingphase.scope.AddingPhaseScope;
 import malek.parser.addingphase.symbol.AddingSymbol;
-import malek.parser.addingphase.symbol.AddingType;
+import malek.parser.addingphase.symbol.SymbolType;
+import malek.parser.addingphase.symbol.ValueType;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class NonGlobalScope implements AddingPhaseScope {
     private final String scopeName;
     private final AddingPhaseScope enclosingScope;
+    private final Set<AddingPhaseScope> childScopes = new HashSet<>();
     private final Map<String, AddingSymbol> symbols = new HashMap<>();
-    private final Map<String, AddingType> types = new HashMap<>();
+    private final Map<String, ValueType> types = new HashMap<>();
 
     protected NonGlobalScope(String scopeName, AddingPhaseScope enclosingScope) {
         this.scopeName = scopeName;
         this.enclosingScope = enclosingScope;
+        this.enclosingScope.addChildScope(this);
     }
 
     @Override
@@ -34,7 +39,12 @@ public abstract class NonGlobalScope implements AddingPhaseScope {
     }
 
     @Override
-    public Map<String, AddingType> getTypes() {
+    public Map<String, ValueType> getValueTypes() {
         return types;
+    }
+
+    @Override
+    public Set<AddingPhaseScope> getChildScopes() {
+        return childScopes;
     }
 }

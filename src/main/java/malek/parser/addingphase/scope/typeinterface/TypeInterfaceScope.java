@@ -10,8 +10,8 @@ import java.util.List;
 public class TypeInterfaceScope extends NonGlobalTypeScope {
     final List<String> extendingInterfaces = new ArrayList<>();
 
-    protected TypeInterfaceScope(String typeName, String scopeName, AddingPhaseScope enclosingScope) {
-        super(typeName, scopeName, enclosingScope);
+    protected TypeInterfaceScope(String typeName, AddingPhaseScope enclosingScope) {
+        super(typeName, typeName, enclosingScope);
     }
 
     public void addExtendingInterface(String s) {
