@@ -1,56 +1,42 @@
 package malek.parser;
 
 import generated.malek.*;
+import malek.buildtool.printlib.Color;
+import malek.buildtool.printlib.PrintLib;
 import malek.parser.addingphase.ScopeAddingPhase;
+import malek.parser.addingphase.ScopeReferencePhase;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 public class TupulCompiler {
     public static String parsedFile = "";
-    public static boolean compileFile(InputStream stream) throws IOException {
-        TupulLexer lexer = new TupulLexer(CharStreams.fromStream(stream));
-        TupulParser parser = new TupulParser(new CommonTokenStream(lexer));
-        ParseTree tree = parser.allMultipleLinkedFiles();
-        parsedFile = tree.toStringTree(parser);
-        ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase();
-        scopeAddingPhase.visit(tree);
-        scopeAddingPhase.global.printScope();
+    public static boolean compileFile(Map<String, File> fileMap) throws IOException {
+        ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase(fileMap);
+        for(String s : fileMap.keySet()) {
+            PrintLib.println("lexing and parsing: " + s, Color.GREEN);
+            TupulParser parser = new TupulParser(new CommonTokenStream(new TupulLexer(CharStreams.fromPath(fileMap.get(s).toPath()))));
+            ParseTree tree = parser.file();
+            PrintLib.println("concrete syntax tree representation");
+            PrintLib.println(tree.toStringTree(parser));
+            scopeAddingPhase.visitFile(tree, s);
+            PrintLib.println("scope map");
+            scopeAddingPhase.global.getFileScope(s).printScope(0);
+        }
+        ScopeReferencePhase scopeReferencePhase = new ScopeReferencePhase(scopeAddingPhase);
+        for(String s : fileMap.keySet()) {
+            PrintLib.println("doing reference checking: " + s, Color.GREEN);
+            TupulParser parser = new TupulParser(new CommonTokenStream(new TupulLexer(CharStreams.fromPath(fileMap.get(s).toPath()))));
+            ParseTree tree = parser.file();
+            scopeReferencePhase.visitFile(tree, s);
+        }
         //scopeAddingPhase.global.printGlobalScope();
         return true;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String fileDir = ClassLoader.getSystemResource("myfile.tupul").getFile();
-        System.out.println(fileDir);
-        TupulLexer lexer = new TupulLexer(CharStreams.fromFileName(fileDir));
-        TupulParser parser = new TupulParser(new CommonTokenStream(lexer));
-        ParseTree tree = parser.allMultipleLinkedFiles();
-        System.out.println("hi");
-        System.out.println(tree.toStringTree(parser));
-        ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase();
-        scopeAddingPhase.visit(tree);
-//        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
-//        AddingPhase addingPhase = new AddingPhase();
-//        parseTreeWalker.walk(addingPhase, tree);
-//        RefPhase refPhase = new RefPhase(addingPhase.global, addingPhase.scopes);
-//        parseTreeWalker.walk(refPhase, tree);
-        //OutputPhase outputPhase = new OutputPhase(addingPhase.global, addingPhase.scopes);
-        //parseTreeWalker.walk(outputPhase, tree);
-        //OutputVisitor outputVisitor = new OutputVisitor();
-        //System.out.println(outputVisitor.visit(tree));
-//        final String dir = System.getProperty("user.dir");
-//        File newFileDir = new File(dir+"/src/main/resources/created.ll");
-//        FileWriter myWriter = new FileWriter(newFileDir.getAbsolutePath());
-//        myWriter.write(outputPhase.fileStringBuilder.toString());
-//        myWriter.close();
-//        Runtime.getRuntime().exec("llc created.ll");
-//        Runtime.getRuntime().exec("clang created.s");
-    }
-    public static void my(Object object) {
-
     }
 }

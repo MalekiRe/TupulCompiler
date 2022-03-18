@@ -125,17 +125,15 @@ public class Potato {
         }
         //TODO, make this work with local taters and internet taters.
         //Getting all the source files
-        List<File> files = new ArrayList<>();
-        addToFileList(srcDir, files);
-        println("files are : " + files.toString());
-        InputStream stream = createConcatInputStream(files);
-        if(stream == null) {
-            println("something has gone horribly wrong, possibly don't have permissions to read files in /src", RED);
-            return;
+        Map<String, File> fileMap = mapSrcDir(srcDir);
+        print("compiling for: ");
+        for(String s : fileMap.keySet()) {
+            print(s);
         }
+        println("");
         println("trying to compile!");
         try {
-            TupulCompiler.compileFile(stream);
+            TupulCompiler.compileFile(fileMap);
         } catch (IOException e) {
             e.printStackTrace();
             println(e.getMessage(), RED);
@@ -164,14 +162,33 @@ public class Potato {
             return new FileInputStream(files.get(iterator));
         }
     }
-    static void addToFileList(File directory, List<File> files) {
-        for(File file : directory.listFiles()) {
+    static Map<String, File> mapSrcDir(File srcDirectory) {
+        Map<String, File> fileList = new HashMap<>();
+        for(File file : srcDirectory.listFiles()) {
             if(file.isDirectory()) {
-                addToFileList(file, files);
+                Map<String, File> tempMap = recursiveFileMapper(file);
+                for(String s : tempMap.keySet()) {
+                    fileList.put(s, tempMap.get(s));
+                }
             } else {
-                files.add(file);
+                fileList.put(file.getName().substring(0, file.getName().lastIndexOf('.')), file);
             }
         }
+        return fileList;
+    }
+    static Map<String, File> recursiveFileMapper(File directory) {
+        Map<String, File> fileList = new HashMap<>();
+        for(File file : directory.listFiles()) {
+            if(file.isDirectory()) {
+                Map<String, File> tempMap = recursiveFileMapper(file);
+                for(String s : tempMap.keySet()) {
+                    fileList.put(directory.getName()+"."+s, tempMap.get(s));
+                }
+            } else {
+                fileList.put(directory.getName()+"."+file.getName().substring(0, file.getName().lastIndexOf('.')), file);
+            }
+        }
+        return fileList;
     }
 
     public static void createNewProject(String projectName, String authorName) throws IOException {
@@ -186,14 +203,14 @@ public class Potato {
         println("creating sub-folders and files");
 
         //Creating source
-        println("Creating Potato.toml and main.tpl");
+        println("Creating Potato.toml and Main.tpl");
         File potatoToml = myFile.toPath().resolve("Potato.toml").toFile();
         potatoToml.createNewFile();
         File srcDir = myFile.toPath().resolve("src").toFile();
         srcDir.mkdir();
         File libsDir = myFile.toPath().resolve("libs").toFile();
         libsDir.mkdir();
-        srcDir.toPath().resolve("main.tpl").toFile().createNewFile();
+        srcDir.toPath().resolve("Main.tpl").toFile().createNewFile();
 
         println("Writing default Potato.toml");
         Configuration.createDefaultConfiguration(potatoToml, projectName, authorName);

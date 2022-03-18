@@ -11,29 +11,23 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#allMultipleLinkedFiles}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TupulParser#file}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFile(TupulParser.FileContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#declarePackage}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeclarePackage(TupulParser.DeclarePackageContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link TupulParser#importSomething}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitImportSomething(TupulParser.ImportSomethingContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#fromDependency}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFromDependency(TupulParser.FromDependencyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree

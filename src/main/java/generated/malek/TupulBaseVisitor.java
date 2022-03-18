@@ -17,13 +17,6 @@ public class TupulBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitFile(TupulParser.FileContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -31,14 +24,14 @@ public class TupulBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDeclarePackage(TupulParser.DeclarePackageContext ctx) { return visitChildren(ctx); }
+	@Override public T visitImportSomething(TupulParser.ImportSomethingContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitImportSomething(TupulParser.ImportSomethingContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFromDependency(TupulParser.FromDependencyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

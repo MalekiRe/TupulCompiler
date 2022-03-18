@@ -16,18 +16,6 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFile(TupulParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -40,18 +28,6 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclarePackage(TupulParser.DeclarePackageContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDeclarePackage(TupulParser.DeclarePackageContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterImportSomething(TupulParser.ImportSomethingContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -59,6 +35,18 @@ public class TupulBaseListener implements TupulListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitImportSomething(TupulParser.ImportSomethingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFromDependency(TupulParser.FromDependencyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFromDependency(TupulParser.FromDependencyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

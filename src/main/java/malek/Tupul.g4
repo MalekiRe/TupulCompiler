@@ -66,20 +66,16 @@ IDENTIFIER              : [a-zA-Z]+[A-Za-z0-9]* ;
  * Parser Rules
  */
 
-allMultipleLinkedFiles          : file+
-                                ;
-
-
-file                            : declarePackage importSomething* (typeDeclaration | interfaceDeclaration)
-                                ;
-
-//Declare the thing
-declarePackage                  : 'file' (IDENTIFIER '.')* IDENTIFIER ';'
+file                            : fromDependency* importSomething* (typeDeclaration | interfaceDeclaration)
                                 ;
 
 
 //Import stuff
-importSomething                 : 'import' ( IDENTIFIER '.' )* IDENTIFIER ';'
+importSomething                 : 'import' STRING ';'
+                                ;
+
+//getting files from dependencies.
+fromDependency                  : 'from' STRING '{' (importSomething ';')* '}'
                                 ;
 
 //INTERFACE STUFF

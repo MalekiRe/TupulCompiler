@@ -58,6 +58,10 @@ public interface AddingPhaseScope {
         }
     }
 
+    default boolean thisScopeDirectlyContainsSymbol(String name) {
+        return getSymbols().containsKey(name);
+    }
+
     default void defineSymbols(AddingSymbol ...symbols) {
         Arrays.stream(symbols).forEach(this::defineSymbol);
     }

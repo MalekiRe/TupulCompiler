@@ -8,16 +8,6 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface TupulListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#allMultipleLinkedFiles}.
-	 * @param ctx the parse tree
-	 */
-	void enterAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TupulParser#allMultipleLinkedFiles}.
-	 * @param ctx the parse tree
-	 */
-	void exitAllMultipleLinkedFiles(TupulParser.AllMultipleLinkedFilesContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TupulParser#file}.
 	 * @param ctx the parse tree
 	 */
@@ -28,16 +18,6 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitFile(TupulParser.FileContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#declarePackage}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeclarePackage(TupulParser.DeclarePackageContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TupulParser#declarePackage}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeclarePackage(TupulParser.DeclarePackageContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link TupulParser#importSomething}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +27,16 @@ public interface TupulListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitImportSomething(TupulParser.ImportSomethingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#fromDependency}.
+	 * @param ctx the parse tree
+	 */
+	void enterFromDependency(TupulParser.FromDependencyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#fromDependency}.
+	 * @param ctx the parse tree
+	 */
+	void exitFromDependency(TupulParser.FromDependencyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree

@@ -1,34 +1,35 @@
 package malek.parser.addingphase.scope;
 
 import malek.parser.addingphase.scope.nonglobals.NonGlobalSymbolScope;
+import malek.parser.addingphase.symbol.FileLocation;
 import malek.parser.addingphase.symbol.SymbolBuiltInType;
 import malek.parser.addingphase.symbol.SymbolType;
 import malek.parser.util.FileStore;
 
 public class FileScope extends NonGlobalSymbolScope {
 
-    private final FileStore fileLocation;
-    private final FileStore[] importedThings;
+    private final FileLocation fileLocation;
+    private final FileLocation[] importedThings;
 
-    private FileScope(String scopeName, AddingPhaseScope enclosingScope, FileStore fileLocation, FileStore[] importedThings) {
+    private FileScope(String scopeName, AddingPhaseScope enclosingScope, FileLocation fileLocation, FileLocation[] importedThings) {
         super(scopeName, SymbolBuiltInType.FILE, enclosingScope);
         this.fileLocation = fileLocation;
         this.importedThings = importedThings;
     }
 
-    public FileStore getFileLocation() {
-        return fileLocation;
+    public String getFileLocation() {
+        return fileLocation.getFileLocation();
     }
 
-    public FileStore[] getImportedThings() {
+    public FileLocation[] getImportedThings() {
         return importedThings;
     }
 
     public static class FileScopeBuilder {
         String scopeName;
         AddingPhaseScope enclosingScope;
-        FileStore fileLocation;
-        FileStore[] importedThings;
+        FileLocation fileLocation;
+        FileLocation[] importedThings;
         public FileScopeBuilder addName(String scopeName) {
             this.scopeName = scopeName;
             return this;
@@ -37,16 +38,35 @@ public class FileScope extends NonGlobalSymbolScope {
             this.enclosingScope = enclosingScope;
             return this;
         }
-        public FileScopeBuilder addFileLocation(FileStore fileLocation) {
+        public FileScopeBuilder addFileLocation(FileLocation fileLocation) {
             this.fileLocation = fileLocation;
             return this;
         }
-        public FileScopeBuilder addImportedThings(FileStore ...importedThings) {
+        public FileScopeBuilder addImportedThings(FileLocation ...importedThings) {
             this.importedThings = importedThings;
             return this;
         }
         public FileScope build() {
             return new FileScope(scopeName, enclosingScope, fileLocation, importedThings);
+        }
+    }
+    public FileScope clone() {
+        FileScope clonedScope = new FileScope(getScopeName(), getEnclosingScope(), fileLocation, importedThings);
+        for(String s : getSymbols().keySet()) {
+            clonedScope.defineSymbol(s, getSymbols().get(s));
+        }
+        for(String s : getValueTypes().keySet()) {
+            clonedScope.defineType(getValueTypes().get(s));
+        }
+
+        return clonedScope;
+    }
+    public void copySymbolsAndTypes(FileScope scope) {
+        for(String s : scope.getSymbols().keySet()) {
+            this.defineSymbol(s, scope.getSymbols().get(s));
+        }
+        for(String s : scope.getValueTypes().keySet()) {
+            this.defineType(scope.getValueTypes().get(s));
         }
     }
 }

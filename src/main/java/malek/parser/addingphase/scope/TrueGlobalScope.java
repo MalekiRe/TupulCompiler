@@ -8,6 +8,7 @@ public class TrueGlobalScope implements AddingPhaseScope {
     final Map<String, ValueType> types = new HashMap<>();
     final Map<String, AddingSymbol> symbols = new HashMap<>();
     final Set<AddingPhaseScope> childScopes = new HashSet<>();
+    final Map<String, FileScope> fileScopeMap = new HashMap<>();
     final String scopeName = "TrueGlobal";
     static final private String[] builtinValueTypes = {"int", "double", "float", "string", "char", "void"};
     static TrueGlobalScope trueGlobalScope = new TrueGlobalScope();
@@ -43,4 +44,15 @@ public class TrueGlobalScope implements AddingPhaseScope {
         return types;
     }
 
+    public void addFileScope(FileScope fileScope) {
+        this.fileScopeMap.put(fileScope.getFileLocation(), fileScope);
+    }
+
+    public FileScope getFileScope(String fileLocation) {
+        return this.fileScopeMap.get(fileLocation);
+    }
+
+    public Set<String> getFileScopeNames() {
+        return fileScopeMap.keySet();
+    }
 }

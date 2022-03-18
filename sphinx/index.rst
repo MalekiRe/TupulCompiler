@@ -13,7 +13,7 @@ Welcome to Tupul's documentation!
    conditionals
    functions
    setTypes
-
+   keywords
 
 .. toctree::
    :maxdepth: 4
@@ -23,6 +23,7 @@ Welcome to Tupul's documentation!
    interface
    tags
    constructor
+
 
 Indices and tables
 ==================

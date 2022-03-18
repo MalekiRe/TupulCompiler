@@ -1,6 +1,5 @@
 package malek.parser.scope;
 
-import malek.parser.exception.ParsingException;
 import malek.parser.symbol.*;
 
 import java.text.ParseException;
