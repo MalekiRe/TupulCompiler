@@ -29,7 +29,8 @@ Therefore, super takes in the interface of which you are calling the method from
 
 Unless a method is private, one can call its parent method from the class using the super keyword, so, following from the 'type' example, this would be valid.
 
-.. code-block::Java
+.. code-block::
+
 
     interface I1 {
         void func(int i) {
