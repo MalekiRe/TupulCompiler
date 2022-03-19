@@ -50,6 +50,7 @@ Unless a method is private, one can call its parent method from the class using 
     }
 
 
+
 .. code-block:: Java
 
     type MyClass {
