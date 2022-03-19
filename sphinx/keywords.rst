@@ -49,7 +49,7 @@ Unless a method is private, one can call its parent method from the class using 
         }
     }
 
-
+So, this would be valid.
 
 .. code-block:: Java
 
