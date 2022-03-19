@@ -28,7 +28,7 @@ Even if you want to achieve some small functionality from some other class, you 
 A big difference between types and interfaces, is that types must 'resolve' conflicts in the interfaces they have extended.
 This is done by means of the 'resolve' keyword, and functions like so.
 
-.. code-block::Java
+.. code-block:: Java
 
     interface I1 {
         void func(int i) {
