@@ -26,3 +26,37 @@ Therefore, super takes in the interface of which you are calling the method from
         }
     }
 
+
+Unless a method is private, one can call its parent method from the class using the super keyword, so, following from the 'type' example, this would be valid.
+
+.. code-block::Java
+
+    interface I1 {
+        void func(int i) {
+          print(i-1);
+        }
+    }
+    interface I2 {
+        void func(int i) {
+          print(i+1);
+        }
+    }
+    type MyType extends I2, I1{
+        resolve(I2, I1)
+        void func(int i){
+          super(I2).func(i);
+          super(I1).func(i)
+        }
+    }
+
+.. code-block:: Java
+
+    type MyClass {
+        public void main() {
+            MyType myType;
+            myType.func(0);
+            myType.super(I1).func(0);
+            myType.super(I2).func(0);
+        }
+    }
+
