@@ -17,17 +17,23 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFile(TupulParser.FileContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#importSomething}.
+	 * Visit a parse tree produced by {@link TupulParser#fileImport}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitImportSomething(TupulParser.ImportSomethingContext ctx);
+	T visitFileImport(TupulParser.FileImportContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TupulParser#fromDependency}.
+	 * Visit a parse tree produced by {@link TupulParser#fromImport}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFromDependency(TupulParser.FromDependencyContext ctx);
+	T visitFromImport(TupulParser.FromImportContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#fileOrNormalID}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFileOrNormalID(TupulParser.FileOrNormalIDContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree
@@ -166,6 +172,12 @@ public interface TupulVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TupulParser#superCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSuperCall(TupulParser.SuperCallContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TupulParser#functionCall}.
 	 * @param ctx the parse tree

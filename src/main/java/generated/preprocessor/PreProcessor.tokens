@@ -1,0 +1,16 @@
+T__0=1
+T__1=2
+IMPORT=3
+FROM=4
+AS=5
+SEMICOLON=6
+IDENTIFIER=7
+FILE_IDENTIFIER=8
+WHITESPACE=9
+GARBAGE=10
+'{'=1
+'}'=2
+'import'=3
+'from'=4
+'as'=5
+';'=6

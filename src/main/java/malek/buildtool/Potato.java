@@ -2,6 +2,7 @@ package malek.buildtool;
 
 import malek.buildtool.config.Configuration;
 import malek.parser.TupulCompiler;
+import malek.preprocessor.PreProcess;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Potato {
         validArgumentsMap.put("update-version", Command.UPDATE_VERSION);
     }
     static String specifyArgsString = "specify arguments, can be 'build', 'run' or 'new'";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if(args.length == 0) {
             println(specifyArgsString, RED);
             return;
@@ -62,7 +63,7 @@ public class Potato {
         }
     }
 
-    public static void buildProject() {
+    public static void buildProject() throws IOException {
         File currentDir = new File(System.getProperty("user.dir"));
         Configuration potatoToml = null;
         File srcDir = null;
@@ -132,14 +133,17 @@ public class Potato {
         }
         println("");
         println("trying to compile!");
+        PreProcess.preProcessFiles(fileMap, buildDir);
+        /*
         try {
-            TupulCompiler.compileFile(fileMap);
+            TupulCompiler.compileFile(fileMap, buildDir);
         } catch (IOException e) {
             e.printStackTrace();
             println(e.getMessage(), RED);
             println("something has gone horribly wrong trying to compile the files", RED);
             return;
         }
+         */
         println("successfully compiled!", RAINBOW);
         println("concrete syntax tree representation!", GREEN);
         println(TupulCompiler.parsedFile);

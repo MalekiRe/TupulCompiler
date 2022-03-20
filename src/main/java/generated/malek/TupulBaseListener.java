@@ -28,25 +28,37 @@ public class TupulBaseListener implements TupulListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImportSomething(TupulParser.ImportSomethingContext ctx) { }
+	@Override public void enterFileImport(TupulParser.FileImportContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImportSomething(TupulParser.ImportSomethingContext ctx) { }
+	@Override public void exitFileImport(TupulParser.FileImportContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFromDependency(TupulParser.FromDependencyContext ctx) { }
+	@Override public void enterFromImport(TupulParser.FromImportContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFromDependency(TupulParser.FromDependencyContext ctx) { }
+	@Override public void exitFromImport(TupulParser.FromImportContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFileOrNormalID(TupulParser.FileOrNormalIDContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFileOrNormalID(TupulParser.FileOrNormalIDContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -323,6 +335,18 @@ public class TupulBaseListener implements TupulListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSuperCall(TupulParser.SuperCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSuperCall(TupulParser.SuperCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

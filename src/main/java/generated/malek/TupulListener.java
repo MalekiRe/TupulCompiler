@@ -18,25 +18,35 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitFile(TupulParser.FileContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#importSomething}.
+	 * Enter a parse tree produced by {@link TupulParser#fileImport}.
 	 * @param ctx the parse tree
 	 */
-	void enterImportSomething(TupulParser.ImportSomethingContext ctx);
+	void enterFileImport(TupulParser.FileImportContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#importSomething}.
+	 * Exit a parse tree produced by {@link TupulParser#fileImport}.
 	 * @param ctx the parse tree
 	 */
-	void exitImportSomething(TupulParser.ImportSomethingContext ctx);
+	void exitFileImport(TupulParser.FileImportContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#fromDependency}.
+	 * Enter a parse tree produced by {@link TupulParser#fromImport}.
 	 * @param ctx the parse tree
 	 */
-	void enterFromDependency(TupulParser.FromDependencyContext ctx);
+	void enterFromImport(TupulParser.FromImportContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#fromDependency}.
+	 * Exit a parse tree produced by {@link TupulParser#fromImport}.
 	 * @param ctx the parse tree
 	 */
-	void exitFromDependency(TupulParser.FromDependencyContext ctx);
+	void exitFromImport(TupulParser.FromImportContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#fileOrNormalID}.
+	 * @param ctx the parse tree
+	 */
+	void enterFileOrNormalID(TupulParser.FileOrNormalIDContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#fileOrNormalID}.
+	 * @param ctx the parse tree
+	 */
+	void exitFileOrNormalID(TupulParser.FileOrNormalIDContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#interfaceDeclaration}.
 	 * @param ctx the parse tree
@@ -267,6 +277,16 @@ public interface TupulListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCodeBlock(TupulParser.FunctionCodeBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TupulParser#superCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterSuperCall(TupulParser.SuperCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TupulParser#superCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitSuperCall(TupulParser.SuperCallContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#functionCall}.
 	 * @param ctx the parse tree

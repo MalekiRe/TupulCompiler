@@ -34,6 +34,8 @@ COMMA                   : ',' ;
 DOUBLE_OR               : '||' ;
 DOUBLE_AND              : '&&' ;
 THIS_KEYWORD            : 'this' ;
+SUPERSET_KEYWORD        : 'superset' ;
+SUPER_KEYWORD           : 'super' ;
 INT_TYPE                : 'int' ;
 FLOAT_TYPE              : 'float' ;
 DOUBLE_TYPE             : 'double' ;
@@ -48,45 +50,45 @@ UNION_KEYWORD           : 'union' ;
 INSTANCEOF_KEYWORD      : 'instanceof' ;
 SUBSET_KEYWORD          : 'subset' ;
 STRICT_SUBSET_KEYWORD   : 'strictsubset' ;
-SUPERSET_KEYWORD        : 'superset' ;
 TYPE                    : 'type' ;
 INTERFACE               : 'interface' ;
 EXTENDS                 : 'extends' ;
 OVERRIDE                : 'override' ;
 IMPLEMENT               : 'implement' ;
 IMPORT                  : 'import' ;
+AS                      : 'as' ;
+FROM                    : 'from' ;
 PUBLIC                  : 'public' ;
 PRIVATE                 : 'private' ;
 CHAR                    : '\''[A-Za-z0-9]'\'' ;
 STRING                  : '"' (~[\r\n"] | '""')* '"' ;
-WHITESPACE              : [ \t\r\n]+ -> skip ;
+WHITESPACE              : [ \t\r\n]+ -> channel(HIDDEN) ;
+FILE_IDENTIFIER         : '\''(.)+?'\'';
 IDENTIFIER              : [a-zA-Z]+[A-Za-z0-9]* ;
-
 /*
  * Parser Rules
  */
 
-file                            : fromDependency* importSomething* (typeDeclaration | interfaceDeclaration)
+file                            : fromImport* fileImport* (typeDeclaration | interfaceDeclaration)
                                 ;
 
-
-//Import stuff
-importSomething                 : 'import' STRING ';'
+fileImport                      : IMPORT FILE_IDENTIFIER AS IDENTIFIER ';'
                                 ;
 
-//getting files from dependencies.
-fromDependency                  : 'from' STRING '{' (importSomething ';')* '}'
+fromImport                      : FROM FILE_IDENTIFIER '{' fileImport+ '}'
+                                ;
+
+fileOrNormalID                  : FILE_IDENTIFIER | IDENTIFIER
                                 ;
 
 //INTERFACE STUFF
-
 interfaceDeclaration            : 'interface' IDENTIFIER ('extends' interfaceExtensions)? interfaceCodeBlock
                                 ;
 
-interfaceExtensions             : IDENTIFIER ( interfaceExtensionName )*
+interfaceExtensions             : fileOrNormalID ( interfaceExtensionName )*
                                 ;
 
-interfaceExtensionName          : ',' IDENTIFIER
+interfaceExtensionName          : ',' fileOrNormalID
                                 ;
 
 interfaceCodeBlock              : '{' (interfaceCodeBlock)* '}'
@@ -98,7 +100,7 @@ interfaceCodeBlock              : '{' (interfaceCodeBlock)* '}'
                                 ;
 
 
-interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalFunctionPost
+interfaceFunctionDeclaration    : ('override' | 'implement') universalFunctionModifiers fileOrNormalID '::' universalFunctionPost
                                 | universalFunctionPost
                                 ;
 
@@ -117,7 +119,7 @@ typeCodeBlock                   : '{' (typeCodeBlock)* '}'
                                 | variableDeclaration ';'
                                 ;
 
-typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers IDENTIFIER '::' universalFunctionPost
+typeFunctionDeclaration         : ('override' | 'implement') universalFunctionModifiers fileOrNormalID '::' universalFunctionPost
                                 | universalFunctionModifiers universalFunctionPost
                                 ;
 
@@ -179,11 +181,16 @@ functionCodeBlock               : '{' functionCodeBlock* '}'
                                 | typeDeclaration ';'
                                 | interfaceDeclaration ';'
                                 | functionWithinFunctionDec ';'
+                                | superCall ';'
                                 | ';'
                                 // TODO::finish this off
                                 ;
 
+superCall                       : SUPER_KEYWORD '(' IDENTIFIER ')'
+                                ;
+
 functionCall                    : IDENTIFIER '(' functionCallArguments? ')'
+                                | THIS_KEYWORD '.' functionCall
                                 ;
 
 //Logic Control Stuff

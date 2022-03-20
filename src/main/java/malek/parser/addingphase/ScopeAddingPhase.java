@@ -58,11 +58,11 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
         fileScopeBuilder.addFileLocation(new FileLocation(currentFileLocation));
         fileScopeBuilder.addName(currentFileLocation);
         List<FileLocation> importedLocations = new ArrayList<>();
-        for(TupulParser.ImportSomethingContext importSomethingContext : ctx.importSomething()) {
-            String str = importSomethingContext.STRING().getText();
-            str = str.substring(1, str.length()-1);
-            importedLocations.add(new FileLocation(str));
-        }
+//        for(TupulParser.ImportSomethingContext importSomethingContext : ctx.importSomething()) {
+//            String str = importSomethingContext.STRING().getText();
+//            str = str.substring(1, str.length()-1);
+//            importedLocations.add(new FileLocation(str));
+//        }
         fileScopeBuilder.addImportedThings(importedLocations.toArray(new FileLocation[0]));
         FileScope fileScope = fileScopeBuilder.build();
         global.addFileScope(fileScope);

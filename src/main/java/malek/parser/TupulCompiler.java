@@ -9,15 +9,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
+
+import static malek.preprocessor.PreProcess.preProcessFiles;
 
 public class TupulCompiler {
     public static String parsedFile = "";
-    public static boolean compileFile(Map<String, File> fileMap) throws IOException {
+    public static boolean compileFile(Map<String, File> fileMap, File buildDir) throws IOException {
         ScopeAddingPhase scopeAddingPhase = new ScopeAddingPhase(fileMap);
         for(String s : fileMap.keySet()) {
             PrintLib.println("lexing and parsing: " + s, Color.GREEN);
@@ -39,4 +38,5 @@ public class TupulCompiler {
         //scopeAddingPhase.global.printGlobalScope();
         return true;
     }
+
 }
