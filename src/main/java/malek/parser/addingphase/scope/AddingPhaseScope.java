@@ -64,12 +64,39 @@ public interface AddingPhaseScope {
     default ValueType resolveType(String name) {
         AddingPhaseScope currentScope = this;
         while(true) {
-            if(currentScope == null)
+            if(currentScope == null) {
                 return null;
-            if(currentScope.getValueTypes().containsKey(name))
+            }
+            if(currentScope.getValueTypes().containsKey(name)) {
                 return currentScope.getValueTypes().get(name);
+            }
+            if(currentScope.getValueTypes().containsKey(name.replace(currentScope.getScopeName()+".", "")))
+                return currentScope.getValueTypes().get(name.replace(currentScope.getScopeName()+".", ""));
+            for(AddingPhaseScope scope : currentScope.getChildScopes().values()) {
+                ValueType t = scope.resolveTypeNoUp(name, scope);
+                if(t != null) {
+                    return t;
+                }
+            }
+//            if(currentScope.getEnclosingScope() != null)
+//                System.out.println("going up a level from: " + currentScope.getScopeName() + " to: " + currentScope.getEnclosingScope().getScopeName());
+//            else
+//                System.out.println("going up a level from True Global to null");
             currentScope = currentScope.getEnclosingScope();
         }
+    }
+    default ValueType resolveTypeNoUp(String name, AddingPhaseScope currentScope) {
+        if(currentScope.getValueTypes().containsKey(name))
+            return currentScope.getValueTypes().get(name);
+        if(currentScope.getValueTypes().containsKey(name.replace(currentScope.getScopeName()+".", "")))
+            return currentScope.getValueTypes().get(name.replace(currentScope.getScopeName()+".", ""));
+        for(AddingPhaseScope scope : getChildScopes().values()) {
+            ValueType t = scope.resolveTypeNoUp(name, scope);
+            if(t != null) {
+                return t;
+            }
+        }
+        return null;
     }
 
     default boolean thisScopeDirectlyContainsSymbol(String name) {

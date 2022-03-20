@@ -46,7 +46,9 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
         this.currentScope = scope;
     }
     void resetCurrentScope() {
+
         this.currentScope = currentScope.getEnclosingScope();
+
     }
     public void visitFile(ParseTree tree, String s) {
         this.currentFileLocation = s;
@@ -65,8 +67,8 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
 
     @Override public Object visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
         currentScope.defineSymbol(getTypeSymbol(ctx));
-        currentScope.defineType(new ConcreteValueType(ctx.IDENTIFIER().getText()));
-        setCurrentScope(new TypeScope(ctx.IDENTIFIER().getText(), currentScope));
+        currentScope.defineType(new ConcreteValueType(ctx.fileOrNormalID().getText()));
+        setCurrentScope(new TypeScope(ctx.fileOrNormalID().getText(), currentScope));
         //Don't know how to deal with having extended interfaces yet.
         //For now, only adding it if it isn't overrided or implemented.
         visitTypeCodeBlock(ctx.typeCodeBlock());
@@ -76,7 +78,7 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
 
     @Override public Object visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx) {
         currentScope.defineSymbol(getInterfaceSymbol(ctx));
-        setCurrentScope(new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope));
+        setCurrentScope(new InterfaceScope(ctx.fileOrNormalID().getText(), currentScope));
         //Don't know how to deal with having extended interfaces yet.
         //For now, only adding it if it isn't overrided or implemented.
         visitInterfaceCodeBlock(ctx.interfaceCodeBlock());
@@ -85,11 +87,11 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
     }
 
     private AddingSymbol getInterfaceSymbol(TupulParser.InterfaceDeclarationContext interfaceDeclaration) {
-        return new AddingSymbol(interfaceDeclaration.IDENTIFIER().getText(), SymbolBuiltInType.INTERFACE);
+        return new AddingSymbol(interfaceDeclaration.fileOrNormalID().getText(), SymbolBuiltInType.INTERFACE);
     }
 
     private AddingSymbol getTypeSymbol(TupulParser.TypeDeclarationContext typeDeclaration) {
-        return new AddingSymbol(typeDeclaration.IDENTIFIER().getText(), SymbolBuiltInType.TYPE);
+        return new AddingSymbol(typeDeclaration.fileOrNormalID().getText(), SymbolBuiltInType.TYPE);
     }
 
     @Override public Object visitInterfaceFunctionDeclaration(TupulParser.InterfaceFunctionDeclarationContext ctx) {

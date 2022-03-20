@@ -446,7 +446,9 @@ public class TupulParser extends Parser {
 
 	public static class InterfaceDeclarationContext extends ParserRuleContext {
 		public TerminalNode INTERFACE() { return getToken(TupulParser.INTERFACE, 0); }
-		public TerminalNode IDENTIFIER() { return getToken(TupulParser.IDENTIFIER, 0); }
+		public FileOrNormalIDContext fileOrNormalID() {
+			return getRuleContext(FileOrNormalIDContext.class,0);
+		}
 		public InterfaceCodeBlockContext interfaceCodeBlock() {
 			return getRuleContext(InterfaceCodeBlockContext.class,0);
 		}
@@ -483,7 +485,7 @@ public class TupulParser extends Parser {
 			setState(132);
 			match(INTERFACE);
 			setState(133);
-			match(IDENTIFIER);
+			fileOrNormalID();
 			setState(136);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -887,7 +889,9 @@ public class TupulParser extends Parser {
 
 	public static class TypeDeclarationContext extends ParserRuleContext {
 		public TerminalNode TYPE() { return getToken(TupulParser.TYPE, 0); }
-		public TerminalNode IDENTIFIER() { return getToken(TupulParser.IDENTIFIER, 0); }
+		public FileOrNormalIDContext fileOrNormalID() {
+			return getRuleContext(FileOrNormalIDContext.class,0);
+		}
 		public TypeCodeBlockContext typeCodeBlock() {
 			return getRuleContext(TypeCodeBlockContext.class,0);
 		}
@@ -924,7 +928,7 @@ public class TupulParser extends Parser {
 			setState(180);
 			match(TYPE);
 			setState(181);
-			match(IDENTIFIER);
+			fileOrNormalID();
 			setState(184);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -4565,12 +4569,12 @@ public class TupulParser extends Parser {
 		"\7S\2\2vw\7L\2\2wx\t\2\2\2xy\7!\2\2y\5\3\2\2\2z{\7M\2\2{|\7S\2\2|~\7$"+
 		"\2\2}\177\5\4\3\2~}\3\2\2\2\177\u0080\3\2\2\2\u0080~\3\2\2\2\u0080\u0081"+
 		"\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083\7%\2\2\u0083\7\3\2\2\2\u0084"+
-		"\u0085\t\2\2\2\u0085\t\3\2\2\2\u0086\u0087\7G\2\2\u0087\u008a\7T\2\2\u0088"+
-		"\u0089\7H\2\2\u0089\u008b\5\f\7\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2"+
-		"\2\2\u008b\u008c\3\2\2\2\u008c\u008d\5\20\t\2\u008d\13\3\2\2\2\u008e\u0092"+
-		"\5\b\5\2\u008f\u0091\5\16\b\2\u0090\u008f\3\2\2\2\u0091\u0094\3\2\2\2"+
-		"\u0092\u0090\3\2\2\2\u0092\u0093\3\2\2\2\u0093\r\3\2\2\2\u0094\u0092\3"+
-		"\2\2\2\u0095\u0096\7\62\2\2\u0096\u0097\5\b\5\2\u0097\17\3\2\2\2\u0098"+
+		"\u0085\t\2\2\2\u0085\t\3\2\2\2\u0086\u0087\7G\2\2\u0087\u008a\5\b\5\2"+
+		"\u0088\u0089\7H\2\2\u0089\u008b\5\f\7\2\u008a\u0088\3\2\2\2\u008a\u008b"+
+		"\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008d\5\20\t\2\u008d\13\3\2\2\2\u008e"+
+		"\u0092\5\b\5\2\u008f\u0091\5\16\b\2\u0090\u008f\3\2\2\2\u0091\u0094\3"+
+		"\2\2\2\u0092\u0090\3\2\2\2\u0092\u0093\3\2\2\2\u0093\r\3\2\2\2\u0094\u0092"+
+		"\3\2\2\2\u0095\u0096\7\62\2\2\u0096\u0097\5\b\5\2\u0097\17\3\2\2\2\u0098"+
 		"\u009c\7$\2\2\u0099\u009b\5\20\t\2\u009a\u0099\3\2\2\2\u009b\u009e\3\2"+
 		"\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d\u009f\3\2\2\2\u009e"+
 		"\u009c\3\2\2\2\u009f\u00a8\7%\2\2\u00a0\u00a1\5T+\2\u00a1\u00a2\7!\2\2"+
@@ -4581,7 +4585,7 @@ public class TupulParser extends Parser {
 		"\u00ac\5\b\5\2\u00ac\u00ad\7\3\2\2\u00ad\u00ae\5\34\17\2\u00ae\u00b1\3"+
 		"\2\2\2\u00af\u00b1\5\34\17\2\u00b0\u00a9\3\2\2\2\u00b0\u00af\3\2\2\2\u00b1"+
 		"\23\3\2\2\2\u00b2\u00b3\5 \21\2\u00b3\u00b4\5(\25\2\u00b4\u00b5\7!\2\2"+
-		"\u00b5\25\3\2\2\2\u00b6\u00b7\7F\2\2\u00b7\u00ba\7T\2\2\u00b8\u00b9\7"+
+		"\u00b5\25\3\2\2\2\u00b6\u00b7\7F\2\2\u00b7\u00ba\5\b\5\2\u00b8\u00b9\7"+
 		"H\2\2\u00b9\u00bb\5\f\7\2\u00ba\u00b8\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb"+
 		"\u00bc\3\2\2\2\u00bc\u00bd\5\30\r\2\u00bd\27\3\2\2\2\u00be\u00c2\7$\2"+
 		"\2\u00bf\u00c1\5\30\r\2\u00c0\u00bf\3\2\2\2\u00c1\u00c4\3\2\2\2\u00c2"+

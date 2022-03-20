@@ -18,11 +18,11 @@ public class PreProcess {
     public static Map<String, String> preProcessFiles(Map<String, File> fileMap, File buildDir) throws IOException {
         Map<String, String> processedFiles = new HashMap<>();
         for(String filePath : fileMap.keySet()) {
-            processedFiles.put(filePath, processFile(fileMap.get(filePath), new File(buildDir, filePath+".tpl")));
+            processedFiles.put(filePath, processFile(filePath, fileMap.get(filePath), new File(buildDir, filePath+".tpl")));
         }
         return processedFiles;
     }
-    private static String processFile(File source, File outputFile) throws IOException {
+    private static String processFile(String name, File source, File outputFile) throws IOException {
         //Get strings to replace
         PreProcessorLexer lexer = new PreProcessorLexer(CharStreams.fromFileName(source.getAbsolutePath()));
         PreProcessListener listener = new PreProcessListener();
@@ -36,13 +36,23 @@ public class PreProcess {
         outputFile.createNewFile();
         TupulLexer tupulLexer = new TupulLexer(CharStreams.fromFileName(source.getAbsolutePath()));
         CommonTokenStream tokenStream = new CommonTokenStream(tupulLexer);
+        TupulParser tupulParser = new TupulParser(new CommonTokenStream(new TupulLexer(CharStreams.fromFileName(source.getAbsolutePath()))));
         tokenStream.fill();
+        TupulParser.FileContext fd = tupulParser.file();
+        TupulParser.TypeDeclarationContext td = fd.typeDeclaration();
+        if(td != null) {
+            System.out.println("name is: " + name);
+            listener.getMap().put(td.children.get(1).getText(), "'" + name + "'");
+        } else {
+            listener.getMap().put(fd.interfaceDeclaration().children.get(1).getText(), "'" + name + "'");
+        }
         TokenStreamRewriter tokenStreamRewriter = new TokenStreamRewriter(tokenStream);
         tokenStream.getTokens(0, tokenStream.size()-1, TupulLexer.IDENTIFIER).forEach(token -> {
             if(listener.getMap().containsKey(token.getText())) {
                 tokenStreamRewriter.replace(token, listener.getMap().get(token.getText()));
             }
         });
+        System.out.println("REWRITEN: " + tokenStreamRewriter.getText());
         return tokenStreamRewriter.getText();
     }
 }

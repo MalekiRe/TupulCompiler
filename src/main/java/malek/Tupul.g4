@@ -82,7 +82,7 @@ fileOrNormalID                  : FILE_IDENTIFIER | IDENTIFIER
                                 ;
 
 //INTERFACE STUFF
-interfaceDeclaration            : 'interface' IDENTIFIER ('extends' interfaceExtensions)? interfaceCodeBlock
+interfaceDeclaration            : 'interface' fileOrNormalID ('extends' interfaceExtensions)? interfaceCodeBlock
                                 ;
 
 interfaceExtensions             : fileOrNormalID ( interfaceExtensionName )*
@@ -109,7 +109,7 @@ interfaceAbstractFuncDec        : universalFunctionModifiers universalPostIdenti
 
 //TYPE FILE STUFF
 
-typeDeclaration                 : 'type' IDENTIFIER ('extends' interfaceExtensions)? typeCodeBlock
+typeDeclaration                 : 'type' fileOrNormalID ('extends' interfaceExtensions)? typeCodeBlock
                                 ;
 
 typeCodeBlock                   : '{' (typeCodeBlock)* '}'

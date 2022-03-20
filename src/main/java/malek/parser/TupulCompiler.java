@@ -37,7 +37,8 @@ public class TupulCompiler {
             ParseTree tree = parser.file();
             scopeReferencePhase.visitFile(tree, s);
         }
-        scopeAddingPhase.global.printScope();
+        System.out.println("now for the C version");
+        System.out.println(scopeReferencePhase.bufferMap.get(scopeReferencePhase.global.getScopeName()));
         return true;
     }
 

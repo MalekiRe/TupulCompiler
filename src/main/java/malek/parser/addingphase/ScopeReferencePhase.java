@@ -2,24 +2,22 @@ package malek.parser.addingphase;
 
 import generated.malek.TupulBaseVisitor;
 import generated.malek.TupulParser;
-import malek.buildtool.printlib.Color;
 import malek.buildtool.printlib.PrintLib;
 import malek.parser.addingphase.scope.AddingPhaseScope;
-import malek.parser.addingphase.scope.FileScope;
 import malek.parser.addingphase.scope.PerRunGlobalScope;
-import malek.parser.addingphase.scope.function.FunctionScope;
-import malek.parser.addingphase.symbol.FileLocation;
+import malek.parser.addingphase.symbol.ConcreteValueType;
 import malek.parser.addingphase.symbol.FunctionSymbol;
 import malek.parser.addingphase.symbol.ValueType;
 import malek.parser.addingphase.symbol.VariableSymbol;
-import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static malek.buildtool.printlib.Color.RED;
 
 public class ScopeReferencePhase extends TupulBaseVisitor<Object> {
     public ParseTreeProperty<AddingPhaseScope> scopes;
@@ -27,9 +25,10 @@ public class ScopeReferencePhase extends TupulBaseVisitor<Object> {
     AddingPhaseScope currentScope;
     Map<String, File> fileMap;
     String currentFileLocation;
+    public Map<String, StringBuffer> bufferMap = new HashMap<>();
     public ScopeReferencePhase(ScopeAddingPhase scopeAddingPhase) {
         this.global = scopeAddingPhase.global;
-        this.currentScope = global;
+        setCurrentScope(global);
         this.scopes = scopeAddingPhase.scopes;
     }
     public void visitFile(ParseTree tree, String s) {
@@ -44,24 +43,33 @@ public class ScopeReferencePhase extends TupulBaseVisitor<Object> {
 //        return copiedScope;
 //    }
     void setCurrentScope(AddingPhaseScope scope) {
+        if(!bufferMap.containsKey(scope.getScopeName())) {
+            bufferMap.put(scope.getScopeName(), new StringBuffer());
+        }
         this.currentScope = scope;
     }
     void resetCurrentScope() {
+        bufferMap.get(currentScope.getEnclosingScope().getScopeName()).append(bufferMap.get(currentScope.getScopeName()));
         this.currentScope = currentScope.getEnclosingScope();
     }
     @Override public Object visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
         if(currentScope == global) {
-            setCurrentScope(currentScope.getChildScope(currentFileLocation));
+            setCurrentScope(currentScope.getChildScope("'" + currentFileLocation + "'"));
         } else {
-            setCurrentScope(currentScope.getChildScope(ctx.IDENTIFIER().getText()));
+            setCurrentScope(currentScope.getChildScope(ctx.fileOrNormalID().getText()));
         }
         System.out.println("Our current scope in this thingy is : " + currentScope.getScopeName());
+        appendOutput("struct " + currentScope.getScopeName() + " {");
         visitChildren(ctx);
+        appendOutput(" }");
         resetCurrentScope();
         return null;
     }
     @Override public Object visitSingleVarAssignment(TupulParser.SingleVarAssignmentContext ctx) {
         PrintLib.println("assigning variable: " + (currentScope.resolveSymbol(ctx.IDENTIFIER().getText())) + " to: " + ctx.finalValue().getText());
+        appendOutput(convertToCCCompatibleIdentifier(currentScope.resolveSymbol(ctx.IDENTIFIER().getText()).toString()));
+        appendOutput("=");
+        appendOutput(ctx.finalValue().getText());
         visitChildren(ctx);
         return null;
     }
@@ -78,6 +86,31 @@ public class ScopeReferencePhase extends TupulBaseVisitor<Object> {
         visitFunctionCodeBlock(ctx.universalFunctionPost().functionCodeBlock());
         resetCurrentScope();
         return null;
+    }
+    @Override public Object visitSingleVarDec(TupulParser.SingleVarDecContext ctx) {
+        String typeStr = ctx.type().getText();
+        System.out.println("type: " + typeStr);
+        System.out.println(currentScope.resolveType(typeStr));
+        String type = currentScope.resolveType(typeStr).toString();
+        for(int i = 0; i < ctx.IDENTIFIER().size(); i++) {
+            appendOutput(type + " " + currentScope.resolveSymbol(ctx.IDENTIFIER().get(i).getText()).toString() + ";");
+            if(ctx.finalValue(i) != null) {
+                appendOutput(currentScope.resolveSymbol(ctx.IDENTIFIER().get(i).getText()) + "=" + ctx.finalValue(i).getText());
+            }
+        }
+        return null;
+    }
+    void appendOutput(String s) {
+        bufferMap.get(currentScope.getScopeName()).append(convertToCCCompatibleIdentifier(s));
+    }
+
+    String convertToCCCompatibleIdentifier(String id) {
+        id = id.replaceAll("\\.", "_DOT_");
+        id = id.replaceAll(":", "_COLON_");
+        id = id.replaceAll(";", "_SEMICOLON_");
+        id = id.replaceAll("'", "_SINGLE_QUOTE_");
+        id = id.replaceAll("-", "_DASH_");
+        return id;
     }
 
 //    @Override public Object visitFile(TupulParser.FileContext ctx) {
