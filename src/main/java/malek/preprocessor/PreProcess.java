@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class PreProcess {
-    public static Set<String> preProcessFiles(Map<String, File> fileMap, File buildDir) throws IOException {
-        Set<String> processedFiles = new HashSet<>();
+    public static Map<String, String> preProcessFiles(Map<String, File> fileMap, File buildDir) throws IOException {
+        Map<String, String> processedFiles = new HashMap<>();
         for(String filePath : fileMap.keySet()) {
-            processedFiles.add(processFile(fileMap.get(filePath), new File(buildDir, filePath+".tpl")));
+            processedFiles.put(filePath, processFile(fileMap.get(filePath), new File(buildDir, filePath+".tpl")));
         }
         return processedFiles;
     }

@@ -13,7 +13,7 @@ import java.util.Set;
 public abstract class NonGlobalScope implements AddingPhaseScope {
     private final String scopeName;
     private final AddingPhaseScope enclosingScope;
-    private final Set<AddingPhaseScope> childScopes = new HashSet<>();
+    private final Map<String, AddingPhaseScope> childScopes = new HashMap<>();
     private final Map<String, AddingSymbol> symbols = new HashMap<>();
     private final Map<String, ValueType> types = new HashMap<>();
 
@@ -44,7 +44,7 @@ public abstract class NonGlobalScope implements AddingPhaseScope {
     }
 
     @Override
-    public Set<AddingPhaseScope> getChildScopes() {
+    public Map<String, AddingPhaseScope> getChildScopes() {
         return childScopes;
     }
 }

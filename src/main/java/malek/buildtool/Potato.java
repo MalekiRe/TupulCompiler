@@ -133,8 +133,8 @@ public class Potato {
         }
         println("");
         println("trying to compile!");
-        PreProcess.preProcessFiles(fileMap, buildDir);
-        /*
+        //PreProcess.preProcessFiles(fileMap, buildDir);
+
         try {
             TupulCompiler.compileFile(fileMap, buildDir);
         } catch (IOException e) {
@@ -143,7 +143,7 @@ public class Potato {
             println("something has gone horribly wrong trying to compile the files", RED);
             return;
         }
-         */
+
         println("successfully compiled!", RAINBOW);
         println("concrete syntax tree representation!", GREEN);
         println(TupulCompiler.parsedFile);

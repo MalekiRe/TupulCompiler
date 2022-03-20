@@ -208,6 +208,54 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitUniversalPostIdentifierFuncDec(TupulParser.UniversalPostIdentifierFuncDecContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code normalFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterNormalFunctionCall(TupulParser.NormalFunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code normalFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitNormalFunctionCall(TupulParser.NormalFunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code staticFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterStaticFunctionCall(TupulParser.StaticFunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code staticFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitStaticFunctionCall(TupulParser.StaticFunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code thisFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterThisFunctionCall(TupulParser.ThisFunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code thisFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitThisFunctionCall(TupulParser.ThisFunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code instanceFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstanceFunctionCall(TupulParser.InstanceFunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code instanceFunctionCall}
+	 * labeled alternative in {@link TupulParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstanceFunctionCall(TupulParser.InstanceFunctionCallContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TupulParser#functionTagOperation}.
 	 * @param ctx the parse tree
 	 */
@@ -287,16 +335,6 @@ public interface TupulListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSuperCall(TupulParser.SuperCallContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TupulParser#functionCall}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctionCall(TupulParser.FunctionCallContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TupulParser#functionCall}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctionCall(TupulParser.FunctionCallContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#whileLoop}.
 	 * @param ctx the parse tree
@@ -398,15 +436,53 @@ public interface TupulListener extends ParseTreeListener {
 	 */
 	void exitFinalValue(TupulParser.FinalValueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TupulParser#varID}.
+	 * Enter a parse tree produced by the {@code localVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarID(TupulParser.VarIDContext ctx);
+	void enterLocalVariableInstance(TupulParser.LocalVariableInstanceContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TupulParser#varID}.
+	 * Exit a parse tree produced by the {@code localVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarID(TupulParser.VarIDContext ctx);
+	void exitLocalVariableInstance(TupulParser.LocalVariableInstanceContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code thisVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void enterThisVariableInstance(TupulParser.ThisVariableInstanceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code thisVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void exitThisVariableInstance(TupulParser.ThisVariableInstanceContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code staticVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void enterStaticVariableInstance(TupulParser.StaticVariableInstanceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code staticVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void exitStaticVariableInstance(TupulParser.StaticVariableInstanceContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code instanceVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstanceVariableInstance(TupulParser.InstanceVariableInstanceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code instanceVariableInstance}
+	 * labeled alternative in {@link TupulParser#variableInstance}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstanceVariableInstance(TupulParser.InstanceVariableInstanceContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TupulParser#intermediateValue}.
 	 * @param ctx the parse tree

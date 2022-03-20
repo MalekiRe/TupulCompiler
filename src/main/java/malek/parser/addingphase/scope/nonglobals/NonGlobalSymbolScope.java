@@ -12,7 +12,7 @@ import java.util.Set;
 
 public abstract class NonGlobalSymbolScope extends AddingSymbol implements AddingPhaseScope {
     private final AddingPhaseScope enclosingScope;
-    private final Set<AddingPhaseScope> addingPhaseScopes = new HashSet<>();
+    private final Map<String, AddingPhaseScope> addingPhaseScopes = new HashMap<>();
     private final Map<String, AddingSymbol> symbols = new HashMap<>();
     private final Map<String, ValueType> types = new HashMap<>();
 
@@ -43,7 +43,7 @@ public abstract class NonGlobalSymbolScope extends AddingSymbol implements Addin
     }
 
     @Override
-    public Set<AddingPhaseScope> getChildScopes() {
+    public Map<String, AddingPhaseScope> getChildScopes() {
         return addingPhaseScopes;
     }
 }

@@ -61,16 +61,10 @@ public class FunctionSymbol extends AddingSymbol {
     }
     public String getStringRep() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < returnTypes.length; i++) {
-            ValueType valueType = returnTypes[i];
-            s.append(valueType.getName());
-            if((i+1 < returnTypes.length)) {
-                s.append(";");
-            }
-        }
-        s.append(":");
         s.append(getName());
-        s.append(":");
+        if(argumentTypes.length > 0) {
+            s.append(":");
+        }
         for (int i = 0; i < argumentTypes.length; i++) {
             ValueType valueType = argumentTypes[i];
             s.append(valueType.getName());

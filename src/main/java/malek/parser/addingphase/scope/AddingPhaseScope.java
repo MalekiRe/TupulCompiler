@@ -14,12 +14,26 @@ import java.util.Set;
 public interface AddingPhaseScope {
     String getScopeName();
     AddingPhaseScope getEnclosingScope();
-    Set<AddingPhaseScope> getChildScopes();
+    Map<String, AddingPhaseScope> getChildScopes();
     Map<String, AddingSymbol> getSymbols();
     Map<String, ValueType> getValueTypes();
 
     default void addChildScope(AddingPhaseScope scope) {
-        this.getChildScopes().add(scope);
+        addChildScope(scope.getScopeName(), scope);
+    }
+    default void addChildScope(String s, AddingPhaseScope scope) {
+        this.getChildScopes().put(s, scope);
+    }
+    default AddingPhaseScope getChildScope(String s) {
+        AddingPhaseScope current = this;
+        while(current != null) {
+            if(getChildScopes().get(s) == null) {
+                current = current.getEnclosingScope();
+            } else {
+                return getChildScopes().get(s);
+            }
+        }
+        return null;
     }
 
     default void defineSymbol(AddingSymbol symbol) {
@@ -77,6 +91,6 @@ public interface AddingPhaseScope {
         PrintLib.println(PrintLib.spacing(pos)+"Symbols", pos);
         getSymbols().keySet().forEach((str) -> PrintLib.println(PrintLib.spacing(pos+1)+getSymbols().get(str), pos));
         PrintLib.println(PrintLib.spacing(pos)+"Children", pos+1);
-        getChildScopes().forEach(addingPhaseScope -> addingPhaseScope.printScope(pos+1));
+        getChildScopes().values().forEach(addingPhaseScope -> addingPhaseScope.printScope(pos+1));
     }
 }

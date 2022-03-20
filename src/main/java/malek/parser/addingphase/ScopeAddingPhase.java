@@ -42,6 +42,7 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
         this.scopes.put(context, s);
     }
     void setCurrentScope(AddingPhaseScope scope) {
+        this.currentScope.addChildScope(scope);
         this.currentScope = scope;
     }
     void resetCurrentScope() {
@@ -53,34 +54,19 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
     }
     @Override
     public Object visitFile(TupulParser.FileContext ctx) {
-        FileScope.FileScopeBuilder fileScopeBuilder = new FileScope.FileScopeBuilder();
-        fileScopeBuilder.addEnclosingScope(global);
-        fileScopeBuilder.addFileLocation(new FileLocation(currentFileLocation));
-        fileScopeBuilder.addName(currentFileLocation);
-        List<FileLocation> importedLocations = new ArrayList<>();
-//        for(TupulParser.ImportSomethingContext importSomethingContext : ctx.importSomething()) {
-//            String str = importSomethingContext.STRING().getText();
-//            str = str.substring(1, str.length()-1);
-//            importedLocations.add(new FileLocation(str));
-//        }
-        fileScopeBuilder.addImportedThings(importedLocations.toArray(new FileLocation[0]));
-        FileScope fileScope = fileScopeBuilder.build();
-        global.addFileScope(fileScope);
-        setCurrentScope(fileScope);
-        saveScope(ctx, fileScope);
+        currentScope = global;
         if(ctx.typeDeclaration() != null) {
             visitTypeDeclaration(ctx.typeDeclaration());
         } else {
             visitInterfaceDeclaration(ctx.interfaceDeclaration());
         }
-        resetCurrentScope();
         return null;
     }
 
     @Override public Object visitTypeDeclaration(TupulParser.TypeDeclarationContext ctx) {
         currentScope.defineSymbol(getTypeSymbol(ctx));
         currentScope.defineType(new ConcreteValueType(ctx.IDENTIFIER().getText()));
-        currentScope = new TypeScope(ctx.IDENTIFIER().getText(), currentScope);
+        setCurrentScope(new TypeScope(ctx.IDENTIFIER().getText(), currentScope));
         //Don't know how to deal with having extended interfaces yet.
         //For now, only adding it if it isn't overrided or implemented.
         visitTypeCodeBlock(ctx.typeCodeBlock());
@@ -90,7 +76,7 @@ public class ScopeAddingPhase extends TupulBaseVisitor<Object> {
 
     @Override public Object visitInterfaceDeclaration(TupulParser.InterfaceDeclarationContext ctx) {
         currentScope.defineSymbol(getInterfaceSymbol(ctx));
-        currentScope = new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope);
+        setCurrentScope(new InterfaceScope(ctx.IDENTIFIER().getText(), currentScope));
         //Don't know how to deal with having extended interfaces yet.
         //For now, only adding it if it isn't overrided or implemented.
         visitInterfaceCodeBlock(ctx.interfaceCodeBlock());

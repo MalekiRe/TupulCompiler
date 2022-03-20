@@ -72,7 +72,7 @@ IDENTIFIER              : [a-zA-Z]+[A-Za-z0-9]* ;
 file                            : fromImport* fileImport* (typeDeclaration | interfaceDeclaration)
                                 ;
 
-fileImport                      : IMPORT FILE_IDENTIFIER AS IDENTIFIER ';'
+fileImport                      : IMPORT FILE_IDENTIFIER AS (IDENTIFIER | FILE_IDENTIFIER) ';'
                                 ;
 
 fromImport                      : FROM FILE_IDENTIFIER '{' fileImport+ '}'
@@ -131,7 +131,7 @@ functionWithinFunctionDec       : universalFunctionModifiers universalPostIdenti
                                 ;
 
 //FUNCTION STUFF
-universalFunctionModifiers      : ( typeWithVoid | '(' typeWithVoid ( ',' typeWithVoid* ) ')' ) ( 'public' | 'private' )? ( 'fluid' | 'const' | 'fixed' )? ('dirty' | 'tidy' | 'pure')?
+universalFunctionModifiers      : ( typeWithVoid | '(' typeWithVoid ( ',' typeWithVoid* ) ')' ) ('static' | ) ( 'public' | 'private' )? ( 'fluid' | 'const' | 'fixed' )? ('dirty' | 'tidy' | 'pure')?
                                 ;
 
 typeWithVoid                    : (type | 'void')
@@ -139,10 +139,18 @@ typeWithVoid                    : (type | 'void')
 
 functionDecArguments            : type IDENTIFIER (',' type IDENTIFIER)*
                                 ;
+
 functionCallArguments           : IDENTIFIER (',' IDENTIFIER)*
                                 ;
 
+
 universalPostIdentifierFuncDec  : IDENTIFIER '(' functionDecArguments? ')' ( '<' (functionTagOperation ';' )* '>' )?
+                                ;
+
+functionCall                    : IDENTIFIER '(' functionCallArguments? ')'                             #normalFunctionCall
+                                | FILE_IDENTIFIER ('.' IDENTIFIER)+ '(' functionCallArguments? ')'      #staticFunctionCall
+                                | THIS_KEYWORD '.' functionCall                                         #thisFunctionCall
+                                | (IDENTIFIER '.')+ functionCall                                        #instanceFunctionCall
                                 ;
 
 //Tag Stuff
@@ -189,9 +197,6 @@ functionCodeBlock               : '{' functionCodeBlock* '}'
 superCall                       : SUPER_KEYWORD '(' IDENTIFIER ')'
                                 ;
 
-functionCall                    : IDENTIFIER '(' functionCallArguments? ')'
-                                | THIS_KEYWORD '.' functionCall
-                                ;
 
 //Logic Control Stuff
 
@@ -222,14 +227,16 @@ conditional                     : finalValue
 
 //Value stuff
 
-type                            : IDENTIFIER | 'int' | 'char' | 'double' | 'float' | 'string'
+type                            : FILE_IDENTIFIER ('.' IDENTIFIER)* | IDENTIFIER | 'int' | 'char' | 'double' | 'float' | 'string'
                                 ;
 
 finalValue                      : intermediateValue
                                 ;
 
-varID                           : IDENTIFIER
-                                | THIS_KEYWORD
+variableInstance                : IDENTIFIER                        #localVariableInstance
+                                | THIS_KEYWORD                      #thisVariableInstance
+                                | FILE_IDENTIFIER ('.' IDENTIFIER)+ #staticVariableInstance
+                                | (IDENTIFIER '.')+ IDENTIFIER      #instanceVariableInstance
                                 ;
 
 intermediateValue               : functionCall (':' ((type IDENTIFIER | IDENTIFIER) | '(' ( (type IDENTIFIER | IDENTIFIER)+ (',' (type IDENTIFIER | IDENTIFIER))*) ')'))?
@@ -249,7 +256,8 @@ intermediateValue               : functionCall (':' ((type IDENTIFIER | IDENTIFI
                                 | intermediateValue '/' intermediateValue
                                 | intermediateValue '+' intermediateValue
                                 | intermediateValue '-' intermediateValue
-                                | varID
+                                | intermediateValue '%' intermediateValue
+                                | variableInstance
                                 ;
 
 

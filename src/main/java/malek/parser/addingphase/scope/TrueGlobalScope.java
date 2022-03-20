@@ -1,13 +1,19 @@
 package malek.parser.addingphase.scope;
 
+import malek.buildtool.printlib.Color;
+import malek.buildtool.printlib.PrintLib;
+import malek.parser.addingphase.scope.typeinterface.TypeInterfaceScope;
 import malek.parser.addingphase.symbol.*;
+import malek.parser.symbol.InterfaceType;
+import malek.parser.symbol.TypeType;
 
 import java.util.*;
 
 public class TrueGlobalScope implements AddingPhaseScope {
     final Map<String, ValueType> types = new HashMap<>();
     final Map<String, AddingSymbol> symbols = new HashMap<>();
-    final Set<AddingPhaseScope> childScopes = new HashSet<>();
+    final Map<String, AddingPhaseScope> childScopes = new HashMap<>();
+    final Map<String, TypeInterfaceScope> typeInterfaceScopeMap = new HashMap<>();
     final Map<String, FileScope> fileScopeMap = new HashMap<>();
     final String scopeName = "TrueGlobal";
     static final private String[] builtinValueTypes = {"int", "double", "float", "string", "char", "void"};
@@ -30,8 +36,16 @@ public class TrueGlobalScope implements AddingPhaseScope {
     }
 
     @Override
-    public Set<AddingPhaseScope> getChildScopes() {
+    public Map<String, AddingPhaseScope> getChildScopes() {
         return childScopes;
+    }
+
+    public void defineTypeInterfaceScope(String s, TypeInterfaceScope typeInterfaceScope) {
+        this.typeInterfaceScopeMap.put(s, typeInterfaceScope);
+    }
+
+    public TypeInterfaceScope getTypeInterfaceScope(String s) {
+        return this.typeInterfaceScopeMap.get(s);
     }
 
     @Override
@@ -46,10 +60,6 @@ public class TrueGlobalScope implements AddingPhaseScope {
 
     public void addFileScope(FileScope fileScope) {
         this.fileScopeMap.put(fileScope.getFileLocation(), fileScope);
-    }
-
-    public FileScope getFileScope(String fileLocation) {
-        return this.fileScopeMap.get(fileLocation);
     }
 
     public Set<String> getFileScopeNames() {
